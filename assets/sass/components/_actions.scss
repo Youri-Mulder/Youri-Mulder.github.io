@@ -47,7 +47,7 @@
 			width: calc(100% + #{_size(element-margin) * 0.5});
 
 			li {
-				@include vendor('flex-grow', '1');
+				@include vendor('flex-grow', '5');
 				@include vendor('flex-shrink', '1');
 				width: 100%;
 
