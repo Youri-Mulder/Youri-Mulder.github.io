@@ -1,2 +1,1 @@
-# Gegroet 
-## Landgenoot
+remote_theme: Modernist
