@@ -2616,7 +2616,7 @@ input, select, textarea {
 				display: block;
 				height: 100%;
 				position: absolute;
-				right: 1.5em;
+				right: 0.5em !important;
 				top: 0;
 				vertical-align: middle;
 				width: 36px;
@@ -2707,6 +2707,19 @@ input, select, textarea {
 			pointer-events: none;
 			cursor: default;
 			opacity: 0.25;
+		}
+
+		@media only screen and (max-width: 500px) {
+			.actions li {
+				width: 100%;
+				margin-bottom: 1em;
+			}
+			.actions 
+		
+			.actions li a {
+				padding: 1em;
+				font-size: 0.6em;
+			}
 		}
 /* Tiles */
 
