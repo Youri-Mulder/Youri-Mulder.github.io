@@ -2708,23 +2708,6 @@ input, select, textarea {
 			cursor: default;
 			opacity: 0.25;
 		}
-		      /* Nieuwe mediaquery voor kleine schermen */
-			  @media only screen and (max-width: 1000px) {
-				.actions ul {
-					flex-direction: column; /* Verander de richting naar kolom */
-					align-items: stretch; /* Stretch-items voor volledige breedte */
-				}
-	  
-				.actions li {
-					width: 100%;
-					margin-bottom: 1em;
-				}
-	  
-				.actions li a {
-					padding: 1em;
-					font-size: 0.7em;
-				}
-			}
 /* Tiles */
 
 	.tiles {
