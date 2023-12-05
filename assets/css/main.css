@@ -2498,8 +2498,7 @@ input, select, textarea {
 				border-top: 0;
 			}
 
-/* Button */
-
+  /* Button */
 	input[type="submit"],
 	input[type="reset"],
 	input[type="button"],
@@ -2531,7 +2530,6 @@ input, select, textarea {
 		text-transform: uppercase;
 		white-space: nowrap;
 	}
-
 		input[type="submit"]:hover, input[type="submit"]:active,
 		input[type="reset"]:hover,
 		input[type="reset"]:active,
@@ -2710,7 +2708,23 @@ input, select, textarea {
 			cursor: default;
 			opacity: 0.25;
 		}
-
+		      /* Nieuwe mediaquery voor kleine schermen */
+			  @media only screen and (max-width: 1000px) {
+				.actions ul {
+					flex-direction: column; /* Verander de richting naar kolom */
+					align-items: stretch; /* Stretch-items voor volledige breedte */
+				}
+	  
+				.actions li {
+					width: 100%;
+					margin-bottom: 1em;
+				}
+	  
+				.actions li a {
+					padding: 1em;
+					font-size: 0.7em;
+				}
+			}
 /* Tiles */
 
 	.tiles {
@@ -3410,7 +3424,7 @@ input, select, textarea {
 			-ms-transition-delay: 0.75s;
 			transition-delay: 0.75s;
 			pointer-events: none;
-			background-color: #242424 !important;
+			background-color: #242424;
 			content: '';
 			display: block;
 			height: 100%;
@@ -3499,7 +3513,7 @@ input, select, textarea {
 		}
 
 		#banner.style3:after {
-			background-color: #ec8d81;
+			background-color: #FFBE47;
 		}
 
 		#banner.style4:after {
