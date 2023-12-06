@@ -2515,7 +2515,7 @@ input, select, textarea {
 		background-color: rgba(0, 0, 0, 0);
 		border: 0;
 		border-radius: 0;
-		box-shadow: inset 0 0 0 2px #ffffff;
+		box-shadow: inset 0 0 0 2px #8b8b8b;
 		color: #ffffff;
 		cursor: pointer;
 		display: inline-block;
@@ -2835,27 +2835,27 @@ input, select, textarea {
 			}
 
 			.tiles article:nth-child(6n - 5):before {
-				background-color: #18b0e3;
+				background-color: #18b0e37d; /*cyberbro*/
 			}
 
 			.tiles article:nth-child(6n - 4):before {
-				background-color: #FFBE47;
+				background-color: #ffbe477d; /*bugoff*/
 			}
 
 			.tiles article:nth-child(6n - 3):before {
-				background-color: #FF4635;
+				background-color: #ff46358a; /*nightracer*/
 			}
 
 			.tiles article:nth-child(6n - 2):before {
-				background-color: #e7b788;
+				background-color: #e172068a; /*meurble*/
 			}
 
 			.tiles article:nth-child(6n - 1):before {
-				background-color: #8ea9e8;
+				background-color: #8ea9e8; /**/
 			}
 
 			.tiles article:nth-child(6n):before {
-				background-color: #87c5a4;
+				background-color: #87c5a4; /**/
 			}
 
 		@media screen and (max-width: 1280px) {
