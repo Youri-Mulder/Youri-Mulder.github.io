@@ -2402,12 +2402,12 @@ input, select, textarea {
 				}
 
 					ul.pagination li > .page.active:hover {
-						background-color: #9bf1ff;
+						background-color: #9bf2ff;
 						color: #242943 !important;
 					}
 
 					ul.pagination li > .page.active:active {
-						background-color: #53e3fb;
+						background-color: #53e2fb;
 					}
 
 			ul.pagination li:first-child {
@@ -2515,7 +2515,7 @@ input, select, textarea {
 		background-color: rgba(0, 0, 0, 0);
 		border: 0;
 		border-radius: 0;
-		box-shadow: inset 0 0 0 2px #8b8b8b;
+		box-shadow: inset 0 0 0 2px #d6d6d6;
 		color: #ffffff;
 		cursor: pointer;
 		display: inline-block;
@@ -2539,8 +2539,8 @@ input, select, textarea {
 		button:active,
 		.button:hover,
 		.button:active {
-			box-shadow: inset 0 0 0 2px #9bf1ff;
-			color: #9bf1ff;
+			box-shadow: inset 0 0 0 2px #8b8b8b;
+			color: #8b8b8b;
 		}
 
 		input[type="submit"]:active,
@@ -2549,8 +2549,8 @@ input, select, textarea {
 		button:active,
 		.button:active {
 			background-color: rgba(155, 241, 255, 0.1);
-			box-shadow: inset 0 0 0 2px #53e3fb;
-			color: #53e3fb;
+			box-shadow: inset 0 0 0 2px #8b8b8b;
+			color: #8b8b8b;
 		}
 
 		input[type="submit"].icon:before,
@@ -2612,6 +2612,7 @@ input, select, textarea {
 				background-position: center right;
 				background-repeat: no-repeat;
 				background-size: 36px 24px;
+				color: #ffffff;
 				content: '';
 				display: block;
 				height: 100%;
@@ -2704,7 +2705,7 @@ input, select, textarea {
 		.button.noborder{
 			background-color: #ffffff00;
 			box-shadow: none;
-			color: #babdcb;
+			color: #e7e7e7;
 		}
 
 			input[type="submit"].primary:hover, input[type="submit"].primary:active,
@@ -2716,7 +2717,7 @@ input, select, textarea {
 			button.primary:active,
 			.button.primary:hover,
 			.button.primary:active {
-				background-color: #9bf1ff;
+				background-color: rgb(65, 65, 65);
 				color: #242943 !important;
 			}
 
@@ -2725,7 +2726,7 @@ input, select, textarea {
 			input[type="button"].primary:active,
 			button.primary:active,
 			.button.primary:active {
-				background-color: #53e3fb;
+				background-color: rgb(73, 73, 73);
 			}
 
 		input[type="submit"].disabled, input[type="submit"]:disabled,
@@ -3184,7 +3185,7 @@ input, select, textarea {
 			}
 
 			#header .logo:hover strong {
-				background-color: #9bf1ff;
+				background-color: #53e3fb;
 			}
 
 			#header .logo:active strong {
