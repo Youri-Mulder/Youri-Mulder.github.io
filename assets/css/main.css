@@ -160,11 +160,11 @@ input, select, textarea {
 
 		a:hover {
 			border-bottom-color: transparent;
-			color: #616161 !important;
+			color: #9bf1ff !important;
 		}
 
 		a:active {
-			color: #616161 !important;
+			color: #9bf1ff !important;
 		}
 
 	strong, b {
@@ -3198,6 +3198,20 @@ input, select, textarea {
 
 			#header .logo2:active strong {
 				background-color: #ecff17;
+			}
+			/*formula night*/
+			#header .logo3:hover strong {
+				background-color: #ff3a17;
+			}
+			#header .logo3:active strong {
+				background-color: #ff3a17;
+			}
+			/*meurble*/
+			#header .logo4:hover strong {
+				background-color: #ff8c00;
+			}
+			#header .logo4:active strong {
+				background-color: #ff8c00;
 			}
 
 		#header nav {
