@@ -3427,8 +3427,25 @@ input, select, textarea {
 
 		}
 
-/* Banner */
+		.container {
+			position: relative;
+			overflow: hidden;
+			width: 100%;
+			padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+		  }
+		  
+		  /* Then style the iframe to fit in the container div with full height and width */
+		  .responsive-iframe {
+			position: absolute;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			width: 100%;
+			height: 100%;
+		  }
 
+/* Banner */
 	#banner {
 		-moz-align-items: center;
 		-webkit-align-items: center;
@@ -3545,25 +3562,20 @@ input, select, textarea {
 			}
 
 		#banner.style1:after {
-			background-color: #6fc3df; /* cyberbro*/
+			background-color: #6fc3dfb7; /* cyberbro*/
 		}
-
 		#banner.style2:after {
 			background-color: #8d82c4; /* main */
 		}
-
 		#banner.style3:after {
-			background-color: #FFBE47; /* bug off */
+			background-color: #ffbf478e; /* bug off */
 		}
-
 		#banner.style4:after {
-			background-color: #FF4635; /* formuladrift */
+			background-color: #e42f1f96; /* formuladrift */
 		}
-
 		#banner.style5:after {
-			background-color: #FF8800; /* Meurble */
+			background-color: #ff880065; /* Meurble */
 		}
-
 		#banner.style6:after {
 			background-color: rgb(197, 183, 135);
 		}
