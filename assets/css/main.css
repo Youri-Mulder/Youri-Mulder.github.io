@@ -2142,6 +2142,9 @@ input, select, textarea {
 			text-align: center;
 			width: 2em;
 		}
+		.icon.setcoloritch:before{
+			color: #f15900;
+		}
 
 	a.icon.alt:before {
 		-moz-transition: background-color 0.2s ease-in-out;
@@ -3313,23 +3316,23 @@ input, select, textarea {
 		}
 
 			#header.alt.style1 .logo strong {
-				color: #6fc3df;
+				color: #6fc3df; /*Cubrospace*/
 			}
 
 			#header.alt.style2 .logo strong {
-				color: #8d82c4;
+				color: #87c5a4; 
 			}
 
 			#header.alt.style3 .logo strong {
-				color: #ec8d81;
+				color: #a9b61b; /*BugOff*/
 			}
 
 			#header.alt.style4 .logo strong {
-				color: #e7b788;
+				color: #ac4533; /*FormulaNight*/
 			}
 
 			#header.alt.style5 .logo strong {
-				color: #8ea9e8;
+				color: #a76f2a; /*Meurble*/
 			}
 
 			#header.alt.style6 .logo strong {
