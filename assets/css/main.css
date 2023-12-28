@@ -2818,6 +2818,7 @@ input, select, textarea {
 			}
 
 			.tiles article:before {
+				background-color: rgba(36, 41, 67, 0.25);
 				-moz-transition: opacity 0.5s ease;
 				-webkit-transition: opacity 0.5s ease;
 				-ms-transition: opacity 0.5s ease;
@@ -2864,31 +2865,23 @@ input, select, textarea {
 			.tiles article:nth-child(4n - 1), .tiles article:nth-child(4n - 2) {
 				width: 50%; /* is for the tile size */
 			}
-
-			.tiles article:nth-child(6n - 5):before {
-				background-color: #18b0e37d; /*cyberbro*/
+			
+			.tiles.SetColorCybroSpace::before{
+				background-color: #18b0e37d;
 			}
 
-			.tiles article:nth-child(6n - 4):before {
-				background-color: #ffbe477d; /*bugoff*/
+			.tiles.SetColorBugOff::before{
+				background-color: #ffbe477d;
 			}
 
-			.tiles article:nth-child(6n - 3):before {
-				background-color: #ff46358a; /*nightracer*/
+			.tiles.SetColorFormulaNight::before{
+				background-color: #ff46358a;
 			}
 
-			.tiles article:nth-child(6n - 2):before {
-				background-color: #e172068a; /*meurble*/
+			.tiles.SetColorMeurble::before{
+				background-color: #e172068a;
 			}
-
-			.tiles article:nth-child(6n - 1):before {
-				background-color: #8ea9e8; /**/
-			}
-
-			.tiles article:nth-child(6n):before {
-				background-color: #87c5a4; /**/
-			}
-
+			
 		@media screen and (max-width: 1280px) {
 
 			.tiles article {
@@ -2973,7 +2966,8 @@ input, select, textarea {
 			-webkit-flex-direction: row;
 			-ms-flex-direction: row;
 			flex-direction: row;
-			background-color: #2e3450;
+			flex-wrap: wrap;
+			background-color: #444444;
 		}
 
 			.spotlights > section > .image {
@@ -3035,7 +3029,7 @@ input, select, textarea {
 				-webkit-flex-direction: row-reverse;
 				-ms-flex-direction: row-reverse;
 				flex-direction: row-reverse;
-				background-color: #333856;
+				background-color: #565656;
 			}
 
 				.spotlights > section:nth-child(2n) > .content {
@@ -3187,33 +3181,33 @@ input, select, textarea {
 				padding: 0 0.125em 0 0.375em;
 			}
             /*cyberbro*/
-			#header .logo:hover strong {
+			#header .logoCybroSpace:hover strong {
 				background-color: #53e3fb;
 			}
 
-			#header .logo:active strong {
+			#header .logoCybroSpace:active strong {
 				background-color: #53e3fb;
 			}
             /*bugoff*/
-			#header .logo2:hover strong {
+			#header .logoBugOff:hover strong {
 				background-color: #ecff17;
 			}
 
-			#header .logo2:active strong {
+			#header .logoBugOff:active strong {
 				background-color: #ecff17;
 			}
 			/*formula night*/
-			#header .logo3:hover strong {
+			#header .logoFormulaNight:hover strong {
 				background-color: #ff3a17;
 			}
-			#header .logo3:active strong {
+			#header .logoFormulaNight:active strong {
 				background-color: #ff3a17;
 			}
 			/*meurble*/
-			#header .logo4:hover strong {
+			#header .logoMeurble:hover strong {
 				background-color: #ff8c00;
 			}
-			#header .logo4:active strong {
+			#header .logoMeurble:active strong {
 				background-color: #ff8c00;
 			}
 
@@ -3315,27 +3309,27 @@ input, select, textarea {
 			position: absolute;
 		}
 
-			#header.alt.style1 .logo strong {
+			#header.alt.styleCybroSpace .logo strong {
 				color: #6fc3df; /*Cubrospace*/
 			}
 
-			#header.alt.style2 .logo strong {
+			#header.alt.style1 .logo strong {
 				color: #87c5a4; 
 			}
 
-			#header.alt.style3 .logo strong {
+			#header.alt.styleBugOff .logo strong {
 				color: #a9b61b; /*BugOff*/
 			}
 
-			#header.alt.style4 .logo strong {
+			#header.alt.styleFormulaNight .logo strong {
 				color: #ac4533; /*FormulaNight*/
 			}
 
-			#header.alt.style5 .logo strong {
+			#header.alt.styleMeurble .logo strong {
 				color: #a76f2a; /*Meurble*/
 			}
 
-			#header.alt.style6 .logo strong {
+			#header.alt.style2 .logo strong {
 				color: #87c5a4;
 			}
 
@@ -3564,19 +3558,19 @@ input, select, textarea {
 				opacity: 0.75;
 			}
 
-		#banner.style1:after {
+		#banner.styleCybroSpace:after {
 			background-color: #6fc3dfb7; /* cyberbro*/
 		}
-		#banner.style2:after {
+		#banner.styleMain:after {
 			background-color: #8d82c4; /* main */
 		}
-		#banner.style3:after {
+		#banner.styleBugOff:after {
 			background-color: #ffbf478e; /* bug off */
 		}
-		#banner.style4:after {
+		#banner.styleFormulaNight:after {
 			background-color: #e42f1f96; /* formuladrift */
 		}
-		#banner.style5:after {
+		#banner.styleMeurble:after {
 			background-color: #ff880065; /* Meurble */
 		}
 		#banner.style6:after {
@@ -3827,7 +3821,7 @@ input, select, textarea {
 		#wrapper > * > .inner {
 			padding: 4em 0 2em 0 ;
 			margin: 0 auto;
-			max-width: 65em;
+			max-width: 60em;
 			width: calc(100% - 6em);
 		}
 

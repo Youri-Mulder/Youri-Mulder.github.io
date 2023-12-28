@@ -1,0 +1,23 @@
+			.tiles article:nth-child(6n - 5):before {
+				background-color: #18b0e37d; /*cyberbro*/
+			}
+			
+			.tiles article:nth-child(6n - 4):before {
+				background-color: #ffbe477d; /*bugoff*/
+			}
+			
+			.tiles article:nth-child(6n - 3):before {
+				background-color: #ff46358a; /*nightracer*/
+			}
+			
+			.tiles article:nth-child(6n - 2):before {
+				background-color: #e172068a; /*meurble*/
+			}
+			
+			.tiles article:nth-child(6n - 1):before {
+				background-color: #8ea9e8; /**/
+			}
+			
+			.tiles article:nth-child(6n):before {
+				background-color: #87c5a4; /**/
+			}
