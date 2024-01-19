@@ -81,16 +81,16 @@
 									</header>
 									<div>
 										<li><a href="#UI" class="button noborder nextt scrolly">UI Functionalitijd-</a></li>   
-									   <li><a href="#Times" class="button noborder nextt scrolly">Lap/Checkpoint Times-</a></li>   
-									   <li><a href="#GameSave" class="button noborder nextt scrolly">GameSaving-</a></li>   
-									   <li><a href="#GameSave" class="button noborder nextt scrolly">Race Manger</a></li>   
+									   <li><a href="#GameSaving" class="button noborder nextt scrolly">GameSaving-</a></li>   
+									   <li><a href="#GameManagers" class="button noborder nextt scrolly">GameManager</a></li>   
+									   <li><a href="#Nav" class="button noborder nextt scrolly">Naviagatie Pijltje</a></li>   
 									</div>
 								</div>
 							</section>
 
 						<!-- Two -->
-						<section id="UI" class=" spotlights">
-							<section>
+						<section class=" spotlights">
+							<section id="UI">
 								<a class="image">
 									<img src="images/FormulaNight/CheckpointTimeColom.gif" alt="" data-position="center center"/>
 									<img src="images/FormulaNight/CheckpointTime.gif" alt="" data-position="center center"/>
@@ -105,47 +105,82 @@
 											<p>Er komt veel te staan op het eind scherm dus heb ik er voor gekozen om alle checkpoint/segnment tijden op een apart tabje te zetten met elke checkpoint een eigen kollom, dit zodat alles goed overzichtelijk is.</p>
 										</div>
 										<ul class="actions">
-											<li><a href="https://gist.github.com/Youri-Mulder/162ba8cea979c3b0a71b6b56c855e30a" class="button">Code</a></li>
+											<li><a href="https://gist.github.com/Youri-Mulder/62df48f7831ddec92a03d2276c899280" class="button">Code</a></li>
 										</ul>
 										<div>
 											<h4>GameUI</h4>
-											<p>na elke checkpoint krijg je ook te zien hoe lang je over de lap hebt gedaan en waar in de lijst de tuid staat. dit is voor 2 seconden te zien na het halen van een checkpoint</p>
-											<p>(De Metertjes zijn helaas niet door mijn gemaakt maar door mijn mede Dev.)</p>
+											<p>na elke checkpoint krijg je aan de linker kant van het beeldscherm ook te zien hoe lang je over de lap hebt gedaan en waar in de lijst de tuid staat. dit is voor 2 seconden te zien na het halen van een checkpoint</p>
 										</div>
 										<ul class="actions">
-											<li><a href="https://gist.github.com/Youri-Mulder/162ba8cea979c3b0a71b6b56c855e30a" class="button">Code</a></li>
+											<li><a href="https://gist.github.com/Youri-Mulder/d81012633280e9099245f151f37a8948" class="button">Code</a></li>
 										</ul>
 									</div>
 								</div>
 							</section>
-							<section id="GameSave">
+							<section id="GameManagers">
 								<a class="image">
-									<img src="images/pic09.jpg" alt="" data-position="top center" />
+									<!-- <img src="images/pic09.jpg" alt="" data-position="top center" /> -->
 								</a>
 								<div class="content">
 									<div class="inner">
 										<header class="major">
-											<h3>--</h3>
+											<h3>GameMamanger</h3>
 										</header>
-										<p>--</p>
+										<div>
+											<h4>LapManager</h4>
+											<p>De lapManager houd de tijd en aantal laps bij van de race die bezig is en slaat daarna alles op naar de game saver die alles omzet naar een save file. de lapManager is alleen actief als er een race is gestart en elke race heeft zijn eigen lapManager</p>
+										</div>
+										<ul class="actions">
+											<li><a href="https://gist.github.com/Youri-Mulder/a2ed26d7630b1acb31ad1545013bc8d4" class="button">Code</a></li>
+										</ul>
+										<div>
+											<h4>GlobalLapManager</h4>
+											<p>De GlobalLapManager word gebruikt om dingen die ten alle tijden actief zijn aan te passen zoals de text voor welke lap bezig is. De GlobalLapManager zorgt er voor dat er genoegt opslag plekken zijn voor alle data en laad het in laden als er een safe file is, het zogt voor het respawnen van de player en stopt de player van rijden wanneer dat nodig is zoals tijdens het aftellen op de start. als er maar 1 race is om te spelen dan zogt de GlobalLapManager er voor dat die race automatisch word gestart.</p>
+										</div>
 										<ul class="actions">
 											<li><a href="https://gist.github.com/Youri-Mulder/16f58193d1084bdf9ce043bc348d9395" class="button">Code</a></li>
 										</ul>
+										<div>
+											<h4>Checkpoits</h4>
+											<p>De checkpoint staat de player positie op en geeft opdracht aan de LapManager om tijdens op de slaan en te kijken of er een lap voorbij is.</p>
+										</div>
+										<ul class="actions">
+											<li><a href="https://gist.github.com/Youri-Mulder/e4eedf744f294ba929721d1dab682d23" class="button">Code</a></li>
+										</ul>
 									</div>
 								</div>
 							</section>
-							<section id="UI">
-								<a href="generic.html" class="image">
-									<img src="images/pic10.jpg" alt="" data-position="25% 25%" />
+							<section id="GameSaving">
+								<!-- 
+								<a class="image">
+									<img src="images/pic09.jpg" alt="" data-position="top center" />
+								</a>
+							    -->
+								<div class="content">
+									<div class="inner">
+										<header class="major">
+											<h3>GameSaving</h3>
+										</header>
+										<h4>DataCenter</h4>
+										<p>De DataCenter slaat de game op in een aparte file en laad die weer in als de game word gestart en er een safe file bestaat. Voor het opslaan maak ik gebruik van een BinaryFormatter.</p>
+										<ul class="actions">
+											<li><a href="https://gist.github.com/Youri-Mulder/25efa7b9178d4b576f80e3756f8c5d09" class="button">Code</a></li>
+										</ul>
+									</div>
+								</div>
+							</section>
+							<section id="Nav">
+								<a class="image">
+									<img src="images/FormulaNight/FormulaNightNavigatie.gif" alt="" data-position="25% 25%" />
 								</a>
 								<div class="content">
 									<div class="inner">
 										<header class="major">
-											<h3>--</h3>
+											<h3>Navigatie Pijltje</h3>
 										</header>
-										<p>--</p>
+										<p>Ik heb een navigaite pijlstje gemaakt die boven de auto hangt zodat de player kan zien waar de volgende checkpoint zit. Nu de game een loop is, is het niet zo zeer nodig maar met het eerste idee van een open world game is het wel handig om te zien waar je heen moet.</p>
 										<ul class="actions">
-											<li><a href="generic.html" class="button">Code</a></li>
+											<li><a href="https://gist.github.com/Youri-Mulder/43f89f4ae0db697810b46dfc0d230381" class="button">Code</a></li>
 										</ul>
 									</div>
 								</div>
