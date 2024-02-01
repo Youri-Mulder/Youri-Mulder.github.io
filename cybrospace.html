@@ -73,16 +73,16 @@
 										<h2>Tijdens dit project heb ik gewerkt aan.</h2>
 									</header>
 									<div>
+										<li><a href="#CameraMovement" class="button noborder nextt scrolly">Camera Movement</a></li>   
+										<li><a href="#LevelSelect" class="button noborder nextt scrolly">Level Select</a></li>   
+										<li><a href="#WallTurret" class="button noborder nextt scrolly">WallTurret</a></li>   
+										<li><a href="#WallCamera" class="button noborder nextt scrolly">WallCamera</a></li>   
+										<li><a href="#" class="button noborder nextt scrolly">------------------------------------</a></li>   
+										<li><a href="#Doors" class="button noborder nextt scrolly">KeyCard / Deuren</a></li>   
 										<li><a href="#" class="button noborder nextt scrolly">GameSaving-</a></li>   
 										<li><a href="#" class="button noborder nextt scrolly">GameManager</a></li>   
 										<li><a href="#" class="button noborder nextt scrolly">Enemies</a></li>   
-										<li><a href="#CameraMovement" class="button noborder nextt scrolly">Camera Movement</a></li>   
-										<li><a href="#" class="button noborder nextt scrolly">KeyCard / Deuren</a></li>   
 										<li><a href="#" class="button noborder nextt scrolly">Boss</a></li>   
-										<li><a href="#" class="button noborder nextt scrolly">WallTurret</a></li>   
-										<li><a href="#" class="button noborder nextt scrolly">WallCamera</a></li>   
-										<li><a href="#" class="button noborder nextt scrolly">Level Select</a></li>   
-										<li><a href="#" class="button noborder nextt scrolly">Player health</a></li>   
 									</div>
 								</div>
 							</section>
@@ -90,15 +90,19 @@
 						<!-- Two -->
 							<section id="two" class="spotlights">
 								<section id="CameraMovement">
-									<video width="700" height="510" autoplay loop muted>
-										<source src="images/CybroSpace/CameraMovement.mp4" type="video/mp4">
-									  </video>
+									<a class="image">
+										<video width="700" height="510" autoplay loop muted>
+											<source src="images/CybroSpace/CameraMovement.mp4" type="video/mp4">
+										  </video>
+									</a>
 									<div class="content">
 										<div class="inner">
 											<header class="major">
 												<h3>CameraMovement</h3>
 											</header>
+											<div>
 											<p>Soms waren er in somige gedeeltes in de map niet goed te zien. ik had al een camera die de player volgt en dat script heb ik aangepast om ook 180 graden te draaien zodat je meer van de map kan zien en zo beter kan rond bewegen. Ik kwam er achter dat de camera een beetje achter de player hangt en zodra de camera draait dan kon je de player vrij wel niet zien. Dit heb ik opgelost door de positie van de Camera ook aan te passen terwijl die draait.</p>
+											</div>
 											<ul class="actions">
 												<li><a href="https://gist.github.com/Youri-Mulder/97782202e0b630f91736e8ee4110cac3" class="button">Code</a></li>
 											</ul>
@@ -114,7 +118,7 @@
 											<source src="images/CybroSpace/KeyCard+Door.mp4" type="video/mp4">
 										  </video>
 									</a>
-									<div class="content">
+									<div id="Doors" class="content">
 										<div class="inner">
 											<header class="major">
 												<h3>KeyCard / Deuren</h3>
@@ -136,6 +140,61 @@
 											<p>asds</p>
 											<ul class="actions">
 												<li><a href="https://gist.github.com/Youri-Mulder/fb1497f8068601d23e353c7cf6d3b3f9" class="button">Code</a></li>
+											</ul>
+										</div>
+									</div>
+								</section>
+								<section id="LevelSelect">
+									<div class="content">
+										<div class="inner">
+											<header class="major">
+												<h3>LevelSelect</h3>
+											</header>
+											<div>
+											<p>Niet alle levels zijn ten alle tijden speelbaar dus zetten de level lesect knoppen zichzelf uit als ze zien dat de player niet bij het goede level is. De knoppen kijken in de DataCenter van de game bij welk level de player is. Als de knop actief is kan een level worden gestart met de level tag in de knop.</p>
+											</div>
+											<ul class="actions">
+												<li><a href="https://gist.github.com/Youri-Mulder/bb0a127cc55e134a4ef0eaae540b68e2" class="button">Code</a></li>
+											</ul>
+										</div>
+									</div>
+								</section>
+								<section id="WallTurret">
+									<a class="image">
+										<video width="700" height="510" autoplay loop muted>
+											<source src="images//CybroSpace/WallTurret.mp4" type="video/mp4">
+										  </video>
+									</a>
+									<div class="content">
+										<div class="inner">
+											<header class="major">
+												<h3>WallTurret</h3>
+											</header>
+											<div>
+											<p>De WallTurret kijk of de player in range is en er geen muur tussen staat en dan begint hij op de player te shieten. Voor wat visuele feedback heeft de turret een lamp die het schietvelt aan geeft. als de player in zicht van de turret zit verandert de kleur van het licht naar rood.</p>
+											</div>
+											<ul class="actions">
+												<li><a href="https://gist.github.com/Youri-Mulder/a8d7c8e25faac12193c9625280d65e20" class="button">Code</a></li>
+											</ul>
+										</div>
+									</div>
+								</section>
+								<section id="WallCamera">
+									<a class="image">
+										<video width="700" height="510" autoplay loop muted>
+											<source src="images/CybroSpace/WallCamera.mp4" type="video/mp4">
+										  </video>
+									</a>
+									<div class="content">
+										<div class="inner">
+											<header class="major">
+												<h3>Camera's</h3>
+											</header>
+											<div>
+											<p>De Camera's kijken of de player ergens rond loopt. De FOV van de camera word aangeven met licht dat rood word als de player er in loopt. De camera geeft aan alle enemies die in de buurt staan aan dat de player in de buurt is ze aan kunnen gaan vallen. De camera heeft de mogelijkheid om rond te draaien en dat is aan te passen in de inspctor.</p>
+											</div>
+											<ul class="actions">
+												<li><a href="https://gist.github.com/Youri-Mulder/a8d7c8e25faac12193c9625280d65e20" class="button">Code</a></li>
 											</ul>
 										</div>
 									</div>
