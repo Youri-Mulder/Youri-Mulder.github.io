@@ -2784,15 +2784,19 @@ input, select, textarea {
 			cursor: default;
 			height: 40vh;
 			max-height: 40em;
-			min-height: 23em;
+			min-height: 10em;
 			overflow: hidden;
 			position: relative;
 			width: 50%; /* is for the tile size */
 		}
 
 		    .tiles .SetBannerTile{
-				width: 100%;
+				width: 100% !important;
 				height: 20vh !important;
+			}
+			.tiles .SetBannerTile h3{
+				text-decoration: overline;
+				font: inherit;
 			}
 
 			.tiles article .image {

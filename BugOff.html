@@ -34,10 +34,7 @@
 							<li><a href="cybrospace.html">CybroSpace</a></li>
 							<li><a href="Meurble.html">Meurble</a></li>
 						</ul>
-						<ul class="actions stacked">
-							<!-- <li><a href="#" class="button primary fit">Get Started</a></li> -->
-							<!-- <li><a href="#" class="button fit">Log In</a></li> -->
-						</ul>
+
 					</nav>
 
 				<!-- Banner -->
@@ -52,8 +49,8 @@
 								<h1>BugOff</h1>
 							</header>
 							<div class="content">
-								<p>BugOff is een shmub groeps project gemaakt in 3 weken. dit was daaraantagen ook mijn eerste groeps project en het ging toch wel behoorlijk soepel<br />
-								----------</p>
+								<p>BugOff is een shmub groeps project gemaakt in 3 weken. dit was ook mijn eerste groeps project en het ging best wel soepel<br />
+								</p>
 							</div>
 						</div>
 					</section>
@@ -69,147 +66,181 @@
 									</div>
 									<div>
 										<a href="BugOffGamePage.html" class="button">Play The Game</a>
-									    <a href="#" class="icon brands alt setcoloritch fa-itch-io"><span class="label">Itch.io</span></a>
+									    <!-- <a href="#" class="icon brands alt setcoloritch fa-itch-io"><span class="label">Itch.io</span></a> -->
 									</div>
 									<header class="major">
-										<h2>--</h2>
+										<h2>Project info</h2>
 									</header>
-									<p>--</p>
+									<p>Dit was mijn eerste groeps project, het ging heel soepel en alles is af gekomen dat was geplant</p>
+									<header class="major">
+										<h2>Tijdens dit project heb ik gewerkt aan.</h2>
+									</header>
+									<div>
+										<li><a href="#Movement" class="button noborder nextt scrolly">PlayerMovement</a></li>   
+										<li><a href="#Maploop" class="button noborder nextt scrolly">Map Loop</a></li>   
+										<li><a href="#MRZandhoopje" class="button noborder nextt scrolly">MR-Zandhoopje</a></li>   
+										<li><a href="#PowerUps" class="button noborder nextt scrolly">PowerUps</a></li>      
+										<li><a href="https://gist.github.com/Youri-Mulder/fa901196d537e9699b3a8c35eb330f9a" class="button noborder nextt scrolly">Schieten / Health</a></li>
+									</div>
 								</div>
 							</section>
 
 						<!-- Two -->
-							<section id="two" class="spotlights">
-								<section>
-									<a href="generic.html" class="image">
-										<img src="images/pic08.jpg" alt="" data-position="center center" />
-									</a>
-									<div class="content">
-										<div class="inner">
-											<header class="major">
-												<h3>--</h3>
-											</header>
-											<p>--</p>
-											<ul class="actions">
-												<!-- <li><a href="generic.html" class="button">Learn more</a></li> -->
-											</ul>
+						<section class=" spotlights">
+							<section id="Movement">
+								<a class="image">
+									<div class="video-container">
+										<video autoplay loop muted playsinline class="responsive-video">
+										  <source src="images/BugOff/BugoffMovement.mp4" type="video/mp4">
+										  Your browser does not support the video tag.
+										</video>
+									  </div>
+								</a>
+								<div class="content">
+									<div class="inner">
+										<header class="major">
+											<h3>PlayerMovement</h3>
+										</header>
+										<div>
+											<p>De player movement is simpele vector3 movement hier heb ik nog een dash aan toe gevoegt. De dash werkt door de player speed tijdenlijk wat hoger te zetten. Om de player minder static door het beeld te zien gleiden heb ik rotaties toegevoegt gebaseerd op welke kant de player op beweegt en dit heb ik gedaan met een lerp.</p>
 										</div>
+										<ul class="actions">
+											<li><a href="https://gist.github.com/Youri-Mulder/b017e290a8826539a91f758aa186fba2" class="button">Code</a></li>
+										</ul>
 									</div>
-								</section>
-								<section>
-									<a href="generic.html" class="image">
-										<img src="images/pic09.jpg" alt="" data-position="top center" />
-									</a>
-									<div class="content">
-										<div class="inner">
-											<header class="major">
-												<h3>--</h3>
-											</header>
-											<p>--</p>
-											<ul class="actions">
-												<!-- <li><a href="generic.html" class="button">Learn more</a></li> -->
-											</ul>
-										</div>
-									</div>
-								</section>
-								<section>
-									<a href="generic.html" class="image">
-										<img src="images/pic10.jpg" alt="" data-position="25% 25%" />
-									</a>
-									<div class="content">
-										<div class="inner">
-											<header class="major">
-												<h3>--</h3>
-											</header>
-											<p>--</p>
-											<ul class="actions">
-												<!-- <li><a href="generic.html" class="button">Learn more</a></li> -->
-											</ul>
-										</div>
-									</div>
-								</section>
-							</section>
-
-						<!-- Three -->
-						<!--
-							<section id="three">
-								<div class="inner">
-									<header class="major">
-										<h2>--</h2>
-									</header>
-									<p>--</p>
-									<ul class="actions">
-										<li><a href="generic.html" class="button next">Get Started</a></li>
-									</ul>
 								</div>
 							</section>
-                        -->
+							<section id="Maploop">
+								<a class="image">
+									<div class="video-container">
+										<video autoplay loop muted playsinline class="responsive-video">
+											<source src="images/BugOff/MapLoop.mp4" type="video/mp4">
+											Your browser does not support the video tag.
+										</video>
+									</div>
+								</a>
+								<div class="content">
+									<div class="inner">
+										<header class="major">
+											<h3>MapLoop</h3>
+										</header>
+										<div>
+											<p>De maploop is gemaakt met waypoints en alle map delen kunnen in een array worden gezet. Het laatste deel van de map is een ghost deel dat later word verwijderd. Als de game start worden er waypoints geplaats op de eerste en de laatse map deel van de array en het laatste deel van de map word verwijderd zodat de delen niet in elkaar clippen. alle delen bewegen dan naar de 2e checkpoit en als die is berrijkt dan word dat map deel naar de eerste checkpoint gezet</p>
+										</div>
+										<ul class="actions">
+											<li><a href="https://gist.github.com/Youri-Mulder/f9c7a929a70fc882084e04457b29d3e2" class="button">Code</a></li>
+										</ul>
+									</div>
+								</div>
+							</section>
+							<section id="MRZandhoopje">
+								<a class="image">
+									<div class="video-container">
+										<video autoplay loop muted playsinline class="responsive-video">
+										  <source src="images/BugOff/MRZandhoopje.mp4" type="video/mp4">
+										  Your browser does not support the video tag.
+										</video>
+									  </div>
+								</a>
+								<div class="content">
+									<div class="inner">
+										<header class="major"> 
+											<h3>MR-Zandhoopje</h3>
+										</header>
+										<div>
+											<p>MR-Zandhoopje heb ik gemaakt naardat er tijd over was. Het leek me leuk om een wezen te hebben dat de player vanuit onder de grond met een spike aanvalt en dan tijdenlijk vast houd. Later is zandhoopje veranderd naar een wolkje.</p>
+											<p>MR-Zandhoopje word elke wave gespawnt en spawnt zelf een waypoint in waar hij naartoe gaat. de waypoint word een paar keer van posite veranderd zodat MR-Zandhoopje op die manier rond loopt. Na een paar keer langs de waypoint te zijn langs geweest gaat MR-Zandhoopje achter de player aan. Als MR-Zandhoopje onder de player zit dan valt hij aan. De player kan deze attac ontwijken door op tijd te dashen. Lukt dat niet dat zit de player nu vast aan de spike van MR-Zandhoopje door een aantal seconden. MR-Zandhoopje laat weer los gaat nog 1 keer langs een waypoint en verdwijnt.</p>
+										</div>
+										<ul class="actions">
+											<li><a href="https://gist.github.com/Youri-Mulder/bdfdcb76cbe4076736f65d8903bbdfcc" class="button">Code</a></li>
+										</ul>
+									</div>
+								</div>
+							</section>
+							<section id="PowerUps">
+								<a class="image">
+									<div class="video-container">
+										<video autoplay loop muted playsinline class="responsive-video">
+											<source src="images/BugOff/BugOffPowerUps.mp4" type="video/mp4">
+											Your browser does not support the video tag.
+										</video>
+									</div>
+								</a>
+								<div class="content">
+									<div class="inner">
+										<header class="major">
+											<h3>PowerUps</h3>
+										</header>
+										<div>
+											<p>Er zijn meerdere powerups zoals [shield, speed, trippleBullets, HealthUp] Deze powerUps worden random gespawnt binnen een aangegeven veld. Zodra de powerUp word gespawnt schiet ie een raycast naar beneden die op de grond vervolgens een landing spot spawnt voor om duidelijk te maken waar de powerUp land. De powerUp valt vervolgens langzaam naar beneden.</p>
+										</div>
+										<ul class="actions">
+											<li><a href="https://gist.github.com/Youri-Mulder/592d779045855b12dc48da677c33ab7d" class="button">Code</a></li>
+										</ul>
+ 									</div>
+								</div>
+							</section>
+							<!--
+							<section id="SchietEnHealth">
+								<a class="image">
+									<div class="video-container">
+										<video autoplay loop muted playsinline class="responsive-video">
+										  <source src="" type="video/mp4">
+										  Your browser does not support the video tag.
+										</video>
+									  </div>
+								</a>
+								<div class="content">
+									<div class="inner">
+										<header class="major">
+											<h3>Schieten/Health</h3>
+										</header>
+										<div>
+											<h4>--</h4>
+											<p>--</p>
+										</div>
+										<ul class="actions">
+											<li><a href="https://gist.github.com/Youri-Mulder/fa901196d537e9699b3a8c35eb330f9a" class="button">Code</a></li>
+										</ul>
+									</div>
+								</div>
+							</section>
+							-->
+							<!--
+								<section id="BaseTemplate">
+								<a class="image">
+									<div class="video-container">
+										<video autoplay loop muted playsinline class="responsive-video">
+										  <source src="" type="video/mp4">
+										  Your browser does not support the video tag.
+										</video>
+									  </div>
+								</a>
+								<div class="content">
+									<div class="inner">
+										<header class="major">
+											<h3>--</h3>
+										</header>
+										<div>
+											<h4>--</h4>
+											<p>--</p>
+										</div>
+										<ul class="actions">
+											<li><a href="" class="button">Code</a></li>
+										</ul>
+									</div>
+								</div>
+							</section>
+							-->
 					</div>
 
-				<!-- Contact -->
-				<!--
-					<section id="contact">
-						<div class="inner">
-							<section>
-								<form method="post" action="#">
-									<div class="fields">
-										<div class="field half">
-											<label for="name">Name</label>
-											<input type="text" name="name" id="name" />
-										</div>
-										<div class="field half">
-											<label for="email">Email</label>
-											<input type="text" name="email" id="email" />
-										</div>
-										<div class="field">
-											<label for="message">Message</label>
-											<textarea name="message" id="message" rows="6"></textarea>
-										</div>
-									</div>
-									<ul class="actions">
-										<li><input type="submit" value="Send Message" class="primary" /></li>
-										<li><input type="reset" value="Clear" /></li>
-									</ul>
-								</form>
-							</section>
-							<section class="split">
-								<section>
-									<div class="contact-method">
-										<span class="icon solid alt fa-envelope"></span>
-										<h3>Email</h3>
-										<a href="#">information@untitled.tld</a>
-									</div>
-								</section>
-								<section>
-									<div class="contact-method">
-										<span class="icon solid alt fa-phone"></span>
-										<h3>Phone</h3>
-										<span>(000) 000-0000 x12387</span>
-									</div>
-								</section>
-								<section>
-									<div class="contact-method">
-										<span class="icon solid alt fa-home"></span>
-										<h3>Address</h3>
-										<span>1234 Somewhere Road #5432<br />
-										Nashville, TN 00000<br />
-										United States of America</span>
-									</div>
-								</section>
-							</section>
-						</div>
-					</section>
-					-->
+		
 
 				<!-- Footer -->
 					<footer id="footer">
 						<div class="inner">
 							<ul class="icons">
-								<!-- <li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li> -->
-								<!-- <li><a href="#" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li> -->
-								<!-- <li><a href="#" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li> -->
-								<li><a href="#" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
-								<!-- <li><a href="#" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li> -->
+								<!-- <li><a href="#" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li> -->
 							</ul>
 							<ul class="copyright">
 								<li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>

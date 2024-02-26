@@ -78,11 +78,10 @@
 										<li><a href="#WallTurret" class="button noborder nextt scrolly">WallTurret</a></li>   
 										<li><a href="#WallCamera" class="button noborder nextt scrolly">WallCamera</a></li>   
 										<li><a href="#GameSave" class="button noborder nextt scrolly">GameSaving-</a></li>   
-										<li><a href="#" class="button noborder nextt scrolly">------------------------------------</a></li>   
+										<li><a href="#enemies" class="button noborder nextt scrolly">Enemies</a></li>   
 										<li><a href="#Doors" class="button noborder nextt scrolly">KeyCard / Deuren</a></li>   
-										<li><a href="#" class="button noborder nextt scrolly">GameManager</a></li>   
-										<li><a href="#" class="button noborder nextt scrolly">Enemies</a></li>   
-										<li><a href="#" class="button noborder nextt scrolly">Boss</a></li>   
+										<li><a href="#Gamemanager" class="button noborder nextt scrolly">GameManager</a></li>   
+										<li><a href="#Bossfight" class="button noborder nextt scrolly">Boss</a></li>   
 									</div>
 								</div>
 							</section>
@@ -104,7 +103,7 @@
 												<h3>CameraMovement</h3>
 											</header>
 											<div>
-											<p>Soms waren er in somige gedeeltes in de map niet goed te zien. ik had al een camera die de player volgt en dat script heb ik aangepast om ook 180 graden te draaien zodat je meer van de map kan zien en zo beter kan rond bewegen. Ik kwam er achter dat de camera een beetje achter de player hangt en zodra de camera draait dan kon je de player vrij wel niet zien. Dit heb ik opgelost door de positie van de Camera ook aan te passen terwijl die draait.</p>
+											<p>Soms waren er in somige gedeeltes in de map niet goed te zien. ik had al een camera die de player volgt en dat script heb ik aangepast om ook 180 graden te draaien zodat je meer van de map kan zien en zo beter kan rond bewegen. de positie van de camera word ook een klein beetje aangepast zodat de speler altijd goed in beeld staat omdat de player niet helemaal in het midden van het beeld zit. De camera word gedraait met een Lerp</p>
 											</div>
 											<ul class="actions">
 												<li><a href="https://gist.github.com/Youri-Mulder/97782202e0b630f91736e8ee4110cac3" class="button">Code</a></li>
@@ -137,22 +136,18 @@
 												<h3>KeyCard / Deuren</h3>
 											</header>
 											<div>
-												<h4>KlapDeur</h4>
+												<h4>KeyCard / klap Deuren</h4>
 											</div>
-											<p>sdojiioisf</p>
-											<div>
-												<h4>KeyCardDoor</h4>
-											</div>
-											<p>kosdhjf</p>
+											<p>De Keycard deur gaat alleen maar open als de er een bool true is. Deze bool kan true worden gezet in de inspector zodat de deur altijd open kan of met een keycard. De kleur van de deuren werd eerst veranderd naar de kleur van de keycards maar dat word niet gebruikt in de laatste versie van de game. De deuren houden met een enum de state bij of de deur open/closed zijn of open/dicht aan het gaan zijn. De Keycard Deuren werken met waypoints warbij de deuren naar de waypoints gaan en de klapdeuren werken met rotaties.</p>
 											<ul class="actions">
 												<li><a href="https://gist.github.com/Youri-Mulder/fb1497f8068601d23e353c7cf6d3b3f9" class="button">Code</a></li>
 											</ul>
 											<div>
 												<h4>KeyCards</h4>
 											</div>
-											<p>asds</p>
+											<p>De deuren hebben allemaal een bool of de player de bijbehoorende keycards heeft. Als er een keycards word opgepakt dan worden de bools true gezet voor alle deuren die de keycard in de inspector er in heeft staan. Op de Ui zit een grit waar keycards op getzet kunnen worden en de kleur word omgezet naar de kleur van de keycard.</p>
 											<ul class="actions">
-												<li><a href="https://gist.github.com/Youri-Mulder/fb1497f8068601d23e353c7cf6d3b3f9" class="button">Code</a></li>
+												<li><a href="https://gist.github.com/Youri-Mulder/2d4ae4ffd5df2c8964b0fd0efc06149b" class="button">Code</a></li>
 											</ul>
 										</div>
 									</div>
@@ -164,7 +159,7 @@
 												<h3>LevelSelect</h3>
 											</header>
 											<div>
-											<p>Niet alle levels zijn ten alle tijden speelbaar dus zetten de level lesect knoppen zichzelf uit als ze zien dat de player niet bij het goede level is. De knoppen kijken in de DataCenter van de game bij welk level de player is. Als de knop actief is kan een level worden gestart met de level tag in de knop.</p>
+											<p>Niet alle levels zijn ten alle tijden speelbaar dus zetten de level select knoppen zichzelf uit als ze zien dat de player niet bij het goede level is. De knoppen kijken in de DataCenter van de game bij welk level de player is. Als de knop actief is kan een level worden gestart met de level tag in de knop die makkelijk naar elk level veranderd kan worden.</p>
 											</div>
 											<ul class="actions">
 												<li><a href="https://gist.github.com/Youri-Mulder/bb0a127cc55e134a4ef0eaae540b68e2" class="button">Code</a></li>
@@ -176,7 +171,7 @@
 									<a class="image">
 										<div class="video-container">
 											<video autoplay loop muted playsinline class="responsive-video">
-												<source src="images/CybroSpace/CameraMovement.mp4" type="video/mp4">
+												<source src="images/CybroSpace/WallTurret.mp4" type="video/mp4">
 												Your browser does not support the video tag.
 											</video>
 										</div>
@@ -187,7 +182,7 @@
 												<h3>WallTurret</h3>
 											</header>
 											<div>
-												<p>De WallTurret kijk of de player in range is en er geen muur tussen staat en dan begint hij op de player te shieten. Voor wat visuele feedback heeft de turret een lamp die het schietvelt aan geeft. als de player in zicht van de turret zit verandert de kleur van het licht naar rood.</p>
+												<p>De WallTurret kijk of de player in range is met een OverlapShere,Angle en met een raycast word er gekeken of er geen muur tussen staat en dan begint het op de player te shieten. Met een RotateTowrds draait de turret naar de player. Voor wat visuele feedback heeft de turret een lamp die het schietvelt aan geeft. als de player in zicht van de turret zit verandert de kleur van het licht naar rood.</p>
 											</div>
 											<ul class="actions">
 												<li><a href="https://gist.github.com/Youri-Mulder/a8d7c8e25faac12193c9625280d65e20" class="button">Code</a></li>
@@ -214,10 +209,10 @@
 									<a class="image">
 										<div class="video-container">
 											<video autoplay loop muted playsinline class="responsive-video">
-											  <source src="images/CybroSpace/WallCamera.mp4" type="video/mp4">
-											  Your browser does not support the video tag.
+												<source src="images/CybroSpace/WallCamera.mp4" type="video/mp4">
+												Your browser does not support the video tag.
 											</video>
-										  </div>
+										</div>
 									</a>
 									<div class="content">
 										<div class="inner">
@@ -225,17 +220,88 @@
 												<h3>Camera's</h3>
 											</header>
 											<div>
-											<p>De Camera's kijken of de player ergens rond loopt. De FOV van de camera word aangeven met licht dat rood word als de player er in loopt. De camera geeft aan alle enemies die in de buurt staan aan dat de player in de buurt is ze aan kunnen gaan vallen. De camera heeft de mogelijkheid om rond te draaien en dat is aan te passen in de inspctor.</p>
+												<p>De Camera's kijken of de player ergens rond loopt met een overlapSphere, Angle ne raycast om te kijken of er geen obstakel tussen staat. De FOV van de camera word aangeven met licht dat rood word als de player er in loopt. De camera geeft aan alle enemies die in de buurt staan aan dat de player in de buurt is ze aan kunnen gaan vallen. De camera heeft de mogelijkheid om rond te draaien en dat is aan te passen in de inspctor.</p>
 											</div>
 											<ul class="actions">
-												<li><a href="https://gist.github.com/Youri-Mulder/a8d7c8e25faac12193c9625280d65e20" class="button">Code</a></li>
+												<li><a href="https://gist.github.com/Youri-Mulder/677a5c716ed4f1e520092a2c1c4f1b71" class="button">Code</a></li>
+											</ul>
+										</div>
+									</div>
+								</section>
+								<section id="Gamemanager">
+									<div class="content">
+										<div class="inner">
+											<header class="major">
+												<h3>GameManager</h3>
+											</header>
+											<div>
+											<p>De GameManager word gebruikt om de death screen in te laden en automatisch het level te herstarten als de player dood gaat. Als de bossfight is geladen word de GameManager overschreven en doet het niks meer.</p>
+											</div>
+											<ul class="actions">
+												<li><a href="https://gist.github.com/Youri-Mulder/03d16aff2a6c1cebe41846d50beb455d" class="button">Code</a></li>
+											</ul>
+										</div>
+									</div>
+								</section>
+								<section id="enemies">
+									<a class="image">
+										<div class="video-container">
+											<video autoplay loop muted playsinline class="responsive-video">
+											  <source src="images/CybroSpace/CybroSapce Ai.mp4" type="video/mp4">
+											  Your browser does not support the video tag.
+											</video>
+										  </div>
+									</a>
+									<div class="content">
+										<div class="inner">
+											<header class="major">
+												<h3>enemies</h3>
+											</header>
+											<div>
+											<p>Ik wilde enemies hebben die veel aan te passen waren dus deze enemies hebben ook best wel wat settings. zo kan de vision range, angle aangepast worden en de manier van lopen. Zo kunnen de enemies waypoints volgen, die zelfde waypoints kunnen ze ook in een random volgworde volgen en de enemies kunnen zelf rondlopen met random movement.</p>
+											<p>Ik heb de vision cone van de enmies gemaakt met een overlapSphere, Angle en een Raycast die kijkt of er geen obstakels in de weg staan. De Ai heeft meerdere states om aan te kunnen vallen rond te lopen of achter de player aan te gaan. En gebaseerd op of er ergens een obstakel tussen staat / de player te ver van de enemie is worden die states aangepast.</p>
+											<p>De enemies hebben de mogelijkheid om andere enmies binnen een range en zonder obstakels in de weg te alerten en ook kunnen de enemies alert worden door cameras die met een overlapSphere alle in range pakken en als de player in de buurt is worden die enemies alert.</p>
+											</div>
+											<ul class="actions">
+												<li><a href="https://gist.github.com/Youri-Mulder/47b8ac1479b493f676b0c10f5d6f0b85" class="button">Code</a></li>
+											</ul>
+										</div>
+									</div>
+								</section>
+								<section id="Bossfight">
+									<a class="image">
+										<div class="video-container">
+											<video autoplay loop muted playsinline class="responsive-video">
+											  <source src="images/CybroSpace/bossfight.mp4" type="video/mp4">
+											  Your browser does not support the video tag.
+											</video>
+										  </div>
+									</a>
+									<div class="content">
+										<div class="inner">
+											<header class="major">
+												<h3>BossFight</h3>
+											</header>
+										    <div>
+												<h3>Boss</h3>
+											</div>
+											<p>De tijd begon een beetje krap te worden dus de boss is helaas een beetje rushed. De boss heeft meerdere attacs die random worden gegeven zoals de normale attac die een kogel per seconde shiet ongeveer, een burst en er was het plan voor granaten maar dat is nu ook een normale attac omdat er tijd te kort was helaas. De boss past zijn postie aan gebaseert op of de player ver weg of dichtbij is en ook als de boss te vaak word geraakt gaat ie op zoek naar een andere positie. De boss heeft een overlapshere, angle vision cone.</p>
+											<ul class="actions">
+												<li><a href="https://gist.github.com/Youri-Mulder/57d62dd504cbb7b887ae17854945e9a5" class="button">Code</a></li>
+											</ul>
+											<div>
+											<h3>BossBattleManager</h3>
+											</div>
+											<p>De BossBattleManager houd de hele bossfight bij. Als de player dood gaat word alles in de boss area hersteld naar hoe het eerst was en nieuwe enemies worden ingespawnt en ook de player stats worden trug gezet. De BossBattleManager regelt ook het in een uit faden van het beeld zoang de bossfight bezig is. Zij alle enemies en de boss dood zijn is de bossfight klaar en word de game automatisch opgeslagen en word het start scherm ingeladen.</p>
+											<ul class="actions">
+												<li><a href="https://gist.github.com/Youri-Mulder/decee062a64bb1d44a5aea46c2d81721" class="button">Code</a></li>
 											</ul>
 										</div>
 									</div>
 								</section>
 							</section>
 					</div>
-
+		
 				<!-- Footer -->
 					<footer id="footer">
 						<div class="inner">
