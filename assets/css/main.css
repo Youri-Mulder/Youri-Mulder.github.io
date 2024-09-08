@@ -2788,12 +2788,17 @@ input, select, textarea {
 			background-repeat: no-repeat;
 			background-size: cover;
 			cursor: default;
-			height: 40vh;
-			max-height: 40em;
+			height:  55vh;
+			max-height: 80em;
 			min-height: 10em;
 			overflow: hidden;
 			position: relative;
 			width: 50%; /* is for the tile size */
+		}
+
+		.tiles .SetBigTile{
+			height: 80vh;
+			width: 100%;
 		}
 
 		    .tiles .SetBannerTile{
