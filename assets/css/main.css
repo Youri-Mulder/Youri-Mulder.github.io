@@ -4117,4 +4117,46 @@ input, select, textarea {
 			height: 100%;
 		  }
 
+		  .colum {
+			display: flex;
+			flex-wrap: wrap; /* Hiermee kunnen de items naar een nieuwe regel springen als er niet genoeg ruimte is */
+			justify-content: center; /* Zorgt ervoor dat de items netjes in het midden blijven */
+			padding: 0;
+			height: auto; /* Pas de hoogte aan de inhoud aan */
+			margin: 0;
+		  }
+
+		  .columlist {
+			flex: 1 1 25%; /* Laat de items 25% van de breedte innemen, maar ze mogen kleiner worden */
+			padding: 10px; /* Ruimte tussen de kolommen */
+			box-sizing: border-box; /* Zorgt ervoor dat padding wordt meegerekend in de breedte */
+			text-align: center;
+		  }
+
+		  @media (max-width: 768px) {
+			.columlist {
+			  flex: 1 1 100%; /* Zorgt ervoor dat de items onder elkaar komen te staan op kleinere schermen */
+			}
+		  }
+
+		  .middelcolumcontainer {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100%;
+		  }
+          
+		  .middeltextcontainer {
+			display: flex;
+			justify-content: center; /* Horizontaal centreren */
+			align-items: center;    /* Verticaal centreren */
+			height: 100%; /* Volledige hoogte van het scherm */
+		  }
+
+		  .middeltext{
+			padding-top: 10vh;
+			text-align: center;
+		  }
+
+
 	
