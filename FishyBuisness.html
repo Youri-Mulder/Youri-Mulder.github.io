@@ -106,8 +106,8 @@
 									</header>
 									<div>
 										<li><a href="#FishSpawner" class="button noborder nextt scrolly">Fish Spawner</a></li>   
-										<li><a href="#FishAi" class="button noborder nextt scrolly">Fish-Ai</a></li>   
 										<li><a href="#FishPooler" class="button noborder nextt scrolly">Fish Pooler</a></li>   
+										<li><a href="#FishAi" class="button noborder nextt scrolly">Fish-Ai</a></li>   
 										<li><a href="#GameSaving" class="button noborder nextt scrolly">GameSaving</a></li>   
 									</div>
 								</div>
@@ -131,10 +131,38 @@
 										</header>
 										<div>
 											<p>met de fish spawners wilde ik berreiken alleen vissen in te spawnen in zones waar de player is.
-												 tijdens het maken leek het ook andig om in te zetten welke vis je wil dat de spawner spawnt zodat op die manier verschillende soorte vissen per zone ingedeelt kunnen worden.</p>
+												 tijdens het maken leek het ook andig om in te zetten welke vis je wil dat de spawner spawnt zodat op die manier 
+												 verschillende soorte vissen per zone ingedeelt kunnen worden.
+												 De vissen blijven binnen hun zone doordat je hun eindpositie aangeeft binnen de grote van de spawner.</p>
 										</div>
 										<ul class="actions">
-											<li><a href="" class="button">Code</a></li>
+											<li><a href="https://gist.github.com/Youri-Mulder/eb4c367b61572676116a6f42e9e12ad4" class="button">Code</a></li>
+										</ul>
+									</div>
+								</div>
+							</section>
+							<!-- fish pooler -->
+							<section id="FishPooler">
+								<a class="image">
+									<div class="image-container">
+										<image src="images/FishyBuisness/fishpooler.png" type="video/mp4">
+									</div>
+								</a>
+								<div class="content">
+									<div class="inner">
+										<header class="major">
+											<h3>Fish Pooler</h3>
+										</header>
+										<div>
+											<p>De fish pooler bewaart een aantal vissen om geen nieuwe in te hoeven spawnen. Met 2 fucties (ReturnFish en GetFish) kunnen er heel makkelijk
+												viss uit de pooler gehaalt worden en ook terug de pooler in gezet worden. 
+												als alle vissen in de pooler in gebruik zijn dan word er een niewe aangemaakt en opgeslagen. 
+												Komen er door er meer te spawnen te veel vissen in de lijst dan worden vissen die worden uit gezet ook verwijderd.
+												Hoeveel vissen er in de pooler passen is in de inspector makkelijk aan te passen.
+											</p>
+										</div>
+										<ul class="actions">
+											<li><a href="https://gist.github.com/Youri-Mulder/59c1a88551b1fe6ae3385399a501f016" class="button">Code</a></li>
 										</ul>
 									</div>
 								</div>
@@ -144,32 +172,7 @@
 								<a class="image">
 									<div class="video-container">
 										<video autoplay loop muted playsinline class="responsive-video">
-										  <source src="" type="video/mp4">
-										  Your browser does not support the video tag.
-										</video>
-									  </div>
-								</a>
-								<div class="content">
-									<div class="inner">
-										<header class="major">
-											<h3>Fish-AI</h3>
-										</header>
-										<div>
-											<h4>--</h4>
-											<p>--</p>
-										</div>
-										<ul class="actions">
-											<li><a href="" class="button">Code</a></li>
-										</ul>
-									</div>
-								</div>
-							</section>
-							<!-- fish pooler -->
-							<section id="FishPooler">
-								<a class="image">
-									<div class="video-container">
-										<video autoplay loop muted playsinline class="responsive-video">
-											<source src="" type="video/mp4">
+											<source src="images/FishyBuisness/FishSpawners.mp4" type="video/mp4">
 											Your browser does not support the video tag.
 										</video>
 									</div>
@@ -177,14 +180,44 @@
 								<div class="content">
 									<div class="inner">
 										<header class="major">
-											<h3>Fish Pooler</h3>
+											<h3>Fish-AI</h3>
 										</header>
 										<div>
-											<h4>--</h4>
-											<p>--</p>
+											<h3>FishBrain</h3>
+											<p>De FishBrain regelt de taken die de vis altijd uitvoerd zoals roteren naar de endpositie of voor het geval dat de vis 
+												aan de haak hangt naar de hengel. Ook worden hier variableren opgeslagen die alle scripts van de vis nodig hebben zoals 
+												de endpos van de vis. ik draai de vis met een IEnumerator loop en een slerp naar de endpositie of vissenhengel gebaseerd op 
+												in welke state de vis is.
+											</p>
+											<h3>FishRoaming</h3>
+											<p>In de FishRoaming word er een positie geven aan de vis om heen te zwemmen. om de zoveel seconden vergelijk ik de intresst value van de vis met een 
+												random.value om te kiezen of de vis mag gaan bijten waarna de state omgaat naar FishBitting.
+												De vis laat ik bewegen met een MoveTowards. 
+												Met een Vector3.distance kijk ik of een vis zijn eidnpunt benaderd. met een kleine formule ( movespeed *= dist + 0.3f ) laat ik de vis
+												vervolgens een beetje remmen.
+											</p>
+											<h3>FishBitting</h3>
+                                            <p>De FishBitting heeft 3 states om bij de houden wat de vis doet met de haak.</p>
+											<h4>-GoingForHook</h4>
+											<p>De GoingForHook zet de eindpositie van de vis op de hook. Er kunnen maar X aantal visse naar de hook toe gaan. zijn het er al te veel dan kunnen ze 
+												bij de FishRoaming niet de FishBitting state krijgen. als de vis de positie van de hook berreikt gaat de state naar OnHook.
+												Gaat de vis te lang achter de hengel aan dan raakt de vis intresse kwijt en gaat verder zwemmen.
+											</p>
+											<h4>-OnHook</h4>
+											<p>Deze state word gebruikt als de vis aan de haak zit en niet aan het tegen werken is.
+												de positie van de vis word hier op de haak geupdate en regaint stamina in een IEnumerator loop. Als de vis X% stamina heeft dan kan
+												de vis er voor keizen de truggelen.
+											</p>
+											<h4>-Struggel</h4>
+											<p>Als de vis begind te struggelen pakt de vis binnen een angle en de range van de vishengel een positie waar de vis heen gaat. De player drukt nu 
+												rechter muisknop in om de vis binnen te hengelen. Hierbij verminderd de vis stamina en verhoogt er kracht op de vislijn
+												komt de tention tot 0 (begin 255) dan breekt de lijn. Ik hou bij ofdat de eindpositie de struggel eindpositie is zodat de vis niet een nieuwe 
+										        positie gaat pakken. Is de stamina van de vis op dan gaat de state naar OnHook en als de tention te hoog is dan word de vis van de lijn afgehaald en 
+												gaat naar Roaming.
+											</p>
 										</div>
 										<ul class="actions">
-											<li><a href="" class="button">Code</a></li>
+											<li><a href="https://gist.github.com/Youri-Mulder/b9bc820d2575a652af6d15140d7842fb" class="button">Code</a></li>
 										</ul>
 									</div>
 								</div>
@@ -205,7 +238,7 @@
 											<h3>GameSaving</h3>
 										</header>
 										<div>
-											<p>Om de game op te slaan maak ik gebruik van json files. de game load en slaat alle progressie op aan de start en afsluiten van de game en slaat ook allees op om de 5 minuten</p>
+											<p>Om de game op te slaan maak ik gebruik van json files. de game load en slaat alle progressie op aan de start en afsluiten van de game en slaat ook alles op om de 5 minuten</p>
 										</div>
 										<ul class="actions">
 											<li><a href="https://gist.github.com/Youri-Mulder/2a5510f6c5088d2efde77e2e59314369" class="button">Code</a></li>
@@ -213,42 +246,11 @@
 									</div>
 								</div>
 							</section>
-							<!--
-								<section id="BaseTemplate">
-								<a class="image">
-									<div class="video-container">
-										<video autoplay loop muted playsinline class="responsive-video">
-										  <source src="" type="video/mp4">
-										  Your browser does not support the video tag.
-										</video>
-									  </div>
-								</a>
-								<div class="content">
-									<div class="inner">
-										<header class="major">
-											<h3>--</h3>
-										</header>
-										<div>
-											<h4>--</h4>
-											<p>--</p>
-										</div>
-										<ul class="actions">
-											<li><a href="" class="button">Code</a></li>
-										</ul>
-									</div>
-								</div>
-							</section>
-							-->
 					</div>
-
-		
 
 				<!-- Footer -->
 					<footer id="footer">
 						<div class="inner">
-							<ul class="icons">
-								<!-- <li><a href="#" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li> -->
-							</ul>
 							<ul class="copyright">
 								<li>&copy; </li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
 							</ul>
