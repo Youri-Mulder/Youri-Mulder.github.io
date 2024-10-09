@@ -19,7 +19,7 @@
 				<header id="header" class="alt styleFishyBuisness">
 					<a href="index.html" class="logo logoFishyBuisness"><strong>FishyBuisness</strong> <span></span></a>
 					<nav>
-						<a href="#menu">Navigatie Menu</a>
+						<a href="#menu">NavigatieMenu</a>
 					</nav>
 				</header>
 
@@ -47,8 +47,7 @@
 							<h1>FishyBuisness</h1>
 						</header>
 						<div class="content">
-							<p>FishyBuisness is een casual fishing game. 
-								je vangt vissen verkoopt ze en koopt upgrades. maar, pas op voor de storm die elke dag voor je klaar staat. <br />
+							<p>Je vangt vissen verkoopt ze en koopt upgrades. Maar pas op voor de storm, die elke dag op je wacht. Het team bestond uit 2 developers en 4 artist (school jaar 2)<br />
 							</p>
 						</div>
 					</div>
@@ -110,10 +109,10 @@
 											<h3>Fish Spawner</h3>
 										</header>
 										<div>
-											<p>met de fish spawners wilde ik berreiken alleen vissen in te spawnen in zones waar de player is.
-												 tijdens het maken leek het ook andig om in te zetten welke vis je wil dat de spawner spawnt zodat op die manier 
-												 verschillende soorte vissen per zone ingedeelt kunnen worden.
-												 De vissen blijven binnen hun zone doordat je hun eindpositie aangeeft binnen de grote van de spawner.</p>
+											<p>Met de fish spawners wilde ik bereiken dat er alleen vissen gespawnd worden in zones waar de player is.
+												Voor elke spawner kan ingesteld worden welke vissen en hoeveel per soort er gespawnd kunnen worden.
+												Het leek me handig om makkelijk te kunnen zien welke vissen in welke spawners zitten, dus heb ik met gizmos de namen van de vissen in beeld gebracht.
+												De vissen blijven binnen hun zone doordat je hun eindpositie aangeeft binnen de grootte van de spawner.</p>
 										</div>
 										<ul class="actions">
 											<li><a href="https://gist.github.com/Youri-Mulder/eb4c367b61572676116a6f42e9e12ad4" class="button">Code</a></li>
@@ -134,11 +133,10 @@
 											<h3>Fish Pooler</h3>
 										</header>
 										<div>
-											<p>De fish pooler bewaart een aantal vissen om geen nieuwe in te hoeven spawnen. Met 2 fucties (ReturnFish en GetFish) kunnen er heel makkelijk
-												viss uit de pooler gehaalt worden en ook terug de pooler in gezet worden. 
-												als alle vissen in de pooler in gebruik zijn dan word er een niewe aangemaakt en opgeslagen. 
-												Komen er door er meer te spawnen te veel vissen in de lijst dan worden vissen die worden uit gezet ook verwijderd.
-												Hoeveel vissen er in de pooler passen is in de inspector makkelijk aan te passen.
+											<p>De fish pooler bewaart een aantal vissen om geen nieuwe in te hoeven spawnen. Met twee functies (ReturnFish en GetFish) kunnen er heel makkelijk vissen uit de pooler gehaald en teruggezet worden.
+												Als alle vissen in de pooler in gebruik zijn wordt er een nieuwe aangemaakt en opgeslagen.
+												Komen er door het spawnen te veel vissen in de lijst dan worden de vissen die uitgezet worden ook verwijderd.
+												Hoeveel vissen er in de pooler passen is in de Inspector makkelijk aan te passen.
 											</p>
 										</div>
 										<ul class="actions">
@@ -176,36 +174,38 @@
 										</header>
 										<div>
 											<h3>FishBrain</h3>
-											<p>De FishBrain regelt de taken die de vis altijd uitvoerd zoals roteren naar de endpositie of voor het geval dat de vis 
-												aan de haak hangt naar de hengel. Ook worden hier variableren opgeslagen die alle scripts van de vis nodig hebben zoals 
-												de endpos van de vis. ik draai de vis met een IEnumerator loop en een slerp naar de endpositie of vissenhengel gebaseerd op 
-												in welke state de vis is.
+											<p>De FishBrain regelt de taken die de vis altijd uitvoert zoals roteren richting de eindpositie of in het geval dat de vis aan de haak hangt naar de hengel. Ook worden hier variabelen opgeslagen die alle scripts van de vis nodig hebben, zoals de eindpositie van de vis.
+												Ik draai de vis met een IEnumerator loop en een slerp naar de eindpositie of hengel afhankelijk van in welke state de vis is.
 											</p>
 											<h3>FishRoaming</h3>
-											<p>In de FishRoaming word er een positie geven aan de vis om heen te zwemmen. om de zoveel seconden vergelijk ik de intresst value van de vis met een 
-												random.value om te kiezen of de vis mag gaan bijten waarna de state omgaat naar FishBitting.
-												De vis laat ik bewegen met een MoveTowards. 
-												Met een Vector3.distance kijk ik of een vis zijn eidnpunt benaderd. met een kleine formule ( movespeed *= dist + 0.3f ) laat ik de vis
-												vervolgens een beetje remmen.
+											<p>In de FishRoaming wordt een positie gegeven aan de vis om naartoe te zwemmen.
+												 Om de zoveel seconden vergelijk ik de interest value van de vis met een random.value om te bepalen of de vis mag gaan bijten waarna de state overgaat naar FishBiting.
+												De vis laat ik bewegen met een MoveTowards.
+												Met een Vector3.distance kijk ik of een vis zijn eindpunt benadert. Met een kleine formule (movespeed *= dist + 0.3f) laat ik de vis vervolgens een beetje remmen.
 											</p>
-											<h3>FishBitting</h3>
-                                            <p>De FishBitting heeft 3 states om bij de houden wat de vis doet met de haak.</p>
+											<h3>FishBiting</h3>
+                                            <p>De FishBiting heeft 3 states om bij de houden wat de vis doet met de haak.</p>
 											<h4>-GoingForHook</h4>
-											<p>De GoingForHook zet de eindpositie van de vis op de hook. Er kunnen maar X aantal visse naar de hook toe gaan. zijn het er al te veel dan kunnen ze 
-												bij de FishRoaming niet de FishBitting state krijgen. als de vis de positie van de hook berreikt gaat de state naar OnHook.
-												Gaat de vis te lang achter de hengel aan dan raakt de vis intresse kwijt en gaat verder zwemmen.
+											<p>De GoingForHook zet de eindpositie van de vis op de hook. Er kunnen maar X aantal vissen naar de hook toe gaan.
+										     	 Zijn het er al te veel dan kunnen ze bij FishRoaming niet de FishBiting state krijgen.
+										    	 Als de vis de positie van de hook bereikt gaat de state naar OnHook.
+										    	Gaat de vis te lang achter de hengel aan dan verliest de vis interesse en zwemt verder.
 											</p>
 											<h4>-OnHook</h4>
-											<p>Deze state word gebruikt als de vis aan de haak zit en niet aan het tegen werken is.
-												de positie van de vis word hier op de haak geupdate en regaint stamina in een IEnumerator loop. Als de vis X% stamina heeft dan kan
-												de vis er voor keizen de truggelen.
+											<p>Deze state wordt gebruikt wanneer de vis aan de haak zit en niet aan het struggelen is.
+												De positie van de vis wordt hier op de haak geupdatet en regaint stamina in een IEnumerator loop.
+											    Als de vis X % stamina heeft kan de vis ervoor kiezen te struggelen.
 											</p>
 											<h4>-Struggel</h4>
-											<p>Als de vis begind te struggelen pakt de vis binnen een angle en de range van de vishengel een positie waar de vis heen gaat. De player drukt nu 
-												rechter muisknop in om de vis binnen te hengelen. De vis word nu naar de boot getrokken en .Hierbij verminderd de vis stamina en verhoogt er kracht op de vislijn
-												komt de tention tot 0 (begin 255) dan breekt de lijn. Laat de player rechter muisknop los dan zwemt de vis weg. Ik hou bij ofdat de eindpositie de struggel eindpositie is zodat de vis niet een nieuwe 
-										        positie gaat pakken. Is de stamina van de vis op dan gaat de state naar OnHook en als de tention te hoog is dan word de vis van de lijn afgehaald en 
-												gaat naar Roaming.
+											<p>Als de vis begint te struggelen pakt de vis binnen een hoek en de range van de vishengel een positie waar de vis heen moet.
+												De speler drukt nu de rechtermuisknop in om de vis binnen te hengelen.
+												<br>
+												Hierbij vermindert de vis zijn stamina en neemt de kracht op de vislijn toe.
+												Komt de spanning tot 0 (start op 255) dan breekt de lijn.
+												Laat de speler de rechtermuisknop los dan zwemt de vis weg.<br>
+												Ik houd bij of de eindpositie de struggle-eindpositie is zodat de vis niet een nieuwe positie gaat pakken.
+												Is de stamina van de vis op dan gaat de state naar "OnHook".
+												Als de spanning te hoog is wordt de vis van de lijn gehaald en gaat naar Roaming.
 											</p>
 										</div>
 										<ul class="actions">
@@ -230,7 +230,7 @@
 											<h3>GameSaving</h3>
 										</header>
 										<div>
-											<p>Om de game op te slaan maak ik gebruik van json files. de game load en slaat alle progressie op aan de start en afsluiten van de game en slaat ook alles op om de 5 minuten</p>
+											<p>Om de game op te slaan maak ik gebruik van JSON-bestanden. De game laadt en slaat alle voortgang op bij het starten en afsluiten van de game en slaat daarnaast alles op om de 5 minuten.</p>
 										</div>
 										<ul class="actions">
 											<li><a href="https://gist.github.com/Youri-Mulder/2a5510f6c5088d2efde77e2e59314369" class="button">Code</a></li>

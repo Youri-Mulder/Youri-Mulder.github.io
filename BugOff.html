@@ -22,7 +22,7 @@
 					<header id="header" class="alt styleBugOff">
 						<a href="index.html" class="logo logoBugOff"><strong>BugOff</strong> <span></span></a>
 						<nav>
-							<a href="#menu">Navigatie Menu</a>
+							<a href="#menu">NavigatieMenu</a>
 						</nav>
 					</header>
 
@@ -50,7 +50,8 @@
 								<h1>BugOff</h1>
 							</header>
 							<div class="content">
-								<p>BugOff is een shmub groeps project gemaakt in 3 weken. dit was ook mijn eerste groeps project en het ging best wel soepel.<br />
+								<p>BugOff is een shmub groepsproject gemaakt in 3 weken. dit was ook mijn eerste groeps project en het ging best wel soepel. 
+									Het team bestond uit 2 developers en 3 artist (school jaar 1).<br />
 								</p>
 							</div>
 						</div>
@@ -72,7 +73,7 @@
 									<header class="major">
 										<h2>Project info</h2>
 									</header>
-									<p>Dit was mijn eerste groeps project, het ging heel soepel en alles is af gekomen dat was geplant.</p>
+									<p>Dit was mijn eerste groepsproject. Het ging heel soepel en alles is afgekomen zoals gepland.</p>
 									<header class="major">
 										<h2>Tijdens dit project heb ik gewerkt aan.</h2>
 									</header>
@@ -103,7 +104,9 @@
 											<h3>PlayerMovement</h3>
 										</header>
 										<div>
-											<p>De player movement is simpele vector3 movement hier heb ik nog een dash aan toe gevoegt. De dash werkt door de player speed tijdenlijk wat hoger te zetten. Om de player minder static door het beeld te zien gleiden heb ik rotaties toegevoegt gebaseerd op welke kant de player op beweegt en dit heb ik gedaan met een lerp.</p>
+											<p>De player movement is een simpele vector3 movement en hier heb ik nog een dash aan toe gevoegt.
+												 De dash werkt door de player speed tijdelijk wat hoger te zetten.
+												 Om de player minder statisch door het beeld te zien gleiden heb ik rotaties toegevoegd, gebaseerd op de richting waarin de player beweegt en dit heb ik gedaan met een lerp.</p>
 										</div>
 										<ul class="actions">
 											<li><a href="https://gist.github.com/Youri-Mulder/b017e290a8826539a91f758aa186fba2" class="button">Code</a></li>
@@ -126,7 +129,10 @@
 											<h3>MapLoop</h3>
 										</header>
 										<div>
-											<p>De maploop is gemaakt met waypoints en alle map delen kunnen in een array worden gezet. Het laatste deel van de map is een ghost deel dat later word verwijderd. Als de game start worden er waypoints geplaats op de eerste en de laatse map deel van de array en het laatste deel van de map word verwijderd zodat de delen niet in elkaar clippen. alle delen bewegen dan naar de 2e checkpoit en als die is berrijkt dan word dat map deel naar de eerste checkpoint gezet.</p>
+											<p>De maploop is gemaakt met waypoints en alle map delen kunnen in een array worden gezet.
+												 Het laatste deel van de map is een ghost deel dat later word verwijderd.
+												  Als de game start worden er waypoints geplaats op de eerste en de laatse map deel van de array en het laatste deel van de map word verwijderd zodat de delen niet in elkaar clippen. 
+												  alle delen bewegen dan naar de 2e checkpoit en als die is berrijkt dan word dat map deel naar de eerste checkpoint gezet.</p>
 										</div>
 										<ul class="actions">
 											<li><a href="https://gist.github.com/Youri-Mulder/f9c7a929a70fc882084e04457b29d3e2" class="button">Code</a></li>
@@ -149,8 +155,15 @@
 											<h3>MR-Zandhoopje</h3>
 										</header>
 										<div>
-											<p>MR-Zandhoopje heb ik gemaakt naardat er tijd over was. Het leek me leuk om een wezen te hebben dat de player vanuit onder de grond met een spike aanvalt en dan tijdenlijk vast houd. Later is zandhoopje veranderd naar een wolkje.</p>
-											<p>MR-Zandhoopje word elke wave gespawnt en spawnt zelf een waypoint in waar hij naartoe gaat. de waypoint word een paar keer van positie veranderd zodat MR-Zandhoopje op die manier rond loopt. Na een paar keer langs de waypoint te zijn langs geweest gaat MR-Zandhoopje achter de player aan. Als MR-Zandhoopje onder de player zit dan valt hij aan. De player kan deze attac ontwijken door op tijd te dashen. Lukt dat niet dat zit de player nu vast aan de spike van MR-Zandhoopje voor een aantal seconden. MR-Zandhoopje laat weer los gaat nog 1 keer langs een waypoint en verdwijnt.</p>
+											<p>MR-Zandhoopje heb ik gemaakt nadat er tijd over was. 
+												Het leek me leuk om een wezen te hebben dat de player vanuit de grond met een spike aanvalt en dan tijdelijk vasthoudt. 
+												Later is Zandhoopje veranderd naar een wolkje.</p>
+											<p>MR-Zandhoopje wordt elke wave gespawnd en spawnt zelf een waypoint waar hij naartoe gaat.
+												 De waypoint wordt een paar keer van positie veranderd zodat MR-Zandhoopje met een Movetowards er heen kan. 
+												 Na een paar keer langs de waypoint te zijn gegaan gaat MR-Zandhoopje achter de player aan.
+												  Als MR-Zandhoopje onder de player zit valt hij aan. De player kan deze aanval ontwijken door op tijd te dashen. 
+												  Lukt dat niet dan zit de player vast aan de spike van MR-Zandhoopje voor een aantal seconden. 
+												  MR-Zandhoopje laat dan weer los gaat nog één keer langs een waypoint en verdwijnt.</p>
 										</div>
 										<ul class="actions">
 											<li><a href="https://gist.github.com/Youri-Mulder/bdfdcb76cbe4076736f65d8903bbdfcc" class="button">Code</a></li>
@@ -173,7 +186,9 @@
 											<h3>PowerUps</h3>
 										</header>
 										<div>
-											<p>Er zijn meerdere powerups zoals [shield, speed, trippleBullets, HealthUp] Deze powerUps worden random gespawnt binnen een aangegeven veld. Zodra de powerUp word gespawnt schiet ie een raycast naar beneden die op de grond vervolgens een landing spot spawnt voor om duidelijk te maken waar de powerUp land. De powerUp valt vervolgens langzaam naar beneden.</p>
+											<p>Er zijn meerdere power-ups zoals [shield, speed, tripleBullets, HealthUp]. Deze power-ups worden random gespawnd binnen een aangegeven veld.
+												 Zodra de power-up wordt gespawnd schiet hij een raycast naar beneden die op de grond vervolgens een landing spot spawnt om duidelijk te maken waar de power-up landt.
+												  De power-up valt vervolgens langzaam naar beneden. </p>
 										</div>
 										<ul class="actions">
 											<li><a href="https://gist.github.com/Youri-Mulder/592d779045855b12dc48da677c33ab7d" class="button">Code</a></li>

@@ -24,7 +24,7 @@
 					<header id="header" class="alt styleDualDefenders">
 						<a href="index.html" class="logo logoDualDefenders"><strong>DualDefenders</strong> <span></span></a>
 						<nav>
-							<a href="#menu">Navigatie Menu</a>
+							<a href="#menu">NavigatieMenu</a>
 						</nav>
 					</header>
 
@@ -51,7 +51,8 @@
 								<h1>DualDefenders</h1>
 							</header>
 							<div class="content">
-								<p>DualDefenders is een tower defence game gemaakt door 2 developers. in deze TW moet je niet alleen je eigen base beschermen maar moet je ook enemies sturen naar de Ai tegenstander<br />
+								<p>DualDefenders is een tower defense game gemaakt door twee developers.
+									 In deze tower defense moet je niet alleen je eigen base beschermen maar ook vijanden sturen naar de AI tegenstander.<br />
 								</p>
 								<hr>
 							</div>
@@ -89,11 +90,12 @@
 									</div>
 
 									<header class="major">
-										<!--
 											<h2>Project info</h2>
 										</header>
-										<p>Dit was een projet dat ik met 1 andere developer heb gemaakt </p>
-									    -->
+										<p>Ik heb dit project gemaakt met één andere developer. We moesten bij dit project gebruikmaken van een pathfinding AI gemaakt door een docent.
+											 We kozen voor de waypoint path finding en hebben daarmee een tower defense game gemaakt.
+											Als twist op de tower defense hebben we het van twee kanten gemaakt en moet je nu ook vijanden plaatsen bij de AI tegenstander.
+										</p>
 									</header>
 
 									<header class="major">
@@ -102,7 +104,7 @@
 
 									<div>
 										<li><a href="#CamMovement" class="button noborder nextt scrolly">Camera movement</a></li>   
-										<li><a href="#TegenstanderAI" class="button noborder nextt scrolly">TegenstanderAI</a></li>   
+										<li><a href="#TegenstanderAI" class="button noborder nextt scrolly">Tegenstander AI</a></li>   
 										<li><a href="#EnemiesPlaatsen" class="button noborder nextt scrolly">Enemies plaatsen</a></li>   
 									</div>
 									
@@ -127,8 +129,8 @@
 											<h3>CameraMovement</h3>
 										</header>
 										<div>
-											<p>Om te kunnen wisselen van jouw velt naar die van de player heb ik een camera gemaakt die van een start vector naar een eindvector gaat doormiddel van een slerp. 
-												Waar de camera zich bevind heeft ook effect op welke kant van de map je wel en niet kan horen.</p>
+											<p>Om te kunnen wisselen tussen jouw veld en dat van de tegenstander heb ik een camera gemaakt die van een startvector naar een eindvector beweegt door middel van een Slerp. 
+												Waar de camera zich bevindt beïnvloedt ook welke kant van de map je wel en niet kunt horen.</p>
 										</div>
 										<ul class="actions">
 											<li><a href="https://gist.github.com/Youri-Mulder/3ce94e6d5832b28094254d2ab65600f5" class="button">Code</a></li>
@@ -151,16 +153,15 @@
 											<h3>Enemies</h3>
 										</header>
 										<div>
-											<p>We moesten voor dit project voor de movement een pathfinding systeem van een docent gebruiken. 
-												ik en mijn team mate hebben gekozen voor de waypoints pathfinding.
-											de rest van de enemies heb ik zelf gemaakt. De enemies hebben scriptable objects om heel makkelijk verschillende varianten te maken.</p>
+											<p>We moesten voor dit project voor de beweging een pathfinding-systeem van een docent gebruiken. Mijn teamgenoot en ik hebben gekozen voor waypoints pathfinding. 
+												De rest van de enemies heb ik zelf gemaakt. 
+												De enemies gebruiken scriptable objects om heel eenvoudig verschillende varianten te maken.</p>
 											<h4>Enemy Base</h4>
-											<p>In de ai base worden alle values ingestelt is staat de code die word gebruikt als de enemie zijn eindpunt heeft berrijkt.
-											</p>
+											<p>In de AI-basis worden alle waarden ingesteld en staat de code die wordt gebruikt wanneer de enemy zijn eindpunt heeft bereikt.</p>
 											<h4>Shooting Enemy</h4>
-											<p>Voor de shooting enemy gebuik ik een overlapssphere om te kijken of er een tower in de enemie range zit.
-												er word vervolgens een kogel gespawnt en gedraait richting de eerste de beste tower. 
-												als laatst word er nog een coroutine gestart voor cooldown.
+											<p>Voor de shooting enemy gebruik ik een overlap sphere om te controleren of er een toren binnen het bereik van de enemy is. 
+												Vervolgens wordt er een kogel gespawned en gericht op de dichtstbijzijnde toren. Tot slot wordt een coroutine gestart voor de cooldown.
+												De kogel wordt vervolgens met een Vector3 Movement naar de toren bewogen.
 											</p>
 										</div>
 										<ul class="actions">
@@ -185,10 +186,10 @@
 											<h3>Tegenstander AI</h3>
 										</header>
 										<div>
-											<p>De tegestander AI heeft meerdere states en zo de mogelijkheid om towers te plaatsen en upgraden. 
-												met de chosing state word er gekeken wat er in de map nodig is. 
-												als er genoeg towers zijn over de map dan gaat de ai of meer bij bouwen of towers upgraden en dit is allemaal instelbaar. 
-												zodat de ai niet towers en upgrades gaat spammen is er ook een idle state.</p>
+											<p>De tegenstander-AI heeft meerdere states en de mogelijkheid om towers te plaatsen en te upgraden. 
+												Met de choosing state wordt er gekeken naar wat er in de map nodig is. 
+												Als er genoeg towers op de map staan, gaat de AI meer bijbouwen of towers upgraden en dit is allemaal instelbaar. 
+												Om te voorkomen dat de AI towers en upgrades gaat spammen is er ook een idle state.</p>
 										</div>
 										<ul class="actions">
 											<li><a href="https://gist.github.com/Youri-Mulder/5e279c47d0d5ded38dce38ce9c2adbd4" class="button">Code</a></li>
@@ -212,8 +213,8 @@
 											<h3>Enemies plaatsen</h3>
 										</header>
 										<div>
-											<p>De enemies kunnen geplaatst worden op spawn tiles. Via de spawn manager word er dan een enemie gespawnt op die tile. 
-												Van de spawn tile word een tag gepakt dat gelijk staat aan een pad dat de enemy moet gaan volgen.</p>
+											<p>De enemies kunnen worden geplaatst op spawn tiles. Via de spawn manager wordt er dan een enemy gespawned op die tile. 
+												Van de spawn tile wordt een tag gepakt die gelijkstaat aan een pad dat de enemy moet volgen.</p>
 										</div>
 										<ul class="actions">
 											<li><a href="https://gist.github.com/Youri-Mulder/6e567c1c485ef7c8b1247b75c115b4e5" class="button">Code</a></li>

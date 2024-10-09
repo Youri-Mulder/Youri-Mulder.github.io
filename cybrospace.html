@@ -22,7 +22,7 @@
 					<header id="header" class="alt styleCybroSpace">
 						<a href="index.html" class="logo logoCybroSpace"><strong>CybroSpace</strong> <span></span></a>
 						<nav>
-							<a href="#menu">Navigatie Menu</a>
+							<a href="#menu">NavigatieMenu</a>
 						</nav>
 					</header>
 
@@ -49,7 +49,7 @@
 								<h1>CybroSpace</h1>
 							</header>
 							<div class="content">
-								<p>CybroSpace is een top down twin stick game groeps project gemaakt in 7 weken (school jaar 1).<br />
+								<p>CybroSpace is een top down twin stick game groeps project gemaakt in 7 weken. Het team bestond uit 2 developers en 2 artist (school jaar 1).<br />
 								</p>
 							</div>
 						</div>
@@ -68,7 +68,9 @@
                                         <h2>Project Info</h2>
 									</header>
 									<div>
-									<p>Dit was een groeps project voor school en is samen met de artist gemaakt in 7 weken. Dit project ging helaas niet al te soepel en er waren wat tegenslagen maar uitijndelijk hebben we er toch iets vets van weten te maken.</p>
+									<p>Dit was een groepsproject voor school dat samen met de artist in 7 weken is gemaakt. 
+										Dit project ging helaas niet al te soepel en er waren wat tegenslagen maar uiteindelijk hebben we er toch iets vets van weten te maken.
+									</p>
 									</div>
 									<header class="major">
 										<h2>Tijdens dit project heb ik gewerkt aan.</h2>
@@ -104,7 +106,10 @@
 												<h3>CameraMovement</h3>
 											</header>
 											<div>
-											<p>Sommige gedeeltes in de map waren niet goed te zien door de camera angle. Ik had al een camera die de player volgt en dat script heb ik aangepast om ook 180 graden te draaien zodat je meer van de map kan zien en zo beter kan rond bewegen. de positie van de camera word ook een klein beetje aangepast zodat de speler altijd goed in beeld staat omdat de player niet helemaal in het midden van het beeld zit. De camera word gedraait met een Lerp.</p>
+											<p>Sommige gedeeltes in de map waren niet goed te zien door de camera positie. 
+												Ik had al een camera die de speler volgt en dat script heb ik aangepast zodat de camera ook 180 graden kan draaien zodat je meer van de map kunt zien en beter kunt rondbewegen. 
+												De positie van de camera wordt ook een klein beetje aangepast zodat de speler altijd goed in beeld staat omdat de speler niet helemaal in het midden van het beeld zit. 
+												De camera wordt gedraaid met een Lerp en een simpele timer.</p>
 											</div>
 											<ul class="actions">
 												<li><a href="https://gist.github.com/Youri-Mulder/97782202e0b630f91736e8ee4110cac3" class="button">Code</a></li>
@@ -139,14 +144,23 @@
 											<div>
 												<h4>KeyCard / klap Deuren</h4>
 											</div>
-											<p>De Keycard deur gaat alleen maar open als de er een bool true is. Deze bool kan true worden gezet in de inspector zodat de deur altijd open kan of met een keycard open moet. De kleur van de deuren werden eerst veranderd naar de kleur van de keycards maar dat word niet gebruikt in de laatste versie van de game. De deuren houden met een enum de state bij of de deur open/dicht zijn of open/dicht aan het gaan zijn. De Keycard Deuren werken met waypoints waarbij de deuren naar de waypoints gaan en de klapdeuren werken met rotaties.</p>
+											<p>De keycarddeur gaat alleen open als er een bool true is. 
+												Deze bool kan in de inspector op true worden gezet zodat de deur altijd open kan zijn of met een keycard geopend moet worden. 
+												De kleur van de deuren werd eerst veranderd naar de kleur van de keycards maar dat wordt niet gebruikt in de laatste versie van de game. 
+												De deuren houden met een enum de staat bij of de deur open/dicht aan het gaan is. 
+												De keycarddeuren werken met waypoints waarbij de deuren naar de waypoints gaan en de klapdeuren roteren van de ene rotatie naar de andere.</p>
 											<ul class="actions">
 												<li><a href="https://gist.github.com/Youri-Mulder/fb1497f8068601d23e353c7cf6d3b3f9" class="button">Code</a></li>
 											</ul>
 											<div>
 												<h4>KeyCards</h4>
 											</div>
-											<p>De deuren hebben allemaal een bool of de player de bijhoorende keycards heeft. Als er een keycards word opgepakt dan worden de bools true gezet voor alle deuren die de keycard in de inspector heeft staan. Op de UI zit een grit waar keycards op gespawnt worden als er een keycards word opgepakt. De kleur van de UI keycard word omgezet naar de kleur van de opgepakte keycard.</p>
+											<p>De deuren hebben allemaal een bool die aangeeft of de speler de bijbehorende keycards heeft. 
+												Als er een keycard wordt opgepakt worden de bools op true gezet voor alle deuren die de keycard in de inspector hebben staan. 
+												Op de UI bevindt zich een grid waar keycards op gespawnd worden wanneer er een keycard wordt opgepakt. 
+												De kleur van de UI keycard wordt omgezet naar de kleur van de opgepakte keycard.
+
+											</p>
 											<ul class="actions">
 												<li><a href="https://gist.github.com/Youri-Mulder/2d4ae4ffd5df2c8964b0fd0efc06149b" class="button">Code</a></li>
 											</ul>
@@ -160,7 +174,9 @@
 												<h3>LevelSelect</h3>
 											</header>
 											<div>
-											<p>Niet alle levels zijn altijd speelbaar dus zetten de level select knoppen zichzelf uit als ze zien dat de player nog niet bij dat level is aangekomen. De knoppen kijken in de DataCenter van de game bij welk level de player is. Als de knop actief is kan een level worden gestart met de level tag in de knop die makkelijk naar elk level veranderd kan worden zodat de knoppen makkelijk instelbaar zijn voor komende levels die nog in development zijn.</p>
+											<p>Niet alle levels zijn altijd speelbaar dus schakelen de levelselectknoppen zichzelf uit als ze zien dat de speler nog niet bij dat level is aangekomen. 
+												De knoppen kijken in het DataCenter van de game om te zien bij welk level de speler is. 
+												Als de knop actief is kan een level worden gestart met de leveltag in de knop die gemakkelijk naar elk level kan worden veranderd zodat de knoppen makkelijk instelbaar zijn voor komende levels die nog in ontwikkeling zijn.</p>
 											</div>
 											<ul class="actions">
 												<li><a href="https://gist.github.com/Youri-Mulder/bb0a127cc55e134a4ef0eaae540b68e2" class="button">Code</a></li>
@@ -183,7 +199,10 @@
 												<h3>WallTurret</h3>
 											</header>
 											<div>
-												<p>De WallTurret kijk of de player in range is met een OverlapShere,Angle en met een raycast word er gekeken of er geen muur tussen staat en dan begint de wallturret op de player te schieten. Met een RotateTowrds draait de turret naar de player. Voor wat visuele feedback heeft de turret een lamp die het schietveld aan geeft. als de player in zicht van de turret is veranderd de kleur van het licht naar rood.</p>
+												<p>De WallTurret kijkt of de speler binnen bereik is met een OverlapSphere en een angle(VisonCone). 
+													Met een raycast wordt er gekeken of er geen muur tussen staat en dan begint de WallTurret op de speler te schieten. 
+													Met RotateTowards draait de turret naar de speler. Voor wat visuele feedback heeft de turret een licht die het schietveld aangeeft. 
+													Als de speler in het zicht van de turret is verandert de kleur van het licht naar rood.</p>
 											</div>
 											<ul class="actions">
 												<li><a href="https://gist.github.com/Youri-Mulder/a8d7c8e25faac12193c9625280d65e20" class="button">Code</a></li>
@@ -198,7 +217,9 @@
 												<h3>GameSaving</h3>
 											</header>
 											<div>
-											<p>De game slaat alles wat opgeslagen moet worden op in lists in een aparte class die met een binaryformatter word omgezet tot safe file. De stats waar de player mee eindigt worden naar het volgende level over gezet zodat de player verder kan gaan met de zelfde stats en als de player een vorig level wil spelen dan kan de player met de oude stats verder.</p>
+											<p>De game slaat alles wat opgeslagen moet worden op in lijsten in een aparte class die met een BinaryFormatter wordt omgezet tot een save file. 
+												De stats waar de speler mee eindigt worden naar het volgende level overgezet zodat de speler verder kan gaan met dezelfde stats. 
+												Als de speler een vorig level wil spelen kan de speler met de oude stats verder omdat alles per level word opgeslagen.</p>
 											</div>
 											<ul class="actions">
 												<li><a href="https://gist.github.com/Youri-Mulder/4afa06ce404bf3434995628a8599186c" class="button">Code</a></li>
@@ -221,7 +242,10 @@
 												<h3>Camera's</h3>
 											</header>
 											<div>
-												<p>De Camera's kijken of de player ergens rond loopt doormiddel van een overlapSphere, Angle en een raycast om te kijken of er geen obstakel tussen staat. De FOV van de camera word aangeven met licht dat rood word als de player er in loopt. De camera geeft aan alle enemies die in de buurt staan aan dat de player in de buurt is zodat ze gaan aanvallen. De camera heeft de mogelijkheid om rond te draaien en dat is aan te passen in de inspector.</p>
+												<p>De camera's kijken of de speler ergens rondloopt door middel van een OverlapSphere en angle (vision cone). een raycast controleert of er geen obstakel tussen staat. 
+													Het gezichtsveld (FOV) van de camera wordt aangegeven met licht dat rood wordt als de speler erin loopt. 
+													De camera geeft aan alle vijanden die in de buurt staan aan dat de speler in de buurt is zodat ze gaan aanvallen. 
+													De camera heeft de mogelijkheid om rond te draaien en dit is aan te passen in de inspector.</p>
 											</div>
 											<ul class="actions">
 												<li><a href="https://gist.github.com/Youri-Mulder/677a5c716ed4f1e520092a2c1c4f1b71" class="button">Code</a></li>
@@ -236,7 +260,8 @@
 												<h3>GameManager</h3>
 											</header>
 											<div>
-											<p>De GameManager word gebruikt om de death screen in te laden en automatisch het level te herstarten als de player dood gaat. Als de bossfight is geladen word de GameManager overschreven en doet het niks meer.</p>
+											<p>De GameManager wordt gebruikt om het death screen in te laden en automatisch het level te herstarten als de speler doodgaat. 
+												Zodra de bossfight is geladen wordt de GameManager overschreven en doet deze niets meer.</p>
 											</div>
 											<ul class="actions">
 												<li><a href="https://gist.github.com/Youri-Mulder/03d16aff2a6c1cebe41846d50beb455d" class="button">Code</a></li>
@@ -271,9 +296,18 @@
 												<h3>Enemies</h3>
 											</header>
 											<div>
-											<p>Ik wilde enemies hebben die veel aan te passen waaren dus deze enemies hebben ook best wel wat settings. Zo kan de vision range, angle aangepast worden en de manier van lopen. Zo kunnen de enemies waypoints volgen, die zelfde waypoints kunnen ze ook in een random volgworde volgen en de enemies kunnen zelf rondlopen met random movement.</p>
-											<p>Ik heb de vision cone van de enmies gemaakt met een overlapSphere, Angle en een Raycast die kijkt of er geen obstakels in de weg staan. De Ai heeft meerdere states om aan te kunnen vallen rond te lopen of achter de player aan te gaan. En gebaseerd op of er ergens een obstakel staat / de player te ver van de enemie is worden die states aangepast.</p>
-											<p>De enemies hebben de mogelijkheid om andere enemies binnen een range en zonder obstakels in de weg te alerten en ook kunnen de enemies alert worden door camera's die met een overlapSphere alle in range enemies pakken en als de player in de buurt is worden die enemies alert en krijgen ze de player positie.</p>
+											<p>Ik wilde enemies hebben die gemakkelijk aan te passen zijn dus deze enemies hebben ook best wel wat instellingen. 
+												Zo kunnen de zichtafstand, zichtangle en de manier van bewegen worden aangepast. 
+												De enemies kunnen waypoints volgen. dezelfde waypoints kunnen ze ook in een random volgorde volgen. en de enemies kunnen zelf rondlopen met random movement.
+											</p>
+											<p>Ik heb de vision cone van de enemies gemaakt met een OverlapSphere, angle en een raycast die kijkt of er geen obstakels in de weg staan. 
+												De AI heeft meerdere states om aan te vallen rond te lopen of achter de speler aan te gaan. 
+												Afhankelijk van of er ergens een obstakel staat of de speler te ver van de enemy is worden die states aangepast.
+											</p>
+											<p>De enemies hebben de mogelijkheid om andere enemies binnen een bepaalde range en zonder obstakels in de weg te alarmeren. 
+												Daarnaast kunnen de enemies alert worden door camera's die met een OverlapSphere alle in range enemies detecteren. 
+												Als de speler in de buurt is worden die enemies alert en krijgen ze de positie van de speler.
+											</p>
 											</div>
 											<ul class="actions">
 												<li><a href="https://gist.github.com/Youri-Mulder/47b8ac1479b493f676b0c10f5d6f0b85" class="button">Code</a></li>
@@ -298,14 +332,21 @@
 										    <div>
 												<h3>Boss</h3>
 											</div>
-											<p>De tijd begon een beetje krap te worden dus de boss is helaas een beetje gerushed. De boss heeft meerdere attacs die random worden gegeven zoals de normale attac die ongeveer een kogel per seconde schiet, een burst attac en er was het plan voor granaten maar dat is nu ook een normale attac omdat er tijd te kort was helaas. De boss past zijn positie aan gebaseert op of de player ver weg of dichtbij is en ook als de boss te vaak word geraakt gaat ie op zoek naar een andere positie. De boss heeft een overlapshere, angle vision cone.</p>
+											<p>De tijd begon een beetje krap te worden dus de boss is helaas een beetje gehaast. 
+												De boss heeft meerdere aanvallen die willekeurig worden uitgevoerd zoals de normale aanval die ongeveer één kogel per seconde schiet, 
+												een burstaanval en er was het plan voor granaten maar dat is nu ook een normale aanval geworden omdat er helaas te weinig tijd was. 
+												De boss past zijn positie aan gebaseerd op of de speler ver weg of dichtbij is. 
+												Ook als de boss te vaak wordt geraakt gaat hij op zoek naar een andere positie. 
+												De boss heeft een OverlapSphere en een angle vision cone.</p>
 											<ul class="actions">
 												<li><a href="https://gist.github.com/Youri-Mulder/57d62dd504cbb7b887ae17854945e9a5" class="button">Code</a></li>
 											</ul>
 											<div>
 											<h3>BossBattleManager</h3>
 											</div>
-											<p>De BossBattleManager houd de hele bossfight bij. Als de player dood gaat word alles in de boss area hersteld naar hoe het eerst was. Nieuwe enemies worden ingespawnt en ook de player stats worden terug gezet. De BossBattleManager regelt ook het in een uit faden van het beeld zolang de bossfight bezig is. Als alle enemies en de boss dood zijn is de bossfight klaar en word de game automatisch opgeslagen en het start scherm ingeladen.</p>
+											<p>De BossBattleManager houdt de hele bossfight bij. Als de speler doodgaat wordt alles in de boss area hersteld naar de oorspronkelijke staat. 
+												Nieuwe enemies worden ingespawnd en ook de spelerstats worden teruggezet. De BossBattleManager regelt ook het in- en uitfaden van het beeld zolang de bossfight bezig is. 
+												Als alle enemies en de boss dood zijn is de bossfight klaar en wordt de game automatisch opgeslagen en het startscherm ingeladen.</p>
 											<ul class="actions">
 												<li><a href="https://gist.github.com/Youri-Mulder/decee062a64bb1d44a5aea46c2d81721" class="button">Code</a></li>
 											</ul>
@@ -319,9 +360,6 @@
 					<footer id="footer">
 						<div class="inner">
 							<ul class="icons">
-								<!-- <li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li> -->
-								<!-- <li><a href="#" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li> -->
-								<!-- <li><a href="#" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li> -->
 								<!-- <li><a href="#" class="icon brands alt fa-itch-io"><span class="label">Itch</span></a></li> -->
 								<!-- <li><a href="#" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li> -->
 							</ul>
