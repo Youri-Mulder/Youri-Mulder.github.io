@@ -10,6 +10,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="shortcut icon" href="https://webserver.yourimuldergamedev.nl/youri-icon.png">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
@@ -72,7 +73,9 @@
 									<div>
 									<p>Dit project is gemaakt voor school in jaar 2 en we moesten een night racer maken in 4 weken. 
 										De bedoeling van dit project was dat het een open world racegame zou worden waarbij er meerdere races beschikbaar zijn om op te racen. 
-										Aan de art hebben ze dat niet kunnen redden maar de backend zoals het opslaan van scores en de Game/Race Managers werken grotendeels om deopen world functionaliteit aan te kunnen.</p>
+										Aan de art hebben ze dat niet kunnen redden maar de backend zoals het opslaan van scores en de Game/Race Managers werken om de open world functionaliteit aan te kunnen. 
+										Al die backend systemen heb ik in elkaar gezet. En ik ben trots op dat ik het openworld systeem heb kunnen maken.
+									</p>
 									</div>
 									<header class="major">
 										<h2>Tijdens dit project heb ik gewerkt aan.</h2>
@@ -113,17 +116,132 @@
 											<p>Er komt veel op het eindscherm te staan dus heb ik ervoor gekozen om alle checkpoint en segmenttijden op een apart tabblad te zetten met elke checkpoint in een eigen kolom. 
 												Dit zorgt ervoor dat alles goed overzichtelijk is.</p>
 										</div>
-										<ul class="actions">
-											<li><a href="https://gist.github.com/Youri-Mulder/62df48f7831ddec92a03d2276c899280" class="button">Code</a></li>
-										</ul>
+                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * UIScript.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+   /// <summary>
+    /// open segement window and close anything else in screen, change segment window to 0 (start kolom) 
+    /// </summary>
+    public void OpenSegmentTimeWindow()
+    {
+        OpenTimes.SetActive(false);
+        Globalmanager.TimeWindow.SetActive(false);
+        SegmentScreen.SetActive(true);
+        ChangeSegment(0);
+    }
+    /// <summary>
+    /// gives 1 parameter to ChangeSegment
+    /// </summary>
+    public void NextSegment()
+    {
+        ChangeSegment(1);
+    }
+    /// <summary>
+    /// gives -1 parameter to ChangeSegment
+    /// </summary>
+    public void PreviusSegment()
+    {
+        ChangeSegment(-1);
+    }
+    /// <summary>
+    /// changes segment window witch 1 || -1 parameter
+    /// </summary>
+    /// <param name="next"></param>
+    private void ChangeSegment(int next)
+    {
+        LapManager manager = Globalmanager.GetActiveManager();
+        OnSegment += next;
+
+        if (OnSegment > manager._CheckPoints.Count - 1) OnSegment = 0;
+        else if (OnSegment < 0) OnSegment = manager._CheckPoints.Count -1;
+
+        SegmentText.text = "Checkpoint " + OnSegment;
+        for (int i = 0; i < Globalmanager.MaxScores; i++)
+        {
+            SegmentScores[i].text = manager.SegmentTimeList[(OnSegment * Globalmanager.MaxScores) + i].ToString("F1");
+        }
+    }
+    /// <summary>
+    /// close the segment times and open all the other end screens
+    /// </summary>
+    public void BackToLapTimes()
+    {
+        OpenTimes.SetActive(true);
+        SegmentScreen.SetActive(false);
+        Globalmanager.TimeWindow.SetActive(true);
+    }
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
 										<div>
 											<h4>Game UI</h4>
 											<p>Na elke checkpoint krijg je aan de linkerkant van het beeldscherm te zien hoe lang je over de lap hebt gedaan en waar je tijd in de lijst staat. 
 												Dit is 2 seconden zichtbaar na het behalen van een checkpoint.</p>
 										</div>
-										<ul class="actions">
-											<li><a href="https://gist.github.com/Youri-Mulder/d81012633280e9099245f151f37a8948" class="button">Code</a></li>
-										</ul>
+                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * DisplaySegmentTime.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+ public void OpenSegmentTimeWindow()
+    {
+        OpenTimes.SetActive(false);
+        Globalmanager.TimeWindow.SetActive(false);
+        SegmentScreen.SetActive(true);
+        ChangeSegment(0);
+    }
+    
+    //word vanuit de UI knoppen gebruikt om de huidige kolom checkpoint tijden + of - te doen de vorige of volgende kolom in te laden
+    public void NextSegment()
+    {
+        ChangeSegment(1);
+    }
+    public void PreviusSegment()
+    {
+        ChangeSegment(-1);
+    }
+    
+    private void ChangeSegment(int next)
+    {
+        LapManager manager = Globalmanager.GetActiveManager();
+        OnSegment += next;
+        
+        // kijk of de volgende segment niet buiten de checkoint list valt.
+        if (OnSegment > manager._CheckPoints.Count - 1) OnSegment = 0;
+        else if (OnSegment < 0) OnSegment = manager._CheckPoints.Count -1;
+        
+        // update de tekt naar de nieuwe aangegeven checkpoint
+        SegmentText.text = "Checkpoint " + OnSegment;
+        
+        // een for loopt laad alle scores van de nieuwe aangewezen collom
+        for (int i = 0; i < Globalmanager.MaxScores; i++)
+        {
+            // haalt de goede scores uit een lijst met alle scores van de net behaalde race
+            SegmentScores[i].text = manager.SegmentTimeList[(OnSegment * Globalmanager.MaxScores) + i].ToString("F1");
+            // onsegemnt = de aangegeven checkpoint.
+            // OnSegment * Maxscores komt uit waar de Scores van de laatste checkpoint zijn beindigt.
+        }
+    }
+    
+    public void BackToLapTimes()
+    {
+        OpenTimes.SetActive(true);
+        SegmentScreen.SetActive(false);
+        Globalmanager.TimeWindow.SetActive(true);
+    }
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
 									</div>
 								</div>
 							</section>
@@ -140,9 +258,212 @@
 											<p>De LapManager houdt de tijd en het aantal laps bij van de race die bezig is en slaat daarna alles op naar de game saver die alles omzet naar een savefile. 
 												De LapManager wordt alleen gebruikt als er een race is gestart en elke race heeft zijn eigen LapManager.</p>
 										</div>
-										<ul class="actions">
-											<li><a href="https://gist.github.com/Youri-Mulder/a2ed26d7630b1acb31ad1545013bc8d4" class="button">Code</a></li>
-										</ul>
+                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * LapManager.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+//(dit zijn de beste stukjes uit de code niet het hele script)
+public class LapManager : MonoBehaviour
+{
+    void Start()
+    {
+        GlobalManager = GetComponentInParent<GlobalLapManager>();
+        if (!DataCenter._DataCenter.DoesSaveFileExist())
+        {
+            LapTime = new float[GlobalManager.MaxScores];
+        }else LapTime = MS.LapTime;
+        CurrentSegmentTimes = new float[_CheckPoints.Count];
+        if (SegmentTimeList.Count == 0) CreateSegmentList();
+    }
+    /// <summary>
+    /// makes the needed space for all segment scores
+    /// </summary>
+    private void CreateSegmentList()
+    {
+        for (int i = 0; i < _CheckPoints.Count * GlobalManager.MaxScores; i++)
+        {
+            SegmentTimeList.Add(0);
+        }
+    }
+    /// <summary>
+    /// Checks if the checkpoint is the next one, saves the time and shows score. 
+    /// </summary>
+    /// <param name="checkpointTag"></param>
+    public void RunCheck(int checkpointTag)
+    {
+        if (checkpointTag == NextCheckpoint)
+        {
+            for(int i = 0; i < CurrentSegmentTimes.Length; i++)
+            {
+                if (CurrentSegmentTimes[i] == 0)
+                {
+                    CurrentSegmentTimes[i] = Timer;
+                    break;
+                }
+            }
+            SetSegmentTimes(checkpointTag, out int scoreplace);
+            NextCheckpoint++;
+            if (NextCheckpoint > _CheckPoints.Count) NextCheckpoint = 1;
+            Timer = 0;
+            if (checkpointTag == CurrentSegmentTimes.Length) LapDone();
+            GlobalManager.SetSideScores(checkpointTag,this,scoreplace);
+        }
+    }
+    public void LapDone()
+    {
+        float Currentlaptime = 0f;
+        Laps++;
+
+        for (int i = 0; i < CurrentSegmentTimes.Length; i++)
+        {
+            Currentlaptime += CurrentSegmentTimes[i];
+        }
+        Calculate(Currentlaptime);
+        if (Laps == 3)
+        {
+            RaceDone();
+            return;
+        }
+        for (int i = 0; i < CurrentSegmentTimes.Length; i++)
+        {
+            CurrentSegmentTimes[i] = 0;
+        }
+        GlobalManager.ChangeLapText(Laps + 1);
+    }
+    /// <summary>
+    /// saves all the segment times to a list that can be saved to an external file
+    /// </summary>
+    /// <param name="checkpointTag"></param>
+    /// <param name="scoreplace"></param>
+    private void SetSegmentTimes(int checkpointTag, out int scoreplace)
+    {
+        // checkpointTag -1 om gelijk te maken aan de lijst 
+        checkpointTag -= 1;
+
+        // staat gelijk aan het stukje waar deze checkpoint scores staan opgeslagen
+        int Calibrate = checkpointTag * GlobalManager.MaxScores;
+
+        // tijdelijke lijst om alles in op de slaan
+        float[] TempSegmentList = new float[_CheckPoints.Count * GlobalManager.MaxScores];
+
+        int loopRound = 0;
+        for (int i = checkpointTag * GlobalManager.MaxScores; i < GlobalManager.MaxScores + Calibrate; i++)
+        {
+            loopRound++;
+            if (Timer < SegmentTimeList[i] || SegmentTimeList[i] == 0)
+            {
+                TempSegmentList[i] = Timer;
+                for (int j = i + 1; j < GlobalManager.MaxScores + Calibrate; j++)
+                {
+                    TempSegmentList[j] = SegmentTimeList[j - 1];
+                }
+                for (int k = i; k < GlobalManager.MaxScores + Calibrate; k++)
+                {
+                    SegmentTimeList[k] = TempSegmentList[k];
+                }
+                break;
+            }
+            else
+            {
+                TempSegmentList[i] = SegmentTimeList[i];
+            }
+        }
+        scoreplace = loopRound;
+    }
+    /// <summary>
+    /// compares the new time to old times and reorganize all the times.
+    /// </summary>
+    /// <param name="CurrentLapTime"></param>
+    public void Calculate(float CurrentLapTime)
+    {
+        float[] TemplapList = new float[GlobalManager.MaxScores];
+        for (int i = 0;i < LapTime.Length; i++)
+        {
+            if (CurrentLapTime < LapTime[i] || LapTime[i] == 0)
+            {
+                TemplapList[i] = CurrentLapTime;
+                for (int j = i + 1; j < LapTime.Length; j++)
+                {
+                    TemplapList[j] = LapTime[j -1];
+                }
+                LapTime = TemplapList;
+                break;
+            }else
+            {
+                TemplapList[i] = LapTime[i];
+            }
+        }
+    }
+    private void SaveTimes()
+    {
+        MS.SegmentTimeList = SegmentTimeList;
+        MS.LapTime = LapTime;
+        GlobalManager.SaveTheGame();
+    }
+    public void LoadToList()
+    {
+        SegmentTimeList = MS.SegmentTimeList;
+        LapTime = MS.LapTime;
+    }
+    /// <summary>
+    /// can be used from other scripts to get i safed segment time
+    /// </summary>
+    /// <param name="i"></param>
+    /// <returns></returns>
+    public float GetSegmentTime(int i)
+    {
+        return SegmentTimeList[i];
+    }
+    /// <summary>
+    /// can be used form other scrips to use the current timer time
+    /// </summary>
+    /// <returns></returns>
+    public float GetTimerTime()
+    {
+        float time = 0f;
+        for (int i = 0; i < CurrentSegmentTimes.Length; i++)
+        {
+            time += CurrentSegmentTimes[i];
+        }
+        time += Timer;
+        return time;
+    }
+
+    public void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag(CarTag))
+        {
+            if (!HasRaceStarted)
+            {
+                if (Input.GetKey(KeyCode.Space))
+                {
+                    GlobalManager.StartRace(this);
+                    HasRaceStarted = true;
+                }
+            }
+        }
+    }
+    public CheckPoints NextCheckPoint()
+    {
+        int checkpointtag = NextCheckpoint -1;
+        return _CheckPoints[checkpointtag];
+    }
+}
+
+[Serializable]
+public class ManagerScore
+{
+    public float[] LapTime = new float[0];
+    public List<float> SegmentTimeList = new List<float>();
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
 										<div>
 											<h4>GlobalLapManager</h4>
 											<p>De GlobalLapManager wordt gebruikt om dingen die altijd actief zijn aan te passen zoals de tekst voor welke lap bezig is. 
@@ -150,16 +471,271 @@
 												Het zorgt voor het respawnen van de speler en stopt de speler met rijden wanneer dat nodig is zoals tijdens het aftellen op de start. 
 												Als er maar één race is om te spelen zorgt de GlobalLapManager ervoor dat die race automatisch wordt gestart.</p>
 										</div>
-										<ul class="actions">
-											<li><a href="https://gist.github.com/Youri-Mulder/16f58193d1084bdf9ce043bc348d9395" class="button">Code</a></li>
-										</ul>
+                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * GlobalLapManager.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+//(dit zijn de beste stukjes uit de code niet het hele script)
+public class GlobalLapManager : MonoBehaviour
+{
+    public int MaxScores; // used in lap managers
+    public List<LapManager> Managers = new List<LapManager>(); // used in editor tool
+    public bool RaceOnHold;
+    private bool CountingDown;
+
+    private void Start()
+    {
+        LastLapTimesAmount.text = "Last " + MaxScores.ToString() + " Lap Times";
+        Timer = CountDownTime;
+        if (Managers.Count == 1)
+        {
+            OneRace();
+        }
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.RightShift) && RaceOnHold)
+        {
+            StartCounbtDown();
+        }
+        if (CountingDown)
+        {
+            Timer -= Time.deltaTime;
+            int CalibrateTime = (int)Timer;
+            CountDown.text = CalibrateTime.ToString("F1");
+            if (StartLightColors != null && StartLights != null)
+            {
+                switch (CalibrateTime)
+                {
+                    case 3:
+                        SetStartLichtColor(4);
+                        break;
+                    case 2:
+                        SetStartLichtColor(3);
+                        break;
+                    case 1:
+                        SetStartLichtColor(2);
+                        break;
+                    case 0:
+                        SetStartLichtColor(2);
+                        break;
+                }
+            }
+        }
+        if (Car.CarDead() || Input.GetKeyDown(KeyCode.R)) RespawnPlayer();
+    }
+    private void OneRace()
+    {
+        Car.CanDrive = false;
+        LapManager manager = Managers[0];
+        StartRace(manager);
+        Debug.Log("only one race exist in thsi scene, it has been started");
+    }
+    public void StartRace(LapManager manager)
+    {
+        Car.CanDrive = false;
+        RaceOnHold = true;
+        manager.UIHolder.SetActive(false);
+        manager.HasRaceStarted = true;
+        for (int i = 0; i < Managers.Count; i++)
+        {
+            if (Managers[i] != manager)
+            {
+                Managers[i].transform.gameObject.SetActive(false);
+            }
+        }
+    }
+    private void StartCounbtDown()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        RaceOnHold = false;
+        Editor.SetActive(false);
+        if (Wait == null) Wait = StartCoroutine(WaitToLEtCarDrive());
+    }
+    public void RaceEnd(float[] lapTimes, float time)
+    {
+        if (Managers.Count > 1)
+        {
+            for (int i = 0; i < Managers.Count; i++)
+            {
+                Managers[i].transform.gameObject.SetActive(true);
+            }
+        }else
+        {
+            RePlayWindow.SetActive(true);
+            TimeWindow.SetActive(true);
+            Car.CanDrive = false;
+        }
+        Cursor.lockState = CursorLockMode.None;
+        SetLapScoreTimes(lapTimes);
+        Editor.SetActive(false);
+
+        int mins = 0;
+        if (time > 60)
+        {
+            while(time > 60)
+            {
+                mins++;
+                time -= 60f;
+            }
+        }
+        if (mins > 0) TotalTime.text = mins + "." + time.ToString("F1");
+        else TotalTime.text = time.ToString("F1");
+    }
+    public void CreateSpace()
+    {
+        for (int i = 0; i < Managers.Count; i++)
+        {
+            DataCenter._DataCenter.SaveFile.AllScores.Add(null);
+        }
+    }
+    public void SaveTheGame()
+    {
+        for (int i = 0; i < Managers.Count; i++)
+        {
+            DataCenter._DataCenter.SaveFile.AllScores[i] = Managers[i].MS;
+        }
+        DataCenter._DataCenter.SaveGame();
+    }
+    public void LoadTheGame()
+    {
+        for (int i = 0; i < Managers.Count; i++)
+        {
+            Managers[i].MS = DataCenter._DataCenter.SaveFile.AllScores[i];
+            Managers[i].LoadToList();
+        }
+    }
+    public LapManager GetActiveManager()
+    {
+        for (int i = 0;i < Managers.Count;i++)
+        {
+            if (Managers[i].isActiveAndEnabled) return Managers[i];
+        }
+        Debug.LogError("No Active Manager has been fount!");
+        return null;
+    }
+
+    private IEnumerator WaitToLEtCarDrive()
+    {
+        CountingDown = true;
+        CountDownHolder.SetActive(true);
+        yield return new WaitForSeconds(CountDownTime -1);
+        Cam.FollowCar = true;
+        Car.CanDrive = true;
+        GetActiveManager().RaceOnGoing = true;
+        CountDownHolder.SetActive(false);
+    }
+
+    public void SetLapScoreTimes(float[] LapTimes)
+    {
+        if (MaxScores <= LastLapTimes.Length)
+        {
+            for (int i = 0; i < LapTimes.Length; i++)
+            {
+                float time = LapTimes[i];
+                int mins = 0;
+                if (time > 60)
+                {
+                    while(time > 60)
+                    {
+                        mins++;
+                        time -= 60;
+                    }
+                    LastLapTimes[i].text = mins.ToString() + "," + time.ToString("F1");
+                }
+            }
+        }
+        else Debug.LogError("MaxScores is to long for the list of LastLapTimes");
+    }
+
+    private void RespawnPlayer()
+    {
+        int i = 0;
+        Vector3 RemoveVel = new Vector3(0,0,0);
+        while (i < 10)
+        {
+            Car.transform.eulerAngles = RemoveVel;
+            Car.rb.velocity = RemoveVel;
+            i++;
+        }
+        Car.transform.eulerAngles = PlayerRespawnRotation;
+        Car.transform.position = PlayerRespawnPoint;
+    }
+    public void SetSideScores(int tag, LapManager manager,int scoreplace)
+    {
+        scoreplace -= 1;
+        tag -= 1;
+        SideTimes.SetActive(true);
+        StartCoroutine(HideSideTimes(scoreplace));
+        int offset = tag * MaxScores;
+        for (int i = 0;i < MaxScores; i++)
+        {
+            SideScores[i].text = manager.SegmentTimeList[i + offset].ToString("F1");
+        }
+        SideScores[scoreplace].color = Color.green;
+    }
+    private IEnumerator HideSideTimes(int scoreplace)
+    {
+        yield return new WaitForSeconds(1);
+        SideScores[scoreplace].color = Color.white;
+        SideTimes.SetActive(false);
+    }
+    public void ChangeLapText(int lap)
+    {
+        LapText.text = ": " + lap + "/3";
+    }
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
 										<div>
 											<h4>Checkpoints</h4>
 											<p>De checkpoint slaat de spelerpositie op en geeft de opdracht aan de LapManager om tijden op te slaan en te controleren of er een lap voorbij is.</p>
 										</div>
-										<ul class="actions">
-											<li><a href="https://gist.github.com/Youri-Mulder/e4eedf744f294ba929721d1dab682d23" class="button">Code</a></li>
-										</ul>
+                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * CheckPoints.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+public class CheckPoints : MonoBehaviour
+{
+    private LapManager Manager;
+    private GlobalLapManager GlobalLapManager;
+    [Tooltip("Hoeveelste CheckPoint Is Dit?")]
+    public int CheckPointTag;
+    void Start()
+    {
+        Destroy(GetComponent<MeshRenderer>());
+        GlobalLapManager = FindObjectOfType<GlobalLapManager>();
+        Manager = GetComponentInParent<LapManager>();
+        if (Manager == null) Debug.LogError("manager == null");
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag(Manager.CarTag))
+        {
+            if (Manager.HasRaceStarted) Manager.RunCheck(CheckPointTag);
+            if (Manager.HasRaceStarted) SavePlayerPos(other.gameObject);
+        }
+    }
+    private void SavePlayerPos(GameObject Car)
+    {
+        GlobalLapManager.PlayerRespawnRotation = Car.transform.eulerAngles;
+        GlobalLapManager.PlayerRespawnPoint = Car.transform.position;
+    }
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
 									</div>
 								</div>
 							</section>
@@ -172,9 +748,124 @@
 										<h4>DataCenter</h4>
 										<p>De DataCenter slaat de game op in een apart bestand en laadt deze weer in wanneer de game wordt gestart en er een savefile bestaat. 
 											Voor het opslaan maak ik gebruik van een BinaryFormatter die een klasse met variabelen omzet naar een bestand.</p>
-										<ul class="actions">
-											<li><a href="https://gist.github.com/Youri-Mulder/25efa7b9178d4b576f80e3756f8c5d09" class="button">Code</a></li>
-										</ul>
+                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * DataCenter.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+public class DataCenter : MonoBehaviour
+{
+    private BinaryFormatter bf;
+    [HideInInspector] public SaveGame SaveFile;
+    private string SaveLocation = "/GameSafe.dat";
+    [HideInInspector] public static DataCenter _DataCenter;
+
+    [Header("editor Settings")]
+    [SerializeField] private bool ShowComments;
+    [SerializeField] private bool DeleteSaveFile;
+    private bool Loaded = false;
+
+    private void Awake()
+    {
+        SetCenter();
+        CreateNewValues();
+        GlobalLapManager GM = FindObjectOfType<GlobalLapManager>(); ;
+        if (File.Exists(Application.persistentDataPath + SaveLocation))
+        {
+            if (ShowComments) Debug.Log("Save File Exitst At : " + Application.persistentDataPath + SaveLocation);
+            if (!Loaded) LoadGame();
+            if (GM != null) GM.LoadTheGame();
+        }
+        else if (GM != null) GM.CreateSpace();
+        Loaded = true;
+    }
+
+    private void CreateNewValues()
+    {
+        if (SaveFile == null) SaveFile = new SaveGame();
+        if (bf == null) bf = new BinaryFormatter();
+    }
+
+    private void Update()
+    {
+        if (DeleteSaveFile)
+        {
+            DeleteGameSave();
+            DeleteSaveFile = false;
+        }
+    }
+    /// <summary>
+    /// makes a singelton and DontDestroyOnLoad
+    /// </summary>
+    private void SetCenter()
+    {
+        if (_DataCenter == null)
+        {
+            DontDestroyOnLoad(gameObject);
+            _DataCenter = this;
+        }
+        else if (_DataCenter != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+    // Save Game 
+    public void SaveGame()
+    {
+        FileStream file;
+
+        if (File.Exists(Application.persistentDataPath + SaveLocation)) file = File.Open(Application.persistentDataPath + SaveLocation, FileMode.Open);
+        else file = File.Create(Application.persistentDataPath + SaveLocation);
+        bf.Serialize(file, SaveFile);
+        file.Close();
+        if (ShowComments) Debug.Log("Game Has Been Saved At : " + Application.persistentDataPath + SaveLocation);
+    }
+    //--
+    // Load game
+    public void LoadGame()
+    {
+        FileStream file;
+        if (File.Exists(Application.persistentDataPath + SaveLocation))
+        {
+            file = File.Open(Application.persistentDataPath + SaveLocation, FileMode.Open);
+            SaveFile = (SaveGame)bf.Deserialize(file);
+            file.Close();
+        }
+        if (ShowComments) Debug.Log("Game Save File Has Been Loaded");
+    }
+
+    public void DeleteGameSave()
+    {
+        if (File.Exists(Application.persistentDataPath + SaveLocation))
+        {
+            File.Delete(Application.persistentDataPath + SaveLocation);
+            if (ShowComments) Debug.Log("Save File Has Been Deleted");
+        }
+        else if (ShowComments) Debug.Log("There is no Save File Stored");
+    }
+
+    public bool DoesSaveFileExist()
+    {
+        if (File.Exists(Application.persistentDataPath + SaveLocation))
+        {
+            return true;
+        }
+        else return false;
+    }
+}
+
+[Serializable]
+public class SaveGame
+{
+    public List<ManagerScore> AllScores =  new List<ManagerScore>();
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
 									</div>
 								</div>
 							</section>
@@ -194,9 +885,44 @@
 										</header>
 										<p>Ik heb een navigatiepijltje gemaakt dat boven de auto hangt zodat de speler kan zien waar het volgende checkpoint zich bevindt. 
 											Nu de game een loop is is het niet zozeer nodig maar met het eerste idee van een open worldgame is het wel handig om te zien waar je heen moet.</p>
-										<ul class="actions">
-											<li><a href="https://gist.github.com/Youri-Mulder/43f89f4ae0db697810b46dfc0d230381" class="button">Code</a></li>
-										</ul>
+								<div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * NavigationRotate.cs / RotateTowards.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+    int tag = NextCheckpoint -1;
+
+    // in de manager van de race die bezig is word deze lijn code in de update geupdate, tag is de volgende checkpoint.
+    GlobalManager.SetNAvigationArrowRotation(_CheckPoints[tag]);
+
+    // dit staat in een algemene race manager via hier word de naviagatie pijl geupdate.
+    public void SetNAvigationArrowRotation(CheckPoints target)
+    {
+        FindObjectOfType<NavigationRotate>().RotateTowarts(target);
+    }
+
+    // dit staat op de navigatie pijl en draait de pijl naar de target wat een checkpoint is
+    public void RotateTowarts(CheckPoints target)
+    {
+        Vector3 rotation = target.transform.position - transform.position;
+        transform.rotation = Quaternion.LookRotation(rotation);
+    }
+
+	-----------
+
+	
+    public void RotateTowarts(CheckPoints target)
+    {
+        Vector3 rotation = target.transform.position - transform.position;
+        transform.rotation = Quaternion.LookRotation(rotation);
+    }
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
 									</div>
 								</div>
 							</section>
@@ -224,6 +950,8 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/prism.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/components/prism-csharp.min.js"></script>
 
 	</body>
 </html>

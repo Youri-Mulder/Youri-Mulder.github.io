@@ -11,6 +11,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="shortcut icon" href="https://webserver.yourimuldergamedev.nl/youri-icon.png">
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
 	<body class="is-preload">
@@ -70,7 +71,8 @@
 									</header>
 									<div>
 									<p>Dit was een groepsproject voor school dat samen met de artist in 7 weken is gemaakt. 
-										Dit project ging helaas niet al te soepel en er waren wat tegenslagen maar uiteindelijk hebben we er toch iets vets van weten te maken.
+										Dit project ging helaas niet al te soepel en er waren wat tegenslagen maar uiteindelijk hebben we er toch iets vets van weten te maken. 
+										We moesten met dit project een top down twinstick game maken.
 									</p>
 									</div>
 									<header class="major">
@@ -112,9 +114,58 @@
 												De positie van de camera wordt ook een klein beetje aangepast zodat de speler altijd goed in beeld staat omdat de speler niet helemaal in het midden van het beeld zit. 
 												De camera wordt gedraaid met een Lerp en een simpele timer.</p>
 											</div>
-											<ul class="actions">
-												<li><a href="https://gist.github.com/Youri-Mulder/97782202e0b630f91736e8ee4110cac3" class="button">Code</a></li>
-											</ul>
+                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * CameraScript.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+public class CameraScript : MonoBehaviour
+{
+    void Update()
+    {
+        if (transform.rotation == Quaternion.Euler(RotationAmound, 180, 0) || transform.rotation == Quaternion.Euler(RotationAmound, -180, 0) || transform.rotation == Quaternion.Euler(RotationAmound,0,0) || transform.rotation == Quaternion.Euler(RotationAmound,360,0))
+        {
+            Rotating = false;
+        }
+
+        //volg de player 
+        if (player != null)
+        {
+            Vector3 newpos = new Vector3(Target.position.x + XOffset, Target.position.y + CamHight, Target.position.z + CamOffset);
+            transform.position = Vector3.Slerp(transform.position, newpos, FollowSpeed * Time.deltaTime);
+        }
+
+        //input voor het draaien van de camera zet alle varables goed om te draaien
+        if (Input.GetKeyDown(KeyCode.N) && !Rotating || Input.GetKeyDown(KeyCode.Mouse3) && !Rotating)  
+        {
+            RotateTimer = 0;
+            CurrentRotation = Quaternion.Euler(65, 180, 0);
+            CamOffset = MinusZOffset;
+            Rotating = true;
+            Reverse = true;
+        }
+        if (Input.GetKeyDown(KeyCode.M) && !Rotating || Input.GetKeyDown(KeyCode.Mouse4) && !Rotating)
+        {
+            RotateTimer = 0;
+            CurrentRotation = Quaternion.Euler(65, 0, 0);
+            CamOffset = ZOffset;
+            Rotating = true;
+            Reverse = false;
+        }
+        // draait de camera naar niewe positie 
+        RotateTimer += Time.deltaTime;
+        float rotatespeed = FollowSpeed * 2;
+        Percentage = RotateTimer / rotatespeed;
+        transform.rotation = Quaternion.Lerp(transform.rotation, CurrentRotation, Percentage);
+    }
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
 										</div>
 									</div>
 								</section>
@@ -150,9 +201,261 @@
 												De kleur van de deuren werd eerst veranderd naar de kleur van de keycards maar dat wordt niet gebruikt in de laatste versie van de game. 
 												De deuren houden met een enum de staat bij of de deur open/dicht aan het gaan is. 
 												De keycarddeuren werken met waypoints waarbij de deuren naar de waypoints gaan en de klapdeuren roteren van de ene rotatie naar de andere.</p>
-											<ul class="actions">
-												<li><a href="https://gist.github.com/Youri-Mulder/fb1497f8068601d23e353c7cf6d3b3f9" class="button">Code</a></li>
-											</ul>
+                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * DoorTrigger.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+public class DoorTrigger : MonoBehaviour
+{
+    private KeyCardDoor Door;
+    private Klapdeur Klapdeur;
+    private void Start()
+    {
+        Door = GetComponentInParent<KeyCardDoor>();
+        Klapdeur = GetComponentInParent<Klapdeur>();
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        // kijk welke deur in gebruik is en open die.
+        if (Door != null && other.gameObject.CompareTag("Player"))
+        {
+            Door.OnDoorEnter();
+        }else if (Klapdeur != null && other.gameObject.CompareTag("Player"))
+        {
+            Klapdeur.OnDoorEnter();
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        //kijk welke soord deur in gebruik is en sluit die.
+        if (Door != null && other.gameObject.CompareTag("Player"))
+        {
+            Door.OnDoorExit();
+        }else if (Klapdeur != null && other.gameObject.CompareTag("Player"))
+        {
+            Klapdeur.OnDoorExit();
+        }
+    }
+
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+								                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * KeyCardDoor.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+enum DoorState
+{
+    open,
+    closed,
+    opening,
+    closing
+}
+
+enum WhatDoor
+{
+    NormalDoor,
+    EndDoor,
+    BossDoor
+}
+public class KeyCardDoor : MonoBehaviour
+{
+    [Tooltip("0 = left 1 = richt")]
+    [SerializeField] private GameObject[] OpenWaypoints;
+    [SerializeField] private DoorState state;
+    [SerializeField] private WhatDoor DoorWhat;
+    private Vector3[] ClosedState = new Vector3[2];
+    public GameObject[] Doors;
+    public bool DoesPlayerHasKeyCard;
+
+    private GameManager GM;
+
+    [Header("DoorSettings")]
+    [SerializeField] private float DoorSpeed;
+    private float Timer;
+    private float Percentage;
+
+    private GameObject Player;
+
+    void Start()
+    {
+        gameObject.isStatic = false;
+        Player = GameObject.Find("player");
+        GM = FindObjectOfType<GameManager>();
+        FindError();
+        ClosedState[0] = Doors[0].transform.position;
+        ClosedState[1] = Doors[1].transform.position;
+    }
+
+    private void FindError()
+    {
+        if (Player == null) Debug.Log("Player has not been found in the scene. add a player to the scene or change to player name to 'Player'");
+        if (Doors[0] == null) Debug.LogError("Left door is missing");
+        if (Doors[1] == null) Debug.LogError("richt door is missing");
+        if (OpenWaypoints[0] == null) Debug.LogError("left openwaypoint is missing");
+        if (OpenWaypoints[1] == null) Debug.LogError("richt openwaypoint is missing");
+    }
+
+    void Update()
+    {
+        if (state == DoorState.opening) OpenDoor();
+        if (state == DoorState.closing) CloseDoor();
+    }
+
+    private void OpenDoor()
+    {
+        Timer += Time.deltaTime;
+        Percentage = Timer / DoorSpeed;
+        Doors[0].transform.position = Vector3.Slerp(Doors[0].transform.position, OpenWaypoints[0].transform.position, Percentage);
+        Doors[1].transform.position = Vector3.Slerp(Doors[1].transform.position, OpenWaypoints[1].transform.position, Percentage);
+        if (Percentage >= 1)
+        {
+            state = DoorState.open;
+        }
+    }
+    private void CloseDoor()
+    {
+        Timer += Time.deltaTime;
+        Percentage = Timer / DoorSpeed;
+        Doors[0].transform.position = Vector3.Slerp(Doors[0].transform.position, ClosedState[0], Percentage);
+        Doors[1].transform.position = Vector3.Slerp(Doors[1].transform.position, ClosedState[1], Percentage);
+        if (Percentage >= 1)
+        {
+            state = DoorState.closed;
+        }
+    }
+
+    public void OnDoorEnter()
+    {
+        Timer = 0f;
+        if (DoesPlayerHasKeyCard)
+        {
+            if (DoorWhat == WhatDoor.EndDoor && GM.Enemies.Count == 0)
+            {
+                state = DoorState.opening;
+            }
+            else if (DoorWhat != WhatDoor.EndDoor) state = DoorState.opening;
+        }
+    }
+
+    public void OnDoorExit()
+    {
+        Timer = 0f;
+        state = DoorState.closing;
+    }
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+								                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * Klapdeur.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+enum KlapDoorState
+{
+    open,
+    closed,
+    opening,
+    closing
+}
+
+public class Klapdeur : MonoBehaviour
+{
+    [Header("settings")]
+    public bool PlayerHaveKeyCard;
+
+    [Header("doors")]
+    public GameObject Door1;
+    public GameObject Door2;
+
+    [Header("movement")]
+    [SerializeField] private float RotateSpeed;
+
+    [Header("Positions")]
+    [SerializeField] private float RotationAmoound;
+    private Quaternion Door1Open;
+    private Quaternion Door2Open;
+    private Quaternion Door1Closed;
+    private Quaternion Door2Closed;
+    private Quaternion startRotation1;
+    private Quaternion startRotation2;
+
+    [SerializeField] private KlapDoorState state; 
+
+    //timers
+    private float Percentage;
+    private float RotateTimer;
+
+    void Start()
+    {
+        gameObject.isStatic = false;
+        Door1Closed.y = transform.rotation.eulerAngles.y;
+        Door2Closed.y = transform.rotation.eulerAngles.y; 
+        Door1Open.y = Quaternion.identity.y + RotationAmoound;
+        Door2Open.y = Quaternion.identity.y + RotationAmoound;
+    }
+
+    void Update()
+    {
+        if (state == KlapDoorState.opening) OpenDoor();
+        if (state == KlapDoorState.closing) CloseDoor();
+    }
+
+    private void OpenDoor()
+    {
+        RotateTimer += Time.deltaTime;
+        Percentage = RotateTimer / RotateSpeed;
+        Door1.transform.rotation = Quaternion.Lerp(startRotation1, Quaternion.Euler(0, Door1Open.y, 0), Percentage);
+        Door2.transform.rotation = Quaternion.Lerp(startRotation2, Quaternion.Euler(0, Door2Open.y, 0), Percentage);
+        if (Percentage >= 1) state = KlapDoorState.open;
+    }
+
+    private void CloseDoor()
+    {
+        RotateTimer += Time.deltaTime;
+        Percentage = RotateTimer / RotateSpeed;
+        Door1.transform.rotation = Quaternion.Lerp(startRotation1, Quaternion.Euler(0, Door1Closed.y, 0), Percentage);
+        Door2.transform.rotation = Quaternion.Lerp(startRotation2, Quaternion.Euler(0, Door2Closed.y, 0), Percentage);
+        if (Percentage >= 1) state = KlapDoorState.closed;
+    }
+
+    public void OnDoorEnter()
+    {
+        if (PlayerHaveKeyCard)
+        {
+            RotateTimer = 0;
+            state = KlapDoorState.opening;
+            startRotation1 = Door1.transform.rotation;
+            startRotation2 = Door2.transform.rotation;
+        }
+    }
+    public void OnDoorExit()
+    {
+        RotateTimer = 0;
+        state = KlapDoorState.closing;
+        startRotation1 = Door1.transform.rotation;
+        startRotation2 = Door2.transform.rotation;
+    }
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
 											<div>
 												<h4>KeyCards</h4>
 											</div>
@@ -162,9 +465,91 @@
 												De kleur van de UI keycard wordt omgezet naar de kleur van de opgepakte keycard.
 
 											</p>
-											<ul class="actions">
-												<li><a href="https://gist.github.com/Youri-Mulder/2d4ae4ffd5df2c8964b0fd0efc06149b" class="button">Code</a></li>
-											</ul>
+                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * KeyCardPickUp.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+public class KeyCardPickUp : MonoBehaviour
+{
+    public KeyCardDoor[] Doors;
+    public Klapdeur[] KlapDoors;
+    public Color Color;
+
+    [Header("Editor settings")]
+    [Tooltip("refresh the editor color of the kaycard and the door it opens")]
+    public bool RefreshColors = false;
+    [Tooltip("use the door reser before removing the door from the kaycard to reset the door color")]
+    [HideInInspector] public bool ResetDoorColors = false;
+    [SerializeField] private bool ChangeDoorColorToKayCardCollorOnPlay;
+    public bool RefreshCardCollor;
+
+    private void Start()
+    {
+        // verander de kleur van de deur naar de kleur van de keycard
+        GetComponent<MeshRenderer>().material.color = Color;
+        if (ChangeDoorColorToKayCardCollorOnPlay)
+        {
+            for (int i = 0; i < Doors.Length; i++)
+            {
+                for (int j = 0; j < Doors[i].Doors.Length; j++)
+                {
+                    Doors[i].Doors[j].GetComponent<MeshRenderer>().material.color = Color;
+                }
+            }
+            for (int i = 0; i < KlapDoors.Length; i++)
+            {
+                KlapDoors[i].Door1.GetComponent<MeshRenderer>().material.color = Color;
+                KlapDoors[i].Door2.GetComponent<MeshRenderer>().material.color = Color;
+            }
+        }
+
+    }
+    private bool Pickedup = false;
+    private void OnTriggerEnter(Collider other)
+    {
+        // zet voor alle deuren DoesPlayerHasKeyCard true en dystroy de keycard
+        if (other.gameObject.CompareTag("Player") && !Pickedup)
+        {
+            Pickedup = true;
+            for (int i = 0; i < Doors.Length; i++)
+            {
+                Doors[i].GetComponent<KeyCardDoor>().DoesPlayerHasKeyCard = true;
+            }
+            for (int i = 0; i < KlapDoors.Length; i++)
+            {
+                KlapDoors[i].GetComponent<Klapdeur>().PlayerHaveKeyCard = true;   
+            }
+            FindObjectOfType<PlayerUI>().KeyCardOnScreen(Color);
+            Destroy(gameObject);
+        }
+    }
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+								                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * PlayerUI.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+    public void KeyCardOnScreen(Color color)
+    {
+        GameObject Keycard = Instantiate(KeyCardImage, KayCardGrid.transform);
+        Keycard.GetComponent<Image>().color = color;
+        KeyCards.Add(Keycard);
+    }
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
 										</div>
 									</div>
 								</section>
@@ -179,9 +564,54 @@
 												De knoppen kijken in het DataCenter van de game om te zien bij welk level de speler is. 
 												Als de knop actief is kan een level worden gestart met de leveltag in de knop die gemakkelijk naar elk level kan worden veranderd zodat de knoppen makkelijk instelbaar zijn voor komende levels die nog in ontwikkeling zijn.</p>
 											</div>
-											<ul class="actions">
-												<li><a href="https://gist.github.com/Youri-Mulder/bb0a127cc55e134a4ef0eaae540b68e2" class="button">Code</a></li>
-											</ul>
+                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * LevelLoader.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+public class LevelLoader : MonoBehaviour
+{
+    [SerializeField] private int Level;
+    private DataCenter Data;
+    [HideInInspector] public bool Ready = false;
+
+    private void Start()
+    {
+        Data = DataCenter.LocalDataCenter;
+        SetctiveState();
+        Ready = true;
+    } 
+    /// <summary>
+    /// zet level button uit als deze nog niet speelbaar is.
+    /// </summary>
+    public void SetctiveState()
+    {
+        if (Data.CurrentLevel < Level)
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
+    public void SetActiveOff()
+    {
+        if (Level > Data.StartLevel)
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
+    public void LoadLevel()
+    {
+        SceneManager.LoadScene(Level);
+    }
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
 										</div>
 									</div>
 								</section>
@@ -205,9 +635,97 @@
 													Met RotateTowards draait de turret naar de speler. Voor wat visuele feedback heeft de turret een licht die het schietveld aangeeft. 
 													Als de speler in het zicht van de turret is verandert de kleur van het licht naar rood.</p>
 											</div>
-											<ul class="actions">
-												<li><a href="https://gist.github.com/Youri-Mulder/a8d7c8e25faac12193c9625280d65e20" class="button">Code</a></li>
-											</ul>
+                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * WallTurret.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+//(dit zijn de beste stukjes uit de code niet het hele script)
+public class WallTurret : MonoBehaviour
+{
+    void Update()
+    {
+        Vision();
+        SeePlayer();
+
+        //rotate terug naar start positie als player niet in zicht is
+        if (!CanSeePlayer)
+        {
+            rotationTimer += Time.deltaTime;
+            Percent = rotationTimer / RotateSpeed;
+            RotationCenter.transform.rotation = Quaternion.Slerp(RotationCenter.transform.rotation, DefauldRotaion, Percent);
+        }
+        else rotationTimer = 0;
+        //verander licht kleur als player in zicht is 
+        if (CanSeePlayer)
+        {
+            licht.color = Color.red;
+        }
+        else licht.color = Color.blue;
+    }
+    /// <summary>
+    /// kijkt of player in range is en er geen muur zit tussen de turret en player.
+    /// is player zichtbaar voor de turret dan roteert ie naar player
+    /// </summary>
+    private void Vision()
+    {
+        Collider[] RangeChecks = Physics.OverlapSphere(transform.position, LookRange, TargetLayer);
+
+        if (RangeChecks.Length != 0)
+        {
+            Transform target = RangeChecks[0].transform;
+            Vector3 directionToTarget = (target.position - transform.position);
+            if (Vector3.Angle(transform.forward, target.position - transform.position) < VisionAngle / 2)
+            {
+                float distanceToPlayer = Vector3.Distance(transform.position, target.position);
+                if (!Physics.Raycast(transform.position, directionToTarget, distanceToPlayer, ObstacleLayer))
+                {
+                    CanSeePlayer = true;
+                    RotateToPlayer(target);
+                }
+                else CanSeePlayer = false;
+            }
+            else CanSeePlayer = false;
+        }
+        else if (CanSeePlayer)
+        {
+            CanSeePlayer = false;
+        }
+    }
+    /// <summary>
+    /// draait naar target
+    /// </summary>
+    /// <param name="target"></param>
+    private void RotateToPlayer(Transform target)
+    {
+        Vector3 DirectionToTarget = target.position - transform.position;
+        RotationCenter.transform.rotation = Quaternion.RotateTowards(RotationCenter.transform.rotation, Quaternion.LookRotation(DirectionToTarget), RotateSpeed * Time.deltaTime);
+    }
+
+    private void SeePlayer()
+    {
+        ShootTimer += Time.deltaTime;
+
+        if (CanSeePlayer && ShootTimer > ShootDelay && Power)
+        {
+            Shoot();
+            ShootTimer = 0;
+        }
+    }
+
+    private void Shoot()
+    {
+        EnemyBullet bullet = Instantiate(BulletPrefab, BulletSpawnPoint.position, BulletSpawnPoint.transform.rotation);
+        bullet.Damage = Damage;
+    }
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
 										</div>
 									</div>
 								</section>
@@ -222,9 +740,293 @@
 												De stats waar de speler mee eindigt worden naar het volgende level overgezet zodat de speler verder kan gaan met dezelfde stats. 
 												Als de speler een vorig level wil spelen kan de speler met de oude stats verder omdat alles per level word opgeslagen.</p>
 											</div>
-											<ul class="actions">
-												<li><a href="https://gist.github.com/Youri-Mulder/4afa06ce404bf3434995628a8599186c" class="button">Code</a></li>
-											</ul>
+                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * DataCenter.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+public class DataCenter : MonoBehaviour
+{
+    // level
+    [HideInInspector] public List<bool> levelCompleted = new List<bool>();
+    // level player health
+    [HideInInspector] public List<float> LevelPlayerHealth = new List<float>();
+    [HideInInspector] public List<float> LevelPlayerArmor = new List<float>();
+    // level player gun
+    [HideInInspector] public List<float> LevelPlayerAmmo = new List<float>();
+    [HideInInspector] public List<float> LevelPlayerMagazine = new List<float>();
+    //public List<GameObject> LevelEquiptGun = new List<GameObject>();
+    // player game progression
+    [HideInInspector] public int CurrentLevel = 1;
+
+    // inspector settings
+    private bool ShowDataLogs = true;
+
+    public static DataCenter LocalDataCenter;
+
+    private BinaryFormatter Bf = new BinaryFormatter();
+    private StorageCenter Data = new StorageCenter();
+
+
+    [HideInInspector] public bool SavingGame = false;
+
+    // refs
+    private PlayerHealth _PlayerHealth;
+    private StanderGun Gun;
+
+    private void Awake()
+    {
+        if (LocalDataCenter == null)
+        {
+            MakeLevels();
+            if (File.Exists(Application.persistentDataPath + SafeFile))
+            {
+                if (ShowDataLogs)
+                {
+                    FileStream file = File.Open(Application.persistentDataPath + SafeFile,FileMode.Open);
+                    Debug.Log("safe file exist at :" + file.Name);
+                    file.Close();
+                }
+                LoadData();
+            } else if (ShowDataLogs) Debug.Log("no safe file has been found");
+        }
+        DataaCenterRegester();
+    }
+
+    private void OnLevelWasLoaded()
+    {
+        //laat Onstart maar 1 keer runnen
+        if (!OnGoingStart)
+        {
+            OnGoingStart = true;
+            OnStart();
+        }
+    }
+    /// <summary>
+    /// maak een Datacenter singelton
+    /// </summary>
+    private void DataaCenterRegester()
+    {
+        if (LocalDataCenter == null)
+        {
+            DontDestroyOnLoad(gameObject);
+            LocalDataCenter = this;
+        }else if (LocalDataCenter != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private bool OnGoingStart = false;
+    /// <summary>
+    /// De start die op elk level gebruikt word 
+    /// </summary>
+    private void OnStart()
+    {
+        level = SceneManager.GetActiveScene().buildIndex;
+
+        _PlayerHealth = FindObjectOfType<PlayerHealth>();
+        Gun = FindObjectOfType<StanderGun>();
+
+        if (level == StartLevel)
+        {
+            LoadPlayerDefauld();
+        }
+        else if (level != MainMenu) LoadLevelDataToPlay(SceneManager.GetActiveScene().buildIndex);
+        OnGoingStart = false;
+    }
+    /// <summary>
+    /// maakt genoeg datapunten aan om alle game data op te slaan
+    /// </summary>
+    private void MakeLevels()
+    {
+        for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+        {
+            levelCompleted.Add(false);
+            LevelPlayerHealth.Add(10);
+            LevelPlayerArmor.Add(10);
+            LevelPlayerAmmo.Add(10);
+            LevelPlayerMagazine.Add(10);
+            //LevelEquiptGun.Add(null);
+        }
+    }
+    /// <summary>
+    /// laad Defauld player settings, word alleen geladen in eerste level
+    /// </summary>
+    private void LoadPlayerDefauld()
+    {
+        _PlayerHealth.Health = SetPlayerHeath;
+        _PlayerHealth.Armor = SetPlayerArmor;
+        Gun.currentAmmo = SetGunAmmo;
+        Gun.magazine = SetMagazines;
+    }
+    /// <summary>
+    /// laad de opgeslagen data in dat er op X level staat opgeslagen
+    /// </summary>
+    /// <param name="_Level"></param>
+    private void LoadLevelDataToPlay(int _Level)
+    {
+        Gun.magazine = LevelPlayerMagazine[_Level];
+        Gun.currentAmmo = LevelPlayerAmmo[_Level];
+        _PlayerHealth.Health = LevelPlayerHealth[_Level];
+        _PlayerHealth.Armor = LevelPlayerArmor[_Level];
+    }
+
+    /// <summary>
+    /// current values worden naar data level values geschreven
+    /// </summary>
+    public void TransferValuesToNextLevel()
+    {
+        int Nextlevel = SceneManager.GetActiveScene().buildIndex + 1;
+        if (Nextlevel < SceneManager.sceneCountInBuildSettings)
+        {
+            LevelPlayerAmmo[Nextlevel] = Gun.currentAmmo;
+            LevelPlayerArmor[Nextlevel] = _PlayerHealth.Armor;
+            LevelPlayerHealth[Nextlevel] = _PlayerHealth.Health;
+            LevelPlayerMagazine[Nextlevel] = Gun.magazine;
+        }
+        if (ShowDataLogs) Debug.Log("saved to next level");
+    }
+
+    /// <summary>
+    /// schrijft data van locaal naar een file
+    /// </summary>
+    private void WriteToSafeFile()
+    {
+        Data.LevelCompleted = levelCompleted;
+        Data.LevelPlayerHealth = LevelPlayerHealth;
+        Data.LevelPlayerArmor = LevelPlayerArmor;
+        Data.LevelPlayerAmmo = LevelPlayerAmmo;
+        Data.LevelPlayerMagazine = LevelPlayerMagazine;
+        Data.CurrentLevel = CurrentLevel;
+        //Data.LevelEquiptGun = LevelEquiptGun;
+    }
+
+    /// <summary>
+    /// schrijft data van file naar locaal
+    /// </summary>
+    private void WriteToLocal()
+    {
+        levelCompleted = Data.LevelCompleted;
+        LevelPlayerHealth = Data.LevelPlayerHealth;
+        LevelPlayerArmor = Data.LevelPlayerArmor;
+        LevelPlayerAmmo = Data.LevelPlayerAmmo;
+        LevelPlayerMagazine = Data.LevelPlayerMagazine;
+        CurrentLevel = Data.CurrentLevel;
+        //LevelEquiptGun = Data.LevelEquiptGun;
+    }
+
+    private void LoadData()
+    {
+        if (File.Exists(Application.persistentDataPath + SafeFile))
+        {
+            FileStream file = File.Open(Application.persistentDataPath + SafeFile, FileMode.Open);
+            Data = (StorageCenter)Bf.Deserialize(file);
+            file.Close();
+            WriteToLocal();
+            if (ShowDataLogs) Debug.Log("safe file has been loaded");
+        }
+        else if (ShowDataLogs) Debug.Log("no salfe file has been found");
+    }
+
+    public void SafeData()
+    {
+        SavingGame = true;
+        if (ShowDataLogs) Debug.Log("saving game");
+
+        WriteToSafeFile();
+        FileStream file = null;
+        if (File.Exists(Application.persistentDataPath + SafeFile))
+        {
+            file = File.Open(Application.persistentDataPath + SafeFile, FileMode.Open);
+        }
+        else file = File.Create(Application.persistentDataPath + SafeFile);
+        Bf.Serialize(file,Data);
+        file.Close();
+
+        if (ShowDataLogs) Debug.Log("Game saved");
+        SavingGame = false;
+    }
+
+    public void DeleteData()
+    {
+        if (File.Exists(Application.persistentDataPath + SafeFile))
+        {
+            ResetLocal();
+            File.Delete(Application.persistentDataPath + SafeFile);
+            if (ShowDataLogs) Debug.Log("safe file has been deleted");
+        }
+        else if (ShowDataLogs) Debug.Log("there is no safe file to delete");
+    }
+    /// <summary>
+    /// als player de safe file reset verwijdert dit alles dat locaal staat opgesalgen
+    /// </summary>
+    public void ResetLocal()
+    {
+        levelCompleted.Clear();
+        LevelPlayerHealth.Clear();
+        LevelPlayerArmor.Clear();
+        LevelPlayerAmmo.Clear();
+        LevelPlayerMagazine.Clear();
+        CurrentLevel = StartLevel;
+        MakeLevels();
+
+        StartCoroutine(ResetLoaders());
+    }
+    private IEnumerator ResetLoaders()
+    {
+        Debug.Log("test ie");
+        yield return new WaitForEndOfFrame();
+        foreach (LevelLoader loader in FindObjectsOfType<LevelLoader>())
+        {
+            Debug.Log("test Foreach");
+            loader.SetActiveOff();
+        }
+    }
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+								<div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * LevelEnd.cs / StorageCenter.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+    private void Safe()
+    {
+        Center.levelCompleted[SceneManager.GetActiveScene().buildIndex] = true;
+        int LastLevel = SceneManager.sceneCountInBuildSettings - 1;
+        if (Center.CurrentLevel < LastLevel) Center.CurrentLevel = Center.CurrentLevel + 1;
+        Center.TransferValuesToNextLevel();
+        Center.SafeData();
+    }
+
+[Serializable]
+public class StorageCenter
+{
+    // level
+    public List<bool> LevelCompleted = new List<bool>();
+    // level player health 
+    public List<float> LevelPlayerHealth = new List<float>();
+    public List<float> LevelPlayerArmor = new List<float>();
+    // level player gun
+    public List<float> LevelPlayerAmmo = new List<float>();
+    public List<float> LevelPlayerMagazine = new List<float>();
+    //public List<GameObject> LevelEquiptGun = new List<GameObject>();
+    // player game progression
+    public int CurrentLevel;
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
 										</div>
 									</div>
 								</section>
@@ -248,9 +1050,116 @@
 													De camera geeft aan alle vijanden die in de buurt staan aan dat de speler in de buurt is zodat ze gaan aanvallen. 
 													De camera heeft de mogelijkheid om rond te draaien en dit is aan te passen in de inspector.</p>
 											</div>
-											<ul class="actions">
-												<li><a href="https://gist.github.com/Youri-Mulder/677a5c716ed4f1e520092a2c1c4f1b71" class="button">Code</a></li>
-											</ul>
+                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * WallCamera.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+public class WallCamera : MonoBehaviour
+{
+    void Update()
+    {
+        Vision();
+        Alert();
+        if (DoRotate) Animation();
+
+        //verander camera licht kleur als player in / out range gaat 
+        if (CanSeePlayer)
+        {
+            licht1.color = Color.red;
+            licht2.color = Color.red;
+        }
+        else
+        {
+            licht1.color = Color.blue;
+            licht2.color = Color.blue;
+        }
+    }
+    /// <summary>
+    /// kijkt met een overlapsSphere en een anle of er een player in de camera zicht staat, een raycast kijkt of er geen obstakel in de weg staat in camera zicht.
+    /// </summary>
+    private void Vision()
+    {
+        Collider[] RangeChecks = Physics.OverlapSphere(transform.position, LookRange, TargetLayer);
+
+        if (RangeChecks.Length != 0)
+        {
+            Transform target = RangeChecks[0].transform;
+            Vector3 directionToTarget = (target.position - transform.position);
+            if (Vector3.Angle(transform.forward, target.position - transform.position) < VisionAngle / 2)
+            {
+                float distanceToPlayer = Vector3.Distance(transform.position, target.position);
+                if (!Physics.Raycast(transform.position, directionToTarget, distanceToPlayer, ObstacleLayer))
+                {
+                    Debug.DrawRay(transform.position, directionToTarget * distanceToPlayer, Color.green);
+                    CanSeePlayer = true;
+                }
+                else CanSeePlayer = false;
+            }
+            else CanSeePlayer = false;
+        }
+        else if (CanSeePlayer)
+        {
+            CanSeePlayer = false;
+        }
+    }
+    /// <summary>
+    /// pakt alle Ai in Range als de player in zicht is en alert ze met CameraAlert
+    /// </summary>
+    private void Alert()
+    {
+        if (CanSeePlayer)
+        {
+            Collider[] RangeChecks = Physics.OverlapSphere(transform.position, AlertRange, EnemieLayer);
+            if (RangeChecks.Length != 0)
+            {
+                for (int i = 0; i < RangeChecks.Length; i++)
+                {
+                    if (RangeChecks[i].GetComponentInChildren<AiBase>())
+                    {
+                        Vector3 ai = new Vector3();
+                        RangeChecks[i].GetComponentInChildren<AiBase>().CameraAlert(ai);
+                    }
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// Laat de camera Roteren Van links naar rechts
+    /// </summary>
+    private void Animation()
+    {
+        RotateTimer += Time.deltaTime;
+        percentage = RotateTimer / RotateSpeed;
+
+        if (RotateIndex == 1)
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, RotationVar1, percentage);
+            if (transform.rotation == RotationVar1)
+            {
+                RotateTimer = 0;
+                RotateIndex++;
+            }
+
+        }
+        else if (RotateIndex == 2)
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, RotationVar2, percentage);
+            if (transform.rotation == RotationVar2)
+            {
+                RotateTimer = 0;
+                RotateIndex--;
+            }
+        }
+    }
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
 										</div>
 									</div>
 								</section>
@@ -264,9 +1173,79 @@
 											<p>De GameManager wordt gebruikt om het death screen in te laden en automatisch het level te herstarten als de speler doodgaat. 
 												Zodra de bossfight is geladen wordt de GameManager overschreven en doet deze niets meer.</p>
 											</div>
-											<ul class="actions">
-												<li><a href="https://gist.github.com/Youri-Mulder/03d16aff2a6c1cebe41846d50beb455d" class="button">Code</a></li>
-											</ul>
+                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * GameManager.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+public class GameManager : MonoBehaviour
+{
+    public GameObject DeathScreen;
+    private PlayerUI UI;
+    private TextMeshProUGUI DeathTimerText;
+    private PlayerHealth Player;
+    [HideInInspector] public bool BossBattleOverride = false;
+    public List<AiBase> Enemies = new List<AiBase>();
+
+    private float DeathTimer = 4;
+    private float AlphaTimer;
+
+    private void Awake()
+    {
+        DeathScreen = GameObject.Find("DeathScreen");
+        UI = FindObjectOfType<PlayerUI>();
+        DeathTimerText = UI.DeathTimerText;
+        //DeathScreen.SetActive(false);
+    }
+    void Start()
+    {
+        Player = FindObjectOfType<PlayerHealth>();
+    }
+
+
+    void Update()
+    {
+        if (Player.Health <= 0 && !BossBattleOverride)
+        {
+            if (!BossBattleOverride && FindObjectOfType<BossBattleManager>())
+            {
+                Destroy(FindObjectOfType<BossBattleManager>());
+            }
+            //timer voor death screen
+            DeathTimer -= Time.deltaTime;
+            AlphaTimer += Time.deltaTime;
+
+            if (!DeathScreen.activeInHierarchy) DeathScreen.SetActive(true);
+
+            //laat de death screen langzaam in
+            Image image = DeathScreen.GetComponent<Image>();
+            Color ImageColor = image.color;
+            ImageColor.a = AlphaTimer;
+            image.color = ImageColor;
+            
+            TextMeshProUGUI Timer = DeathTimerText.GetComponent<TextMeshProUGUI>();
+            Color TextColor = Timer.color;
+            TextColor.a = AlphaTimer;
+            Timer.color = TextColor; 
+
+            //zet op de death screen de respawn timer naar int deathtimer
+            int TimerFix = (int)DeathTimer;
+            DeathTimerText.text = TimerFix.ToString();
+
+            if (DeathTimer < 0)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+        }
+    }
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
 										</div>
 									</div>
 								</section>
@@ -310,9 +1289,385 @@
 												Als de speler in de buurt is worden die enemies alert en krijgen ze de positie van de speler.
 											</p>
 											</div>
-											<ul class="actions">
-												<li><a href="https://gist.github.com/Youri-Mulder/47b8ac1479b493f676b0c10f5d6f0b85" class="button">Code</a></li>
-											</ul>
+                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * AiBase.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+//(dit zijn de beste stukjes uit de code niet het hele script)
+[RequireComponent(typeof(NavMeshAgent))]
+public class AiBase : MonoBehaviour
+{
+    /// <summary>
+    /// vind alle ai in de scene en sla die op in een list
+    /// </summary>
+    public void FindAi()
+    {
+        foreach (AiBase ai in FindObjectsOfType<AiBase>())
+        {
+            AiInScene.Add(ai);
+        }
+    }
+
+    private void SetValues()
+    {
+        CurrentBullets = BulletAmount;
+    }
+
+    void Start()
+    {
+        SearchForWrongValues();
+        // add this ai in de game manager ai list
+        GM.Enemies.Add(this);
+    }
+
+    public void SearchForWrongValues()
+    {
+        if (ShowErrors)
+        {
+            if (LimitingWaypoints && UsingHowManyWayPoints < 2) Debug.LogError("UsingHowManyWayPoints has an unvalit vlaue");
+            if (LimitingWaypoints && UsingHowManyWayPoints > Waypoints.Length) Debug.LogError("the value of UsingHowManyWayPoints is higher than the amound of checkpoints");
+            if (Healthbar == null) Debug.Log("the healltbar is not assignt to the enemy : " + this.name);
+            if (Schieldbar == null) Debug.Log("the schield bar is not assignt to the enemy : " + this.name);
+            if (Bullet == null) Debug.Log("there is no Bullet assignt to the enemy : " + this.name);
+            if (Waypoints == null && MovementMode == AiMovement.Waypoints) Debug.Log("there are no waypoints assignt to the enemy : " + this.name);
+            if (Target == null) Debug.Log("no player has been found in the scene. add a player to the scene or change the name to 'Player'");
+        }
+    }
+
+    void Update()
+    {
+        SearchForNearbyTeam();
+        Vision();
+        Timing();
+        UIComps();
+
+        // movement mode update 
+        if (MovementMode == AiMovement.Random && !Alerted)
+        {
+            RandomMovement();
+        }
+        else if (MovementMode == AiMovement.Waypoints && !Alerted)
+        {
+            FollowWaypoints();
+        }
+        //
+        // reset this ai uit de game managers en destroy this als de health 0 of onder 0 is
+        if (Health <= 0)
+        {
+            for (int i = 0; i < AiInScene.Count; i++)
+            {
+                AiInScene[i].AiInScene.Remove(this);
+            }
+            GM.Enemies.Remove(this);
+
+            if (FindObjectOfType<BossBattleManager>())
+            {
+                BossBattleManager BM = FindObjectOfType<BossBattleManager>();
+                BM.Enemies.Remove(this);
+            }
+            Destroy(gameObject);
+        }
+
+        if (DoesDestroy && Input.GetKeyDown(KeyCode.Space))
+        {
+            for (int i = 0; i < AiInScene.Count; i++)
+            {
+                AiInScene[i].AiInScene.Remove(this);
+            }
+            Destroy(gameObject);
+        }
+        // ai state update
+        if (state == AiState.stalk)
+        {
+            Stalk();
+        }
+        if (!Alerted)
+        {
+            state = AiState.partoll;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        // state update. in fixedupdate voor bullets met physics
+        if (state == AiState.attac)
+        {
+            Attac();
+        }
+    }
+    /// <summary>
+    /// kijkt met een overlapshpere, angle en raycast of er een player in zicht is en er geen obstakel in de weg staat.
+    /// </summary>
+    public void Vision()
+    {
+        Collider[] RangeChecks = Physics.OverlapSphere(transform.position, LookRange, TargetLayer);
+
+        if (RangeChecks.Length != 0)
+        {
+            Transform target = RangeChecks[0].transform;
+            Vector3 directionToTarget = (target.position - transform.position);
+            if (Vector3.Angle(transform.forward, target.position - transform.position) < VisionAngle / 2)
+            {
+                float distanceToPlayer = Vector3.Distance(transform.position, target.position);
+                if (!Physics.Raycast(transform.position, directionToTarget, distanceToPlayer, ObstacleLayer))
+                {
+                    CanSeePlayer = true;
+                    SeePlayer();
+                }
+                else CanSeePlayer = false;
+            }
+            else CanSeePlayer = false;
+        } else if (CanSeePlayer)
+        {
+            CanSeePlayer = false;
+        }
+    }
+    /// <summary>
+    /// stats en ai state word geupdate om aan te vallen
+    /// </summary>
+    private void SeePlayer()
+    {
+        Alerted = true;
+        AlerdTimer = AlertTimerTime;
+        LastPlayerPos = Target.transform.position;
+        if (state == AiState.partoll || state == AiState.stalk)
+        {
+            state = AiState.attac;
+        }
+    }
+    /// <summary>
+    /// pak de player positie en distace naar de player. player positie word nieuwe destination, als player in zicht is zonder obstakels dan word ai state attac
+    /// </summary>
+    private void Stalk()
+    {
+        Vector3 directiontoplayer = (Target.transform.position - transform.position);
+        float distancetoplayer = Vector3.Distance(transform.position, Target.transform.position);
+        
+        if (!Physics.Raycast(transform.position, directiontoplayer, distancetoplayer, ObstacleLayer))
+        {
+            Agent.SetDestination(Target.transform.position);
+        }
+        else Agent.SetDestination(LastPlayerPos);
+
+        if (Vector3.Distance(transform.position, directiontoplayer * distancetoplayer) < LookRange)
+        {
+            LastPlayerPos = Target.transform.position;
+            state = AiState.attac;
+        }
+    }
+    /// <summary>
+    /// reset alert na tijd 
+    /// </summary>
+    private void Timing()
+    {
+        if (Alerted)
+        {
+            if (!CanSeePlayer)
+            {
+                AlerdTimer -= Time.deltaTime;
+            }
+            TimeAlerted += Time.deltaTime;
+        }
+        else TimeAlerted = 0;
+
+        if (AlerdTimer <= 0)
+        {
+            Alerted = false;
+        }
+    }
+    /// <summary>
+    /// kijkt met een distance voor alle ai in de scene of ze dichtbij genoeg zijn en kijkt of er geen obstakel is zodat ander ai in de buurt alert kan worden voor player in de buurt 
+    /// </summary>
+    private void SearchForNearbyTeam()
+    {                
+        for (int i = 0; i < AiInScene.Count; i++)
+        {
+            if (AiInScene[i] != null)
+            {
+                if (Vector3.Distance(transform.position, AiInScene[i].transform.position) < AlertRange && AiInScene[i].Alerted)
+                {
+                    float DistanceToTeam = Vector3.Distance(transform.position, AiInScene[i].transform.position);
+                    Vector3 DirectionToTeam = AiInScene[i].transform.position - transform.position;
+                    if (!Physics.Raycast(transform.position, DirectionToTeam, DistanceToTeam + 1, ObstacleLayer))
+                    {
+                        if (Alerted == false)
+                        {
+                            Alerted = true;
+                            AlerdTimer = AlertTimerTime;
+                            state = AiState.stalk;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    Coroutine ReloadCor = null;
+    public void Attac()
+    {
+        Vector3 targetPos = Target.transform.position;
+        Vector3 DirectionToTarget = (Target.transform.position - transform.position);
+        float DistanceToPlayer = Vector3.Distance(transform.position,DirectionToTarget);
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, DirectionToTarget, out hit, LookRange + 1, TargetLayer))
+        {
+            Debug.DrawRay(transform.position, DirectionToTarget * DistanceToPlayer, Color.magenta);
+            if (hit.collider.gameObject.CompareTag("Player"))
+            {
+                targetPos.y = transform.position.y;  //reset y positie om rare rotaties tegen te gaan
+                ShootTimer += Time.deltaTime;
+
+                //roteer de ai naar de player
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(DirectionToTarget), Time.deltaTime * RotateSpeed);
+
+                if (CanSeePlayer && ShootTimer > Shootdelay && !Reloading)
+                { //zolang de ai de player ziet en kan schieten schiet de ai richting de player
+                    ShootTimer = 0;
+                    CurrentBullets -= 1;
+                    Shoot();
+                    if(CurrentBullets <= 0)
+                    {
+                        Reloading = true;
+                        if (ReloadCor == null) StartCoroutine(Reload());
+                    }
+                }
+                else state = AiState.stalk;
+            }
+            else if (hit.collider.gameObject.tag != null)
+            {
+                state = AiState.stalk;
+            }
+        }
+        else if (hit.collider == null)
+        {
+            state = AiState.stalk;
+        }
+        //als de player ver weg genoeg is word de destination op de ai positie gezet zodat een een nieuwe waypoint/ randompoint word geselecteerd.
+        if (Agent.remainingDistance > Agent.stoppingDistance && Vector3.Distance(transform.position, Target.transform.position) < MinDisToPlayer)
+        {
+            Agent.SetDestination(transform.position);
+        }
+    }
+
+    private void Shoot()
+    {
+        EnemyBullet bullet = Instantiate(Bullet, BulletSpawnPoint.transform.position, BulletSpawnPoint.transform.rotation);
+        bullet.Damage = DamageToPLayer;
+    }
+
+    private IEnumerator Reload()
+    {
+        yield return new WaitForSeconds(ReloadTime);
+        CurrentBullets = BulletAmount;
+        Reloading = false;
+        ReloadCor = null;
+    }
+    /// <summary>
+    /// laat de ai een pad volgen op volgworde of in een random volgworde met een random int.
+    /// </summary>
+    public void FollowWaypoints()
+    {
+        int randomWaypoint;
+        if (Agent.remainingDistance < Agent.stoppingDistance)
+        {
+            if (RandomWaypoints)
+            {
+                if (LimitingWaypoints) randomWaypoint = Random.Range(0, UsingHowManyWayPoints);
+                else randomWaypoint = Random.Range(0, Waypoints.Length);
+                Agent.SetDestination(Waypoints[randomWaypoint].transform.position);
+            }
+            else
+            {
+                CurrentWayPointIndex++;
+                if (CurrentWayPointIndex >= Waypoints.Length || CurrentWayPointIndex >= UsingHowManyWayPoints) CurrentWayPointIndex = 0;
+                Agent.SetDestination(Waypoints[CurrentWayPointIndex].transform.position);
+            }
+        }
+    }
+    /// <summary>
+    /// vraagt random point op als true is word hit positie gezet als nieuwe eind potitie. als random point false is word if statment opnieuw gedaan 
+    /// </summary>
+    public void RandomMovement()
+    {
+        if (Agent.remainingDistance < Agent.stoppingDistance)
+        {
+            Vector3 hit;
+            if (RandomPoint(EnemyCenterPoint.position, CenterRange, out hit))
+            {
+                if (hit == Vector3.zero) Debug.Log("vector 3 is zero");
+                else Agent.SetDestination(hit);
+            }
+        }
+    }
+    /// <summary>
+    /// pakt een random point op de navmesh en return die als output, return true als point op de navmesh is anders return false.
+    /// </summary>
+    /// <param name="center"></param>
+    /// <param name="range"></param>
+    /// <param name="result"></param>
+    /// <returns></returns>
+    public bool RandomPoint(Vector3 center, float range, out Vector3 result)
+    {
+        Vector3 randompoint = center + Random.insideUnitSphere * range; // random point binnen centersphere word gepakt
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(randompoint, out hit, 1.0f, NavMesh.AllAreas)) // navmesh raycaast kijkt of randompoint op de navmash zit
+        {
+            result = hit.position; // return randompoint
+            return true;
+        }
+        result = Vector3.zero;
+        return false;
+    }
+    /// <summary>
+    /// update de health bar boven de Ai draait de health bar naar de camera
+    /// </summary>
+    private void UIComps()
+    {
+        Healthbar.fillAmount = Health / 100;
+        Schieldbar.fillAmount = Armor / 100;
+        Healthbar.transform.rotation = Quaternion.LookRotation(transform.position - Cam.transform.position);
+        Schieldbar.transform.rotation = Quaternion.LookRotation(transform.position - Cam.transform.position);
+    }
+    /// <summary>
+    /// word aangeroepen vanaf de camera's, zet ai state op stalk
+    /// </summary>
+    public void CameraAlert(Vector3 playerpos)
+    {
+        Alerted = true;
+        state = AiState.stalk;
+        AlerdTimer = AlertTimerTime;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.black;
+        if (TurnOnPlayerVisionSphere) Gizmos.DrawSphere(transform.position, LookRange);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("PlayerBullet"))
+        {
+            if (Armor > 0)
+            {
+                Armor -= DamageToTake;
+                if (Armor < 0) Armor = 0;
+            }
+            else if (Armor <= 0)
+            {
+                Health -= DamageToTake;
+            }
+        }
+    }
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
 										</div>
 									</div>
 								</section>
@@ -339,18 +1694,480 @@
 												De boss past zijn positie aan gebaseerd op of de speler ver weg of dichtbij is. 
 												Ook als de boss te vaak wordt geraakt gaat hij op zoek naar een andere positie. 
 												De boss heeft een OverlapSphere en een angle vision cone.</p>
-											<ul class="actions">
-												<li><a href="https://gist.github.com/Youri-Mulder/57d62dd504cbb7b887ae17854945e9a5" class="button">Code</a></li>
-											</ul>
+                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * BossBattle.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+//(dit zijn de beste stukjes uit de code niet het hele script)
+public class BossBattle : MonoBehaviour
+{
+    void Update()
+    {
+        vision();
+        attac();
+
+        //word de boss te vaak gehit dan veranderd ie van positie
+        if (HitCount >= HitChangePosAmound)
+        {
+            HitCount = 0;
+            MovePosition();
+        }
+
+        if (Health <= 0)
+        {
+            Destroy(gameObject,0.1f);
+        }
+
+        if (Vector3.Distance(transform.position, Target.transform.position) < MinDisToPlayer)
+        {
+            // laat de boss still staan als ie dicht genoeg bij de player in de buurt is
+            if (!InPlayerRange)
+            {
+                InPlayerRange = true;
+                Agent.SetDestination(transform.position);
+            }
+            MovePosition();
+        }
+
+        // is de boss te ver van de player dan moet ie dichter naar de player gaan lopen
+        if (Vector3.Distance(transform.position, Target.transform.position) > ToFarDisFromPlayer) WalkToPLayer(Target.transform.position);
+
+        if (InPlayerRange && Vector3.Distance(transform.position, Target.transform.position) > MinDisToPlayer + 1) InPlayerRange = false;
+
+        if (Agent.remainingDistance < Agent.stoppingDistance) MovePosition();
+    }
+    
+
+    private void vision()
+    {
+        Collider[] RangeChecks = Physics.OverlapSphere(transform.position, LookRange, TargetLayer);
+
+        if (RangeChecks.Length != 0)
+        {
+            Transform target = RangeChecks[0].transform;
+            Vector3 directionToTarget = (target.position - transform.position);
+            float distanceToPlayer = Vector3.Distance(transform.position, target.position);
+            float visangle = VisionAngle / 2;
+            if (Vector3.Angle(transform.forward, target.position - transform.position) < visangle)
+            {
+                if (!Physics.Raycast(transform.position, directionToTarget, distanceToPlayer, ObstacleLayer))
+                {
+                    RotateGunToPlayer(directionToTarget);
+                    if (Vector3.Angle(transform.forward, target.position - transform.position) > visangle / 2)
+                    {
+                        RotateToPlayer(directionToTarget);
+                    }
+                }
+            }
+            else if (!Physics.Raycast(transform.position, directionToTarget, distanceToPlayer, ObstacleLayer))
+            {
+                RotateToPlayer(directionToTarget);
+            }
+        }
+        else if (RangeChecks == null)
+        {
+        }
+    }
+
+    private void attac()
+    {
+        ShootTimer += Time.deltaTime;
+
+        if (TotalAmmo >= 0)
+        {
+            // hier word gekeken welke attac uitgevoerd moet worden
+            if (GunMode == AttacMode.burst && ShootTimer >= ShootDelay && DoesShoot && !BurstCoolDown)
+            {
+                ShootTimer = 0;
+                TotalAmmo--;
+                EnemyBullet bullet = Instantiate(BulletPrefab, BulletSpawnPoint.position, BulletSpawnPoint.rotation);
+                HowManyShots++;
+                if (HowManyShots >= MaxBurstAmmo)
+                {
+                    StartCoroutine(BurstHandler());
+                }
+            } else if (GunMode == AttacMode.Bomb && ShootTimer >= ShootDelay && DoesShoot) 
+            {
+                ShootTimer = 0;
+                TotalAmmo--;
+                EnemyBullet bullet = Instantiate(BulletPrefab, BulletSpawnPoint.position, BulletSpawnPoint.rotation);
+
+            }else if (GunMode == AttacMode.normal && ShootTimer >= ShootDelay && DoesShoot)
+            {
+                ShootTimer = 0;
+                TotalAmmo--;
+                EnemyBullet bullet = Instantiate(BulletPrefab, BulletSpawnPoint.position, BulletSpawnPoint.rotation);
+                bullet.Damage = NormalDamage;
+            }
+        }
+        else if (!ChoosingNewGun)
+        {
+            StartCoroutine(NewGunNeeded());
+        }
+    }
+
+
+    private bool BurstCoolDown = false;
+    /// <summary>
+    /// zogt voor een kleine delay tussen de burst kogels
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator BurstHandler()
+    {
+        BurstCoolDown = true;
+        yield return new WaitForSeconds(BurstWait);
+        HowManyShots = 0;
+        burstShotLeft--;
+        BurstCoolDown = false;
+    }
+    private bool ChoosingNewGun = false;
+    /// <summary>
+    /// kies een nieuwe gun met een kleine delay tussen attacs
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator NewGunNeeded()
+    {
+        ChoosingNewGun = true;
+        yield return new WaitForSeconds(ReloadTime);
+        int randomgun = Random.Range(1, System.Enum.GetValues(typeof(AttacMode)).Length + 1);
+        switch (randomgun)
+        {
+            case 1:
+                GunMode = AttacMode.burst;
+                TotalAmmo = MaxBurstAmmo * burstShots;
+                ShootDelay = BurstShootDelay;
+                burstShotLeft = burstShots;
+                break;
+
+            case 2:
+                GunMode = AttacMode.Bomb;
+                TotalAmmo = MaxBobsAmmo;
+                ShootDelay = BombShootDelay;
+                break;
+
+            case 3:
+                GunMode = AttacMode.normal;
+                TotalAmmo = MaxAmmo;
+                ShootDelay = NormalShootDelay;
+                break;
+        }
+        ChoosingNewGun = false;
+    }
+
+    private void RotateGunToPlayer(Vector3 dir)
+    {
+        ArmRotationCenter.transform.rotation = Quaternion.RotateTowards(ArmRotationCenter.transform.rotation, Quaternion.LookRotation(-dir), Time.deltaTime * RotateSpeed);
+    }
+    /// <summary>
+    /// rotate de boss naar de player
+    /// </summary>
+    /// <param name="Dir"></param>
+    private void RotateToPlayer(Vector3 Dir)
+    {
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(Dir), Time.deltaTime * RotateSpeed);
+    }
+
+    private void WalkToPLayer(Vector3 pos)
+    {
+        Agent.SetDestination(pos);
+    }
+
+    /// <summary>
+    /// de destination waar de boss heen moet lopen 
+    /// </summary>
+    private void MovePosition()
+    {
+        if (Agent.remainingDistance < Agent.stoppingDistance)
+        {
+            Vector3 hit;
+            if (RandomPoint(out hit))
+            {
+                if (hit == Vector3.zero) Debug.Log("vector 3 is zero");
+                else Agent.SetDestination(hit);
+            }
+        }
+    }
+    /// <summary>
+    /// return een random point op de navmesh
+    /// </summary>
+    /// <param name="result"></param>
+    /// <returns></returns>
+    public bool RandomPoint(out Vector3 result)
+    {
+        Vector3 randomPoint = transform.position + Random.insideUnitSphere * CenterRange;
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
+        {
+            Debug.DrawRay(hit.position, Vector3.up * 10, Color.green);
+            result = hit.position;
+            return true;
+        }
+        result = Vector3.zero;
+        return false;
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag(PlayerBullet))
+        {
+            HitCount++;
+            if (Armor > 0) Armor -= DamgeToTake;
+            else Health -= DamgeToTake;
+        }
+    }
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
 											<div>
 											<h3>BossBattleManager</h3>
 											</div>
 											<p>De BossBattleManager houdt de hele bossfight bij. Als de speler doodgaat wordt alles in de boss area hersteld naar de oorspronkelijke staat. 
 												Nieuwe enemies worden ingespawnd en ook de spelerstats worden teruggezet. De BossBattleManager regelt ook het in- en uitfaden van het beeld zolang de bossfight bezig is. 
 												Als alle enemies en de boss dood zijn is de bossfight klaar en wordt de game automatisch opgeslagen en het startscherm ingeladen.</p>
-											<ul class="actions">
-												<li><a href="https://gist.github.com/Youri-Mulder/decee062a64bb1d44a5aea46c2d81721" class="button">Code</a></li>
-											</ul>
+                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * BossBattleManager.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+//(dit zijn de beste stukjes uit de code niet het hele script)
+public class BossBattleManager : MonoBehaviour
+{
+    private bool BossDefeated = false;
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player") && !BossBattleEnterd)
+        {
+            Boss = Instantiate(BossPrefab, BossSpawnpoint.transform.position, BossSpawnpoint.transform.rotation);
+            BossBattleEnterd = true;
+            SpawnEnemieWave();
+            SetPlayerStats();
+            SetCamHight();
+            FindAi();
+            GameManager.BossBattleOverride = true;
+            Door.DoesPlayerHasKeyCard = false;
+        }
+    }
+    /// <summary>
+    /// sla de player stats op zodat de fight gereset kan worden als de player dood gaat
+    /// </summary>
+    private void SetPlayerStats()
+    {
+        PlayerHealth = PH.Health;
+        PlayerArmor = PH.Armor;
+        PlayerAmmo = Gun.currentAmmo;
+        PlayerMags = Gun.magazine;
+    }
+    /// <summary>
+    /// zet een nieuwe camera hoogte om meer of minder van de map te kunnen zien tijdens de bossfight
+    /// </summary>
+    private void SetCamHight()
+    {
+        Cam.CamHight = CamHight;
+    }
+    /// <summary>
+    /// sla alle enemies op in een lijst om bij te houden hoeveel er zijn
+    /// </summary>
+    private void FindAi()
+    {
+        foreach (AiBase ai in FindObjectsOfType<AiBase>())
+        {
+            Enemies.Add(ai);
+        }
+    }
+
+    void Update()
+    {
+        if (StartFadeImage.color.a > 0) RespawnFade();
+
+        if (Boss != null)
+        {
+            if (Boss.Health <= 0 && Enemies.Count == 0)
+            {
+                BossDefeated = true;
+            }
+        }
+        if (BossDefeated)
+        {
+            WinScreenFadeIn();
+            if (EndTimer <= 0) WinScreenadeOut();
+            if (EndTimer <= 1.5f) SceneManager.LoadScene(0);
+        }
+
+        if (PH.Health <= 0) DeathScreenFade();
+
+        if (BossHealthBar.activeInHierarchy == false && BossBattleEnterd)
+        {
+            BossHealthBar.SetActive(true);
+        }
+    }
+    private void DeathScreenFade()
+    {
+        DeathTimer -= Time.deltaTime;
+        AlphaTimer += Time.deltaTime;
+
+        if (!DeathScreen.activeInHierarchy) DeathScreen.SetActive(true);
+
+        Image image = DeathScreen.GetComponent<Image>();
+        Color ImageColor = image.color;
+        ImageColor.a = AlphaTimer;
+        image.color = ImageColor;
+
+        Color TextColor = DeathTimerText.color;
+        TextColor.a = AlphaTimer;
+        DeathTimerText.color = TextColor;
+
+        int TimerFix = (int)DeathTimer;
+        DeathTimerText.text = TimerFix.ToString();
+
+        if (DeathTimer < 0)
+        {
+            ResetBossBattle();
+            ResetTimers();
+            DeathScreen.SetActive(false);
+        }
+    }
+    private void ResetBossBattle()
+    {
+        DestroyEnemies();
+        if (Boss != null) Destroy(Boss.gameObject);
+        DestroyPickups();
+        RespawnPLayer();
+        LoadStats();
+        SpawnEnemieWave();
+        PlaceNewPickupds();
+        StartCoroutine(ResetDelay());
+        BossBattle boss = Instantiate(BossPrefab, BossSpawnpoint.position, BossSpawnpoint.rotation);
+        Boss = boss;
+
+        // set startFading color
+        Color c = StartFadeImage.color;
+        c.a = 1;
+        StartFadeImage.color = c;
+    }
+    private IEnumerator ResetDelay()
+    {
+        yield return new WaitForEndOfFrame();
+        FindAi();
+    }
+
+    private void DestroyEnemies()
+    {
+        Enemies.Clear();
+
+        foreach (AiBase ai in FindObjectsOfType<AiBase>())
+        {
+            Destroy(ai.gameObject);
+        }
+    }
+    /// <summary>
+    /// destroy alle ongebruike pickups na een gefaalde bossfight
+    /// </summary>
+    private void DestroyPickups()
+    {
+        Destroy(Pickups);
+    }
+    /// <summary>
+    /// spawn een nieuwe enemie wave in na een gefaalde bossfight
+    /// </summary>
+    private void SpawnEnemieWave()
+    {
+        for (int i = 0; i < EnemieSpawnPoint.Count; i++)
+        {
+            Instantiate(EnemiePrefab, EnemieSpawnPoint[i].position, EnemieSpawnPoint[i].rotation);
+        }
+    }
+    /// <summary>
+    /// spawn nieuwe pickups in na een gefaalde bossfight
+    /// </summary>
+    private void PlaceNewPickupds()
+    {
+        Pickups = Instantiate(PickupsObject, transform.position, transform.rotation);
+    }
+    private void RespawnPLayer()
+    {
+        PH.transform.position = transform.position;
+    }
+    /// <summary>
+    /// reset alle player stats naar wat het was toen de bossfight voor het eerst startte
+    /// </summary>
+    private void LoadStats()
+    {
+        PH.Health = PlayerHealth;
+        PH.Armor = PlayerArmor;
+        Gun.currentAmmo = PlayerAmmo;
+        Gun.magazine = PlayerMags;
+    }
+    private void RespawnFade()
+    {
+        FadeTimer -= Time.deltaTime;
+        Color c = StartFadeImage.color;
+        c.a = FadeTimer;
+        StartFadeImage.color = c;
+        if (StartFadeImage.color.a == 0) ResetTimers();
+    }
+    private void WinScreenFadeIn()
+    {
+        EndTimer -= Time.deltaTime;
+        AlphaTimer += Time.deltaTime;
+        WinScreen.SetActive(true);
+        Image WinScreenImage = WinScreen.GetComponent<Image>();
+        Color c = WinScreenImage.color;
+        c.a = AlphaTimer;
+        WinScreenImage.color = c;
+
+        Color WTC = WinTimer.color;
+        WTC.a = AlphaTimer;
+        WinTimer.color = WTC;
+        int FixedTimer = (int)EndTimer;
+        if (FixedTimer > 0) WinTimer.text = FixedTimer.ToString();
+    }
+
+    private void WinScreenadeOut()
+    {
+        FadeTimer -= Time.deltaTime * 2;
+        Image WinScreenImage = WinScreen.GetComponent<Image>();
+        Color c = WinScreenImage.color;
+        c.r = FadeTimer;
+        c.g = FadeTimer;
+        c.b = FadeTimer;
+        WinScreenImage.color = c;
+
+        Color WTC = WinTimer.color;
+        WTC.r = FadeTimer;
+        WTC.g = FadeTimer;
+        WTC.b = FadeTimer;
+        WinTimer.color = WTC;
+        Safe();
+    }
+    /// <summary>
+    /// safe de game automatisch waneer de player de boss heeft versalgen
+    /// </summary>
+    private void Safe()
+    {
+        Center.levelCompleted[SceneManager.GetActiveScene().buildIndex] = true;
+        int LastLevel = SceneManager.sceneCountInBuildSettings - 1;
+        if (Center.CurrentLevel < LastLevel) Center.CurrentLevel = Center.CurrentLevel + 1;
+        Center.SafeData();
+        QuitToMain();
+    }
+
+    public void QuitToMain()
+    {
+        SceneManager.LoadScene(0);
+    }
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
 										</div>
 									</div>
 								</section>
@@ -380,6 +2197,8 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/prism.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/components/prism-csharp.min.js"></script>
 
 	</body>
 </html>

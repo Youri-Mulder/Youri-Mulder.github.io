@@ -7,6 +7,7 @@
 		<link rel="shortcut icon" href="https://webserver.yourimuldergamedev.nl/youri-icon.png">
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<link rel="stylesheet" href="Games/DualDefendersWeb/TemplateData/style.css">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
 	<body class="is-preload">
@@ -73,7 +74,9 @@
 									<header class="major">
 										<h2>Project info</h2>
 									</header>
-									<p>Fishy Buisness is een project gemaakt met 2 devs en 4 artist. De docenten waren zo enthousiast over de game dat ze zijden dat we de game moesten opgeven voor de Dutch Game Awards en dat hebben we gedaan.
+									<p>Fishy Buisness is een project gemaakt met 2 devs en 4 artist. Dit project was een soort game jam met het thema instanly hooked. De speler moet gelijk in de game zitten en niet willen stoppen. 
+										Wij hebben het hooked gedeelte letterlijk genomen en een fish hook er van gemaakt waar deze fishing game uit is gekomen. 
+										De docenten waren zo enthousiast over de game dat ze zijden dat we de game moesten opgeven voor de Dutch Game Awards en dat hebben we gedaan. 
 									</p>
 									<div class="Spacing">
 										<div class="IconSpacing">
@@ -109,14 +112,220 @@
 											<h3>Fish Spawner</h3>
 										</header>
 										<div>
-											<p>Met de fish spawners wilde ik bereiken dat er alleen vissen gespawnd worden in zones waar de player is.
+											<p>Met de fish spawners wilde ik bereiken dat er alleen vissen gespawnd worden in zones waar de player is (dit volgt de hook van de boot).
 												Voor elke spawner kan ingesteld worden welke vissen en hoeveel per soort er gespawnd kunnen worden.
 												Het leek me handig om makkelijk te kunnen zien welke vissen in welke spawners zitten, dus heb ik met gizmos de namen van de vissen in beeld gebracht.
 												De vissen blijven binnen hun zone doordat je hun eindpositie aangeeft binnen de grootte van de spawner.</p>
 										</div>
-										<ul class="actions">
-											<li><a href="https://gist.github.com/Youri-Mulder/eb4c367b61572676116a6f42e9e12ad4" class="button">Code</a></li>
-										</ul>
+                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * FishSpawner.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+[RequireComponent(typeof(BoxCollider2D))]
+public class FishSpawner : MonoBehaviour
+{
+    [Serializable]
+    private struct FishToSpawn
+    {
+        public FishData fishData;
+        public int amount;
+    }
+    
+    [Serializable] 
+    private struct SpecialFish
+    {
+        public FishData fishData;
+    }
+    
+    [SerializeField] private Vector2 SpawnArea;
+    [SerializeField] private float ActiveToBoatDistance;
+    [SerializeField] private FishToSpawn[] FishTypesToSpawn;
+    [SerializeField] private SpecialFish specialFish;
+    [SerializeField] private GameObject hook;
+
+    private BoxCollider2D bounds;
+    private FishPooler fishPooler;
+    private List<FishBrain> ActiveFish = new List<FishBrain>();
+    private bool isThisSpawnerActive = false;
+    public bool IsThisSpawnerActive
+    {
+        get { return isThisSpawnerActive; }
+        set { isThisSpawnerActive = value;}
+    }
+
+    void Start()
+    {
+        if (specialFish.fishData != null)
+        {
+            EventManager.FishCaught += OnFishCaught;
+        }
+        fishPooler = FishPooler.instance;
+        bounds = GetComponent<BoxCollider2D>();
+        bounds.isTrigger = true;
+        bounds.size = SpawnArea;
+    }
+    
+    private void OnDestroy()
+    {
+        if (specialFish.fishData != null)
+        {
+            EventManager.FishCaught -= OnFishCaught;
+        }
+    }
+
+    void Update()
+    {
+        // is de hook in range van de spawner?
+        if (Vector2.Distance(transform.position, hook.transform.position) < ActiveToBoatDistance &&
+            !isThisSpawnerActive && Hook.instance.hook.gameObject.activeInHierarchy)
+        {
+            ActivateThisSpwner();
+        }
+        //is de hook buiten de range van deze spawner?
+        else if (Vector2.Distance(transform.position, hook.transform.position) > ActiveToBoatDistance &&
+                 isThisSpawnerActive)
+        {
+            DeactivateThisSpwaner();
+        }
+        else if (!Hook.instance.hook.activeInHierarchy) DeactivateThisSpwaner();
+    }
+
+    private void ActivateThisSpwner()
+    {
+        isThisSpawnerActive = true;
+        SpawnFish();
+    }
+
+    private void DeactivateThisSpwaner()
+    {
+        isThisSpawnerActive = false;
+        RemoveFish();
+    }
+
+    //loop door alle vissen heen en returnt de vis naar de pooler
+    private void RemoveFish()
+    {
+        foreach (FishBrain fish in ActiveFish)
+        {
+            if (fish == null)
+            {
+                continue;
+            }
+
+            if (Hook.instance.FishOnHook == null)
+            {
+                if (!fish.FreePass)
+                    fishPooler.ReturnFish(fish);
+            }
+            else if (fish.gameObject != Hook.instance.FishOnHook.gameObject)
+            {
+                if (!fish.FreePass)
+                    fishPooler.ReturnFish(fish);
+            }
+        }
+        //clear de list met alle actieve vissen
+        ActiveFish.Clear();
+    }
+
+    private void SpawnFish()
+    {
+        //loop door alle fish types heen, vraag een vis uit de pooler op en geef de goede fishdata mee. set alle fish values 
+        foreach (FishToSpawn fishType in FishTypesToSpawn)
+        {
+            for (int i = 0; i < fishType.amount; i++)
+            {
+                FishBrain fish = fishPooler.GetFish();
+                fish.SetOriginSpawner(this);
+                fish.Initialize(fishType.fishData, GetRandomFishSize());
+                fish.transform.position = GetRandomPos();
+                fish.transform.SetParent(transform);
+                ActiveFish.Add(fish);
+                fish.gameObject.SetActive(true);
+            }
+        }
+
+        if (specialFish.fishData != null)
+        {
+            FishBrain fish = fishPooler.GetFish();
+            fish.SetOriginSpawner(this);
+            fish.Initialize(specialFish.fishData, GetRandomFishSize());
+            fish.transform.position = GetRandomPos();
+            fish.transform.SetParent(transform);
+            ActiveFish.Add(fish);
+            fish.gameObject.SetActive(true);
+        }
+    }
+    public bool IsInSpwanArea(Vector2 fishpos)
+    {
+        if (bounds.bounds.Contains(fishpos)) return true;
+        else return false;
+    }
+
+    private FishSize GetRandomFishSize()
+    {
+        Array fish = Enum.GetValues(typeof(FishSize));
+        return (FishSize)fish.GetValue(Random.Range(0, fish.Length));
+    }
+
+    public Vector3 GetRandomPos()
+    {
+        Vector3 pos = new Vector3()
+        {
+            x = Random.Range(transform.position.x - SpawnArea.x / 2, transform.position.x + SpawnArea.x / 2),
+            y = Random.Range(transform.position.y - SpawnArea.y / 2, transform.position.y + SpawnArea.y / 2),
+            z = transform.position.z,
+        };
+        return pos;
+    }
+    
+    private void OnFishCaught(FishData data, FishSize size)
+    {
+        if (data == specialFish.fishData)
+        {
+            specialFish.fishData = null;
+        }
+    }
+    
+
+#if UNITY_EDITOR
+    [Header("Editor Gizmos")] [SerializeField]
+    private Color color = Color.green;
+    [SerializeField] private bool ShowActivateRange = true;
+    [SerializeField] private bool ShowBounds = true;
+    [SerializeField] private bool ShowFishNames = true;
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = color;
+        if (ShowBounds) Gizmos.DrawWireCube(transform.position, SpawnArea);
+        Handles.color = color;
+        if (ShowActivateRange) Handles.DrawWireArc(transform.position, Vector3.forward, Vector3.up, 360, ActiveToBoatDistance);
+        int i = 0;
+
+        if (ShowFishNames)
+        {
+            foreach (FishToSpawn type in FishTypesToSpawn)
+            {
+                if (type.fishData == null)
+                    return;
+                i++;
+                Vector3 pos = transform.position;
+                pos.y += i * 2;
+                Handles.Label(pos, type.fishData.fishName);
+            }
+        }
+    }
+#endif
+}
+
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
 									</div>
 								</div>
 							</section>
@@ -139,9 +348,88 @@
 												Hoeveel vissen er in de pooler passen is in de Inspector makkelijk aan te passen.
 											</p>
 										</div>
-										<ul class="actions">
-											<li><a href="https://gist.github.com/Youri-Mulder/59c1a88551b1fe6ae3385399a501f016" class="button">Code</a></li>
-										</ul>
+                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * FishPooler.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+public class FishPooler : MonoBehaviour
+{
+    public static FishPooler instance;
+    public BoxCollider WaterBlock;
+    [SerializeField] private List<FishBrain> FishList = new List<FishBrain>();
+    [SerializeField] private FishBrain fishPrefab;
+    [SerializeField] private int MaxFishInList;
+    [SerializeField] private GameObject Hook;
+    private void Awake()
+    {
+        instance = this;
+    }
+    public FishBrain GetFish()
+    {
+        for (int i = 0; i < FishList.Count; i++)
+        {
+            //pak de eerste de beste vis die niet actief is 
+            if (!FishList[i].gameObject.activeInHierarchy)
+            {
+                return FishList[i];
+            }
+            else if (i == FishList.Count - 1)
+            {
+                //spawnt een nieuwe vis als er geen over is in de pool list
+                FishBrain newfish = SpawnNewFish();
+                FishList.Add(newfish);
+                return newfish;
+            }
+        }
+        // code zou niet null moeten berijken
+        return null;
+    }
+    public void ReturnFish(FishBrain fish)
+    {
+        if (fish == null)
+        {
+            return;
+        }
+        // check of deze vis niet meer nodig is in de pooler
+        if (ToManyFishActive())
+        {
+            FishList.Remove(fish);
+            Destroy(fish.gameObject);
+        }
+        // vis word terug gezet naar de base om te hergebruiken
+        fish.transform.SetParent(transform);
+        fish.gameObject.transform.position = transform.position;
+        fish.DestroyVisual();
+        fish.gameObject.SetActive(false);
+    }
+    /// <summary>
+    /// check over er niet meer vissen in de pooler zitten dan nodig
+    /// </summary>
+    /// <returns></returns>
+    private bool ToManyFishActive()
+    {
+        int i = 0;
+        foreach (FishBrain fish in FishList)
+        {
+            if (!fish.gameObject.activeInHierarchy) i++;
+        }
+        return i >= MaxFishInList;
+    }
+    public FishBrain SpawnNewFish()
+    {
+        FishBrain newfish = Instantiate(fishPrefab, transform.position, Quaternion.identity);
+        newfish.gameObject.SetActive(false);
+        return newfish;
+    }
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
 									</div>
 								</div>
 							</section>
@@ -208,22 +496,708 @@
 												Als de spanning te hoog is wordt de vis van de lijn gehaald en gaat naar Roaming.
 											</p>
 										</div>
-										<ul class="actions">
-											<li><a href="https://gist.github.com/Youri-Mulder/b9bc820d2575a652af6d15140d7842fb" class="button">Code</a></li>
-										</ul>
+								<div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * FishBiting.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+//(dit zijn de beste stukjes uit de code niet het hele script)
+public class FishBiting : MonoBehaviour, IFishState
+{
+    /// <summary>
+    /// zet alle fish waarden naar standard on state start
+    /// </summary>
+    public void OnStateActivate()
+    {
+        stamina = MaxStamina;
+        brain.FishIntresst.Play();
+        biteState = FishBitingState.GoingForHook;
+        Hook.instance.FishTargetinglist.Add(brain);
+    }
+
+    public IFishState SwitchState()
+    {
+        if (Hook.instance.FishOnHook != null && Hook.instance.FishOnHook.gameObject != gameObject)
+        {
+            ResetState();
+            return brain.states.Roaming;
+        }
+        if (offHook)
+        {
+            GetOffHook();
+            ResetState();
+            Hook.instance.ResetRodColor();
+            EventManager.OnBoatControlsChanged(false);
+            FishStruggleEnd?.Invoke();
+            return brain.states.Roaming;
+        }
+        else return this;
+    }
+
+    public void UpdateState()
+    {
+        float dist = Vector2.Distance(transform.position, Hook.instance.hook.transform.position);
+        // zodra de fish bij de hook in de buurt is dan word de state veranderd naar fish on hook
+        if (dist < BitingRange && biteState == FishBitingState.GoingForHook)
+        {
+            Hook.instance.FishOnHook = brain;
+            FishStruggleStart?.Invoke();
+            biteState = FishBitingState.OnHook;
+            brain.FishGought.Play();
+            if (IsInWater()) EventManager.OnBoatControlsChanged(true);
+        }
+
+        if (!brain.GetOriginSpawner().IsInSpwanArea(transform.position))
+        {
+            brain.FreePass = true;
+        }
+
+        if (!brain.GetOriginSpawner().IsInSpwanArea(Hook.instance.hook.transform.position) &&
+             Hook.instance.FishOnHook != null && Hook.instance.FishOnHook.gameObject != gameObject) offHook = true;
+
+        // is de vis buiten water terwijl er word gestruggelt dan word er nu niet meer gestruggelt. de boot kan weer varen
+        if (biteState == FishBitingState.Struggling && !IsInWater())
+        {
+            biteState = FishBitingState.OnHook;
+            EventManager.OnBoatControlsChanged(false);
+        }
+
+        MoveMent();
+        Struggeling();
+
+        // anti fish baiting
+        if (biteState == FishBitingState.GoingForHook && resetStateAfterTimeIntrest == null)
+        {
+            resetStateAfterTimeIntrest = StartCoroutine(FishStateReset());
+        }
+
+        // anti spam clikcing
+        if (Input.GetMouseButtonUp(1) && ccd == null) ccd = StartCoroutine(ClickCoolDown());
+
+        // stop struggel coroutine als vis buiten het water is
+        if (struggelingC != null && !IsInWater())
+        {
+            if (struggelingC != null) StopCoroutine(struggelingC);
+            struggelingC = null;
+        }
+    }
+
+    private void Struggeling()
+    {
+        if (biteState == FishBitingState.Struggling)
+        {
+            if (Input.GetMouseButton(1))
+            {
+                float tentionincrease = 0f;
+                if (ccd == null) tentionincrease = Time.deltaTime * HoldMultiplier;
+                else tentionincrease = strafpunten;
+                if (tension > 0) tension -= tentionincrease;
+            }
+            else if (tension < 255 && transform.position != brain.EndPos)
+            {
+                tension += Time.deltaTime * RestoreMultyplier;
+            }
+
+            tension = Mathf.Clamp(tension, 0, 255);
+            float normalizedHoldTimer = tension / 255.0f;
+            Color color = new Color(1.0f, normalizedHoldTimer, normalizedHoldTimer);
+            Hook.instance.fishline.startColor = color;
+            Hook.instance.fishline.endColor = color;
+
+            if (tension <= 0)
+            {
+                offHook = true;
+                AudioManager.instance.PlaySound("LoseFish");
+                EventManager.OnReelFailed();
+            }
+        }
+        else
+        {
+            tension = 255;
+            Hook.instance.ResetRodColor();
+        }
+    }
+
+    private void MoveMent()
+    {
+        switch (biteState)
+        {
+            case FishBitingState.GoingForHook:
+
+                if (!brain.FishAproach.isPlaying) brain.FishAproach.Play();
+                if (!FishPooler.instance.WaterBlock.bounds.Intersects(Hook.instance.bounds.bounds))
+                {
+                    offHook = true;
+                }
+                brain.SetEndPos(Hook.instance.hook.transform.position);
+                transform.position = Vector3.MoveTowards(transform.position, brain.EndPos, brain.moveSpeed * Time.deltaTime);
+                break;
+
+            case FishBitingState.OnHook:
+
+                transform.position = Hook.instance.hook.transform.position;
+                if (reGain == null)
+                {
+                    reGain = StartCoroutine(RegainStamina());
+                }
+
+                break;
+
+            case FishBitingState.Struggling:
+                // zet positie als die nog niet bestaat
+                if (!endPosIsStrugglePos || brain.EndPos == Vector3.zero)
+                {
+                    Vector2 dir = brain.EndPos;
+                    dir = ChooseSwimDirection();
+                    FindGround(dir, out Vector2 point);
+                    if (FishPooler.instance.WaterBlock.bounds.Contains(point))
+                    {
+                        endPosIsStrugglePos = true;
+                        brain.SetEndPos(point);
+                    }
+                }
+
+                float speed = Input.GetMouseButton(1) == true ? 0 : brain.StruggelSpeed;
+
+                //zet de vis op hook positie als de vis omhook gehesen word
+                //zet anders de positie van de vis op de hook en zet de nieuwe benodigde linelenght
+                if (Input.GetMouseButton(1) && ccd == null) transform.position = Hook.instance.transform.position;
+                else
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, brain.EndPos, speed * Time.deltaTime);
+                    Hook.instance.hook.transform.position = transform.position;
+                    rod.SetLineLength(transform.position);
+                }
+
+                //build tention als de vis op de endpos zit
+                if (transform.position == brain.EndPos)
+                {
+                    if (tension > 0) tension -= Time.deltaTime * HoldMultiplier;
+                }
+
+                // corotine refresh
+                if (struggelingC == null)
+                {
+                    struggelingC = StartCoroutine(FishStruggel());
+                }
+
+                break;
+        }
+    }
+
+    private Vector2 ChooseSwimDirection()
+    {
+        float angle = Random.Range(240, 300);
+        float angleInRadians = angle * Mathf.Deg2Rad;
+        Vector2 dir = new Vector2(Mathf.Cos(angleInRadians), Mathf.Sin(angleInRadians)).normalized;
+        return dir;
+    }
+    private void FindGround(Vector2 direction, out Vector2 newpoint)
+    {
+        Debug.DrawRay(Hook.instance.HookOrigin.transform.position, direction * rod.GetLineLength(), Color.red, 2);
+        if (Physics.Raycast(Hook.instance.HookOrigin.transform.position, direction, out RaycastHit hit,
+                rod.GetLineLength(), Ground))
+        {
+            if (hit.collider.CompareTag("GeenEndPos"))
+            {
+                newpoint = Vector2.zero;
+                return;
+            }
+            Vector3 fixedpoint = hit.point;
+            fixedpoint.y += OffsetFromGround;
+            newpoint = fixedpoint;
+        }
+        else
+        {
+            newpoint = direction * rod.GetLineLength();
+            newpoint += (Vector2)Hook.instance.HookOrigin.transform.position;
+        }
+    }
+    bool IsPointWithinAngle(Vector3 origin, Vector3 forward, float angle, Vector3 point)
+    {
+        Vector3 directionToPoint = (point - origin).normalized;
+        float angleToTarget = Vector3.Angle(forward, directionToPoint);
+        return angleToTarget < angle / 2;
+    }
+    private IEnumerator FishStateReset()
+    {
+        float t = 0.0f;
+        while (t < IntrestLossafter)
+        {
+            if (brain.ActiveState)
+            {
+                t += Time.deltaTime;
+                if (!Input.GetMouseButton(1)) resetStateAfterTimeIntrest = null;
+            }
+            yield return null;
+        }
+
+        if (t >= IntrestLossafter && biteState == FishBitingState.GoingForHook) offHook = true;
+        resetStateAfterTimeIntrest = null;
+    }
+
+    public IEnumerator RegainStamina()
+    {
+        while (stamina < MaxStamina)
+        {
+            if (brain.ActiveState)
+            {
+                stamina += Time.deltaTime * StamRegainMultiply;
+                if (BeginStruggelBeforeFullC == null) BeginStruggelBeforeFullC = StartCoroutine(BeginStruggelBeforeFull());
+            }
+            yield return null;
+        }
+        if (IsInWater())
+        {
+            biteState = FishBitingState.Struggling;
+            struggelingC = StartCoroutine(FishStruggel());
+        }
+        reGain = null;
+    }
+
+    Coroutine BeginStruggelBeforeFullC;
+
+    private IEnumerator BeginStruggelBeforeFull()
+    {
+        // kies of de vis met niet volle stamina kan gaan struggelen
+        if (stamina > MinStaminaStruggelValue)
+        {
+            float RandomValue = Random.value;
+            if (RandomValue < StruggelHalfStaminaKans)
+            {
+                biteState = FishBitingState.Struggling;
+                if (reGain != null) StopCoroutine(reGain);
+                reGain = null;
+            }
+        }
+
+        // zet een colldown van een seconden op deze functie omdat anders de vis altijd struggelt op StruggelHalfStaminaKans value
+        yield return new WaitForSeconds(1);
+        BeginStruggelBeforeFullC = null;
+    }
+
+    public IEnumerator FishStruggel()
+    {
+        
+        while (stamina > 0.1f)
+        {
+            if (brain.ActiveState) stamina -= Time.deltaTime * StamDrainMultiply * FishUpgradeCheck.instance.staminaDrainUpgradePower;
+            yield return null;
+        }
+
+        struggelingC = null;
+        StruggelReset();
+        yield return null;
+    }
+
+    private void StruggelReset()
+    {
+        brain.SetEndPos(Vector3.zero);
+        biteState = FishBitingState.OnHook;
+        endPosIsStrugglePos = false;
+    }
+
+    private void OnGaught(FishData t, FishSize s)
+    {
+        if (Hook.instance.FishOnHook != null)
+        {
+            EventManager.OnBoatControlsChanged(false);
+            FishPooler.instance.ReturnFish(Hook.instance.FishOnHook);
+            GetOffHook();
+        }
+    }
+
+    /// <summary>
+    /// return if the fish is in a struggle
+    /// </summary>
+    /// <returns></returns>
+    public bool IsStruggeling()
+    {
+        if (biteState == FishBitingState.Struggling) return true;
+        else return false;
+    }
+
+    public bool IsInWater()
+    {
+        if (FishPooler.instance.WaterBlock.bounds.Intersects(bounds.bounds))
+        {
+            return true;
+        }
+        else return false;
+    }
+
+    public void GetOffHook()
+    {
+        Hook.instance.FishOnHook = null;
+    }
+    private IEnumerator ClickCoolDown()
+    {
+        yield return new WaitForSeconds(0.3f);
+        ccd = null;
+    }
+    public bool IsFishStruggeling()
+    {
+        if (biteState == FishBitingState.Struggling) return true;
+        else return false;
+    }
+    public void GetStaminaStats(out float stamina, out float maxstamina)
+    {
+        stamina = this.stamina;
+        maxstamina = MaxStamina;
+    }
+    public float GetTension()
+    {
+        return tension / 255;
+    }
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+								<div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * FishBrain.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+[Serializable]
+public struct FishStates
+{
+    public FishRoaming Roaming;
+    public FishBiting Biting;
+}
+public class FishBrain : MonoBehaviour
+{
+    private FishData P_fishData;
+    private FishSpawner OriginSpawner;
+
+    [Header("Layer")]
+    [SerializeField] private LayerMask obstacleLayer;
+
+    [Header("scripts")] public FishWiggle wiggle;
+
+    [Header("states")] public FishStates states;
+    private IFishState P_CurrentState;
+    private bool activeState = true;
+    private bool freePass = false;
+
+    [Header("Movement")] [SerializeField] private float RotateSpeed;
+    private Vector3 P_EndPos;
+    private float P_struggelSpeed;
+    private float P_moveSpeed;
+
+    [Header("visual")] [SerializeField] private GameObject RotationObject;
+    private GameObject inner;
+    private GameObject Visual;
+    private FishUI UI;
+
+    [Header("Particles")] [SerializeField] public ParticleSystem FishGought;
+    [SerializeField] public ParticleSystem FishIntresst;
+    [SerializeField] public ParticleSystem FishAproach;
+
+    [Header("Fish Size")] public FishSize fishSize;
+
+    //corotines
+    private Coroutine RotateC;
+
+    //propeties
+    public Vector3 EndPos
+    {
+        get { return P_EndPos; }
+    }
+
+    public bool FreePass
+    {
+        get { return freePass; }
+        set { freePass = value; }
+    }
+
+    // spawners 
+    public FishSpawner SetOriginSpawner(FishSpawner spawner) => OriginSpawner = spawner;
+    public FishSpawner GetOriginSpawner() => OriginSpawner;
+
+    //visual
+    public void DestroyVisual() => Destroy(Visual);
+    public GameObject innerVisual => inner;
+    public FishUI FishUI => UI;
+
+    // struggeling
+    public bool IsStruggeling() => states.Biting.IsStruggeling();
+
+    //movement
+    public Vector3 GetNewPosition() => OriginSpawner.GetRandomPos();
+
+    public float moveSpeed
+    {
+        get { return P_moveSpeed; }
+        set { P_moveSpeed = value; }
+    }
+
+    public float StruggelSpeed
+    {
+        get { return P_struggelSpeed; }
+        set { P_struggelSpeed = value; }
+    }
+
+    // state
+    public bool ActiveState => activeState;
+
+    public IFishState CurrentState
+    {
+        get { return P_CurrentState; }
+        set
+        {
+            IFishState currentstate = P_CurrentState;
+            IFishState IncommingState = value;
+            if (currentstate != IncommingState)
+            {
+                //run OnStateActivate() als er een andere state word gegeven dan de huidige state
+                value.OnStateActivate();
+            }
+
+            P_CurrentState = value;
+        }
+    }
+    public void Initialize(FishData data, FishSize size)
+    {
+        fishSize = size;
+        fishData = data;
+    }
+
+    //zet alle fish data uit scriptable object in corefish
+    public FishData fishData
+    {
+        get { return P_fishData; }
+        set
+        {
+            P_fishData = value;
+            moveSpeed = value.moveSpeed;
+            StruggelSpeed = value.moveSpeed * 1.5f;
+            Visual = Instantiate(value.fishObject, transform.position, Quaternion.identity, transform);
+            inner = Visual.transform.GetChild(0).gameObject;
+            Vector3 scale = fishData.GetScale(fishSize);
+            Visual.transform.localScale = scale;
+            RotationObject.transform.localScale = scale;
+            states.Biting.Stamina = value.stamina;
+
+            wiggle.SetWigglePositions();
+        }
+    }
+    /// <summary>
+    /// set de target positie van de vis
+    /// </summary>
+    /// <param name="endpos"></param>
+    public void SetEndPos(Vector3 endpos)
+    {
+        P_EndPos = endpos;
+        RotationObject.transform.LookAt(EndPos);
+        StopOldRotation();
+    }
+
+    void Start()
+    {
+        UI = GetComponent<FishUI>();
+        CurrentState = GetComponent<IFishState>();
+        CurrentState = states.Roaming;
+        ViewManager.instance.ViewShow += CheckPauseState;
+    }
+
+    private void OnDestroy()
+    {
+        ViewManager.instance.ViewShow -= CheckPauseState;
+    }
+
+    void Update()
+    {
+        //is de game gepauzeerd en kan de vis updaten?
+        if (activeState)
+        {
+            CurrentState = CurrentState.SwitchState();
+            CurrentState.UpdateState();
+            ManageRoation();
+            CheckForObsticles();
+        }
+    }
+    /// <summary>
+    /// check voor obstakels die recht voor de vis zetten
+    /// </summary>
+    private void CheckForObsticles()
+    {
+        if (Physics.Raycast(RotationObject.transform.position, RotationObject.transform.forward, 0.3f, obstacleLayer))
+            SetEndPos(GetNewPosition());
+    }
+    private void ManageRoation()
+    {
+        Quaternion endpos;
+        if (states.Biting.CurrentState == FishBitingState.OnHook)
+            RotationObject.transform.LookAt(Hook.instance.HookOrigin.transform.position);
+        else RotationObject.transform.LookAt(EndPos);
+        endpos = RotationObject.transform.rotation;
+        if (Visual.activeInHierarchy && Visual.transform.rotation != endpos && RotateC == null) RotateC = StartCoroutine(RotateFish(endpos));
+    }
+
+    private void StopOldRotation()
+    {
+        StopAllCoroutines();
+        RotateC = null;
+    }
+
+    private IEnumerator RotateFish(Quaternion endpos)
+    {
+        float t = 0.0f;
+        Quaternion startpos = Visual.transform.rotation;
+        while (t < 1)
+        {
+            t += Time.deltaTime * 2.5f;
+            Visual.transform.rotation = Quaternion.Slerp(startpos, endpos, t);
+            yield return null;
+        }
+
+        yield return null;
+        RotateC = null;
+    }
+    public void OnDisable()
+    {
+        OriginSpawner = null;
+        P_EndPos = Vector3.zero;
+        CurrentState = states.Roaming;
+    }
+
+    private void CheckPauseState(View newView)
+    {
+        activeState = newView is GameView;
+    }
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+								<div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * FishRoaming.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+public class FishRoaming : MonoBehaviour, IFishState
+{
+    private FishBrain brain;
+
+    [Header("fish intresst")]
+    [SerializeField] private float IntresstDistanceToHook;
+    [SerializeField] private float[] BiteWait;
+
+    private Coroutine BiteC;
+
+    [Header("Editor")]
+    [SerializeField] private bool ShowGizmos;
+
+    //state change
+    private bool BiteState = false;
+
+    void Awake()
+    {
+        brain = GetComponent<FishBrain>();
+    }
+    public void OnStateActivate()
+    {
+        SetRandomPosition();
+    }
+    public IFishState SwitchState()
+    {
+        if (BiteState)
+        {
+            ResetState();
+            return brain.states.Biting;
+        }
+        else return this;
+    }
+    public void UpdateState()
+    {
+        // zet nieuwe End positie als vis positie gelijk staat aan end positie
+        if (transform.position == brain.EndPos)
+        {
+            if (brain.FreePass && !brain.GetOriginSpawner().IsThisSpawnerActive)
+            {
+                brain.FreePass = false;
+                FishPooler.instance.ReturnFish(brain);
+                return;
+            }
+            else brain.FreePass = false;
+            SetRandomPosition();
+        }
+        // zet nieuwe position als End position zero is
+        if (brain.EndPos == Vector3.zero) { SetRandomPosition(); }
+        if (Vector2.Distance(transform.position, Hook.instance.hook.transform.position) < IntresstDistanceToHook 
+            && 
+            FishPooler.instance.WaterBlock.bounds.Intersects(Hook.instance.bounds.bounds))
+        {
+            if (BiteC == null) BiteC = StartCoroutine(ChoseToBite());
+        }
+
+        // decelaration
+        float movespeed = brain.moveSpeed;
+        float dist = Vector2.Distance(transform.position, brain.EndPos);
+        if (dist < 0.6f)
+        {
+            movespeed *= dist + 0.3f;
+        }
+
+        // move fish
+        transform.position = Vector3.MoveTowards(transform.position, brain.EndPos, movespeed * Time.deltaTime);
+    }   
+    public void SetRandomPosition()
+    {
+        if (brain.GetOriginSpawner() == null) brain.SetEndPos(Vector3.zero);
+        else brain.SetEndPos(brain.GetNewPosition());
+    }
+    private IEnumerator ChoseToBite()
+    {
+        float wait = Random.Range(BiteWait[0], BiteWait[1]);
+        yield return new WaitForSeconds(wait);
+        float br = brain.fishData.biteRate + FishUpgradeCheck.instance.BiteMultiply;
+        br /= 10f; //maak commagetal van de bite rate
+        float randomvalue = Random.value;
+        if (randomvalue < br && Hook.instance.FishOnHook == null && Hook.instance.IsFishAllowtToTarget())
+        {
+            BiteState = true;
+        }
+        BiteC = null;
+    }
+    public void OnEnable()
+    {
+        if (brain.EndPos == Vector3.zero) SetRandomPosition();
+    }
+    public void OnDisable()
+    {
+        ResetState();
+    }
+    public void ResetState()
+    {
+        BiteState = false;
+    }
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        if (ShowGizmos) Handles.DrawWireArc(transform.position, Vector3.forward, Vector3.up, 360, IntresstDistanceToHook);
+    }
+#endif
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
 									</div>
 								</div>
 							</section>
 							<!-- game saving -->
 							<section id="GameSaving">
-								<a class="image">
-									<div class="video-container">
-										<video autoplay loop muted playsinline class="responsive-video">
-										  <source src="" type="video/mp4">
-										  Your browser does not support the video tag.
-										</video>
-									  </div>
-								</a>
 								<div class="content">
 									<div class="inner">
 										<header class="major">
@@ -232,9 +1206,169 @@
 										<div>
 											<p>Om de game op te slaan maak ik gebruik van JSON-bestanden. De game laadt en slaat alle voortgang op bij het starten en afsluiten van de game en slaat daarnaast alles op om de 5 minuten.</p>
 										</div>
-										<ul class="actions">
-											<li><a href="https://gist.github.com/Youri-Mulder/2a5510f6c5088d2efde77e2e59314369" class="button">Code</a></li>
-										</ul>
+                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * DataCenter.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+public class DataCenter : MonoBehaviour
+{
+    [Header("Settings")]
+    [SerializeField] private bool EnableGameSaving;
+    [SerializeField] private bool AutoLoadGame;
+    [SerializeField] private bool AutoSaving;
+    [Tooltip("In secondes")]
+    [SerializeField] private int saveAfterTime;
+    private string Filename = "/GameSafe.json";
+    private StorageCenter storageCenter = new StorageCenter();
+    private List<InventorySave> GameSave = new List<InventorySave>();
+
+    private Coroutine SavingC;
+    private void Start()
+    {
+        if (AutoLoadGame && File.Exists(Application.persistentDataPath + Filename))
+        {
+            LoadGame();
+            WriteLoad(LoadMode.start);
+            StartCoroutine(LateStart());
+        }
+        if (AutoSaving) SavingC = StartCoroutine(AutoSaver());
+    }
+    void Update()
+    {
+        if (AutoSaving && SavingC == null) SavingC = StartCoroutine(AutoSaver());
+    }
+    private void LoadGame()
+    {
+        if (File.Exists(Application.persistentDataPath + Filename))
+        {
+            string file = File.ReadAllText(Application.persistentDataPath + Filename);
+            storageCenter = JsonUtility.FromJson<StorageCenter>(file);
+        }
+    }
+    private void SafeGame()
+    {
+        WriteSave();
+        string json = JsonUtility.ToJson(storageCenter,true);
+        File.WriteAllText(Application.persistentDataPath + Filename, json);
+    }
+    private void DeleteFile()
+    {
+        if (File.Exists(Application.persistentDataPath + Filename))
+        {
+            File.Delete(Application.persistentDataPath + Filename);
+        }
+    }
+    private void WriteLoad(LoadMode load)
+    {
+
+        switch (load)
+        {
+            case LoadMode.start:
+                // load upgrades 
+                UpgradeManager.Instance.SetUpgrades(storageCenter.upgradeIndex);
+
+                // load time
+                TimeManager.instance.SetDay(storageCenter.currentDay -1);
+                break;
+            case LoadMode.late:
+                //load fish
+                foreach (InventorySave fishSave in storageCenter.inventory)
+                {
+                    Inventory.instance.AddFish(fishSave.FishData, fishSave.FishSize);
+                }
+
+                //load money
+                EventManager.OnShopSell(storageCenter.Money);
+
+                // load catalogue
+                CatalogueTracker.instance.SetCatalogueNotes(storageCenter.Catalogue.totalCollectedFish, storageCenter.Catalogue.amountCaught);
+
+                // load quests
+                QuestTracker.instance.LoadQuests(storageCenter.Quests);
+                break;
+
+        }
+    } 
+    private void WriteSave()
+    {
+        // write fish
+        List<InventoryItem> invitems = Inventory.instance.currentFish;
+        foreach (InventoryItem fish in invitems)
+        {
+            InventorySave fishSave = new InventorySave();
+            fishSave.FishSize = fish.GetFishSize();
+            fishSave.StackSize = fish.GetStackSize();
+            fishSave.FishData = fish.GetFishData();
+            GameSave.Add(fishSave);
+        }
+        storageCenter.inventory = GameSave;
+
+        // write money
+        storageCenter.Money = EconomyManager.instance.GetCurrentMoneyAmount();
+
+        // write time
+        TimeManager.instance.GetTimeState(out int currentday);
+        storageCenter.currentDay = currentday;
+
+        //upgrades
+        storageCenter.upgradeIndex = UpgradeManager.Instance.GetUpgrades();
+
+        // catalog
+        CatalogueTracker.instance.GetCurrentCatalogueNotes(out int totalFish, out int[] amountcollectedPF);
+        storageCenter.Catalogue.totalCollectedFish = totalFish;
+        storageCenter.Catalogue.amountCaught = amountcollectedPF;
+
+        // quest 
+        storageCenter.Quests = QuestTracker.instance.GetQuests();
+    }
+    private void OnApplicationQuit()
+    {
+        if (EnableGameSaving) SafeGame();
+    }
+    private IEnumerator LateStart()
+    {
+        yield return new WaitForEndOfFrame();
+        WriteLoad(LoadMode.late);
+    }
+    private IEnumerator AutoSaver()
+    {
+        yield return new WaitForSeconds(saveAfterTime);
+        SafeGame();
+        SavingC = null;
+    }
+}
+[Serializable]
+public class StorageCenter
+{
+    public List<InventorySave> inventory = new List<InventorySave>();
+    public CatalogueSave Catalogue;
+    public int[] upgradeIndex;
+    public int currentDay;
+    public int Money;
+    public QuestProgress[] Quests;
+}
+
+[Serializable]
+public struct InventorySave
+{
+    public FishData FishData;
+    public int StackSize;
+    public FishSize FishSize;
+}
+[Serializable]
+public struct CatalogueSave
+{
+    public int totalCollectedFish;
+    public int[] amountCaught; 
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
 									</div>
 								</div>
 							</section>
@@ -259,6 +1393,8 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/prism.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/components/prism-csharp.min.js"></script>
 			<script>
 
 				var container = document.querySelector("#unity-container");

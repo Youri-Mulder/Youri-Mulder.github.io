@@ -12,6 +12,7 @@
 		<link rel="shortcut icon" href="https://webserver.yourimuldergamedev.nl/youri-icon.png">
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<link rel="stylesheet" href="Games/DualDefendersWeb/TemplateData/style.css">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
 	<body class="is-preload">
@@ -104,6 +105,7 @@
 
 									<div>
 										<li><a href="#CamMovement" class="button noborder nextt scrolly">Camera movement</a></li>   
+										<li><a href="#Enemies" class="button noborder nextt scrolly">Enemies</a></li>   
 										<li><a href="#TegenstanderAI" class="button noborder nextt scrolly">Tegenstander AI</a></li>   
 										<li><a href="#EnemiesPlaatsen" class="button noborder nextt scrolly">Enemies plaatsen</a></li>   
 									</div>
@@ -132,9 +134,98 @@
 											<p>Om te kunnen wisselen tussen jouw veld en dat van de tegenstander heb ik een camera gemaakt die van een startvector naar een eindvector beweegt door middel van een Slerp. 
 												Waar de camera zich bevindt beïnvloedt ook welke kant van de map je wel en niet kunt horen.</p>
 										</div>
-										<ul class="actions">
-											<li><a href="https://gist.github.com/Youri-Mulder/3ce94e6d5832b28094254d2ab65600f5" class="button">Code</a></li>
-										</ul>
+								<div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * CameraMovment.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+												
+/// <summary>
+/// Met CamAt weet de camera altijd waar het is
+/// </summary>
+public enum CamAt
+{
+    player,
+    Ai
+}
+/// <summary>
+/// sla camera positie en rotatie op om later te her gebruiken
+/// </summary>
+[Serializable]
+struct CamPos
+{
+    public Vector3 FieldPosition;
+    public Vector3 FieldRotation;
+}
+public class CameraMovment : MonoBehaviour
+{
+    //instance
+    public static CameraMovment Instance;
+
+    [Header("Positions")]
+    [SerializeField] private CamPos AiPos;
+    [SerializeField] private CamPos PlayerPos;
+    private CamPos Destination;
+    private CamPos CurrentPos;
+
+    [Header("Settings")]
+    [SerializeField] private float MoveSpeed;
+    public CamAt WhereCamAt;
+
+    private float Percentage;
+    private float MoveTimer;
+    private bool Moving = false;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+    void Update()
+    {
+        if (Moving)
+        {
+            //move timers, bepaal camera positie
+            MoveTimer += Time.deltaTime;
+            Percentage = MoveTimer / MoveSpeed;
+
+            //positioneer de camera met Slerp/Lerp voor Smooth movement
+            transform.eulerAngles = Vector3.Slerp(CurrentPos.FieldRotation, Destination.FieldRotation, Percentage);
+            transform.position = Vector3.Lerp(CurrentPos.FieldPosition, Destination.FieldPosition, Percentage);
+
+            // zet moving false om MoveCam te kunnen runnen en als player de camera weer te kunnen verplaatsen
+            if (Percentage >= 1f) Moving = false;
+        }
+    }
+    public void MoveCam()
+    {
+        if (!Moving)
+        {
+            //kijk waar de camera is, pas variabelen aan om naar de ander kant van het speel veld te gaan
+            if (WhereCamAt == CamAt.player)
+            {
+                CurrentPos = PlayerPos;
+                Destination = AiPos;
+                WhereCamAt = CamAt.Ai;
+            }
+            else if (WhereCamAt == CamAt.Ai)
+            {
+                CurrentPos = AiPos;
+                Destination = PlayerPos;
+                WhereCamAt = CamAt.player;
+            }
+            //reset move timers
+            MoveTimer = 0f;
+            Percentage = 0f;
+            Moving = true;
+        }
+    }
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
 									</div>
 								</div>
 							</section>
@@ -164,9 +255,211 @@
 												De kogel wordt vervolgens met een Vector3 Movement naar de toren bewogen.
 											</p>
 										</div>
-										<ul class="actions">
-											<li><a href="https://gist.github.com/Youri-Mulder/6f30f5018a1a2fe96334ca11e4a1fa3d" class="button">Code</a></li>
-										</ul>
+										                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * AiBase.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+												
+public enum EnemyKind
+{
+    Easy,
+    Medium,
+    Hard
+}
+public class AiBase : MonoBehaviour
+{
+    [SerializeField] private EnemyTypes EnemyStats;
+    [SerializeField] protected LayerMask TowerLayer;
+    [HideInInspector] public int PathToFollow;
+    [HideInInspector]public CurrencyManager currency;
+    [SerializeField] private int currencyDropAmnt;
+
+    public EnemyKind enemyType;
+    public int cost;
+
+    private GameManager gm;
+    public OnPath ToCastle;
+    GameManager manager;
+
+    private FollowPath _FollowPath;
+    private AiHealth health;
+    private WaveGenerator waveGenerator;
+
+    [SerializeField] private ParticleSystem DeathEffect;
+    public virtual void Start()
+    {
+        gm = GameManager.Instance;
+        waveGenerator = WaveGenerator.Instance;
+        manager = GameManager.Instance;
+        health = GetComponent<AiHealth>();
+
+        health.Ondeath += OnDeath;    
+
+        List<GameObject> path = FindObjectOfType<PathManager>().GetPath(PathToFollow, out OnPath toCastleTag);
+        ToCastle = toCastleTag;
+
+        // set enemy ai behavior
+        Steering steering = GetComponent<Steering>();
+        List<IBehavior> behaviors = new List<IBehavior>();
+        _FollowPath = new FollowPath(path);
+        behaviors.Add(_FollowPath);
+        steering.SetBehaviors(behaviors);
+
+        // set de goede currency manager op deze ai 
+        currency = ToCastle == OnPath.player ? gm.playerCurrency : gm.aiCurrency;
+    }
+    public virtual void Update()
+    {
+        if (_FollowPath.IsDone()) Done();
+    }
+    private void Done()
+    {
+        //spawn een death effect 
+        Instantiate(DeathEffect, transform.position, Quaternion.Euler(-90, 0, 0));
+        //remove de enemie uit de wave generator
+        waveGenerator.currentEnemies.Remove(this);
+        //kijk naar welk caslte deze enemie gaat en haal een live van die castle af
+        if (ToCastle == OnPath.player) manager.PlayerCastle.GetComponent<IModifyValue>().ModifyValue(-1);
+        if (ToCastle == OnPath.ai) manager.AiCastle.GetComponent<IModifyValue>().ModifyValue(-1);
+        Destroy(gameObject);
+    }
+    private void OnDeath()
+    {
+        currency.currencyAmount += currencyDropAmnt;
+        waveGenerator.currentEnemies.Remove(this);
+    }
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+								                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * AiHealth.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+												
+public class AiHealth : MonoBehaviour, IModifyValue, IDamageable
+{
+    [SerializeField] EnemyTypes EnemyStat;
+    [SerializeField] private int health;
+    public delegate void OndeathDelegate();
+    public event OndeathDelegate Ondeath;
+    private int maxHealth;
+    private Animator animator;
+    private AudioSource DeathSound;
+    private AiBase BaseAi;
+    private CameraMovment Cam;
+    public int Health { get => health; set => health = value; }
+    public int MaxHealth { get => maxHealth; set => maxHealth = value; }
+
+    void Start()
+    {
+        BaseAi = GetComponent<AiBase>();
+        Cam = CameraMovment.Instance;
+        DeathSound = GetComponent<AudioSource>();
+        health = EnemyStat.health;
+        maxHealth = health;
+        animator = GetComponentInChildren<Animator>();
+    }
+    public void ModifyValue(int value)
+    {
+        health -= value;
+        if (health <= 0)
+        {
+            if (BaseAi.ToCastle == OnPath.player && Cam.WhereCamAt == CamAt.player || BaseAi.ToCastle == OnPath.ai && Cam.WhereCamAt == CamAt.Ai) DeathSound.Play();
+
+            animator.SetBool("Death", true);
+
+            Destroy(GetComponent<Steering>());
+            Destroy(GetComponent<AiBase>());
+
+            Spawneffect DeathEffect = GetComponent<Spawneffect>();
+            DeathEffect.StartCoroutine(DeathEffect.SpawnDeathEffect(transform.position));
+
+            Destroy(gameObject, 2f);
+            Ondeath?.Invoke();
+        }
+    }
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+								                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * ShootingNPC.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+												
+public class ShootingNPC : AiBase
+{
+    [Header("Gun Settings")]
+    [SerializeField] private float ShootRange;
+    [SerializeField] private float ShootInterval;
+    [SerializeField] private int Damage;
+    
+    [SerializeField] private Bullet Bullet;
+    [SerializeField] private Vector3 Offset;
+    private Coroutine Wait;
+    public override void Start()
+    {
+        base.Start();
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        //zoek towers met een overlapsphere 
+        Collider[] rangeChecks = Physics.OverlapSphere(transform.position, ShootRange, TowerLayer);
+        if (rangeChecks.Length > 0) //zit er iets in de overlapsphere?
+        {
+            //directie naar eerste tower in overlapSphere
+            Vector3 DirToTower = rangeChecks[0].transform.position;
+            if (Wait == null)
+            {
+                //shoot bullet en run een wait functie tot volgent schot
+                Wait = StartCoroutine(WaitToShoot());
+                Shoot(DirToTower);
+            }
+        }
+    }
+    /// <summary>
+    /// Instantiate bullet,zet damage van dit script naar bullet en laat bullet kijken naar dir
+    /// </summary>
+    /// <param name="dir"></param>
+    private void Shoot(Vector3 dir)
+    {
+        //maak een fixedoffset met offset en position om rare dingen te verkomen
+        Vector3 fixedoffset = transform.position;
+        fixedoffset += Offset;
+
+        Bullet bullet = Instantiate(Bullet, fixedoffset, Quaternion.identity);
+        //draai bullet naar dir
+        bullet.transform.LookAt(dir);
+        //set damage naar de bullet
+        bullet.damage = Damage;
+    }
+    private IEnumerator WaitToShoot()
+    {
+        yield return new WaitForSeconds(ShootInterval);
+        Wait = null;
+    }
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
 									</div>
 								</div>
 							</section>
@@ -191,9 +484,536 @@
 												Als er genoeg towers op de map staan, gaat de AI meer bijbouwen of towers upgraden en dit is allemaal instelbaar. 
 												Om te voorkomen dat de AI towers en upgrades gaat spammen is er ook een idle state.</p>
 										</div>
-										<ul class="actions">
-											<li><a href="https://gist.github.com/Youri-Mulder/5e279c47d0d5ded38dce38ce9c2adbd4" class="button">Code</a></li>
-										</ul>
+                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * Brain.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">						
+[Serializable]
+public struct States
+{
+    public Chosing Chosing;
+    public Building Building;
+    public Idle Idle;
+    public Attacting Attacting;
+    public UpgradeTowers Upgrade;
+}
+public class Brain : MonoBehaviour
+{
+    public States _States;
+    public CurrencyManager Currency;
+    public GameManager _GameManager;
+
+    private IState currentState;
+
+    [Header("Editor")]
+    public bool StateDebugs;
+
+    private void Start()
+    {
+        currentState = _States.Chosing;
+        _GameManager = GameManager.Instance;
+        Currency = _GameManager.aiCurrency;
+    }
+
+    private void Update()
+    {
+        currentState.UpdateState();
+        currentState = currentState.SwitchState();
+    }
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+								                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * Building.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+//(dit zijn de beste stukjes uit de code niet het hele script)
+public class Building : MonoBehaviour, IState
+{
+    public IState SwitchState()
+    {
+        //switch de state als de ai een tower heeft geplaatst 
+        if (ReRun > ReRunInterval)
+        {
+            Debug.LogWarning("Rerun");
+            ReRun = 0;
+            return _Brain._States.Idle;
+        }
+        if (HasBuild)
+        {
+            ReRun = 0;
+            HasBuild = false;
+            return _Brain._States.Idle;
+        }
+        return this;
+        //zoalng er geen tower is geplaatst blijft de ai bouwen.
+        //handig als er een tile met een occupent returned word
+    }
+    public void SetLine(WhatLine line)
+    {
+        _WhatLine = line;
+    }
+
+    public void UpdateState()
+    {
+        if (_Brain.StateDebugs) Debug.Log("building");
+        Tile tile = null; // maak alvast een tile aan om een chosetile in op te slaan
+
+        switch (_WhatLine)
+        {
+            case WhatLine.one:
+                tile = ChoseTile(TowerField.Line1);
+                break;
+            case WhatLine.two:
+                tile = ChoseTile(TowerField.Line2);
+                break;
+            case WhatLine.three:
+                tile = ChoseTile(TowerField.Line3);
+                break;
+            case WhatLine.random:
+                if (GetLineWithSpace())
+                {
+                    int randomLine = UnityEngine.Random.Range(1, 4);
+                    switch (randomLine)
+                    {
+                        case 1:
+                            if (ActiveTowers.Line1.Count >= MaxTowersOnLine) return;
+                            _WhatLine = WhatLine.one;
+                            tile = ChoseTile(TowerField.Line1);
+                            break;
+                        case 2:
+                            if (ActiveTowers.Line2.Count >= MaxTowersOnLine) return;
+                            _WhatLine = WhatLine.two;
+                            tile = ChoseTile(TowerField.Line2);
+                            break;
+                        case 3:
+                            if (ActiveTowers.Line3.Count >= MaxTowersOnLine) return;
+                            _WhatLine = WhatLine.three;
+                            tile = ChoseTile(TowerField.Line3);
+                            break;
+
+                    }
+                }
+                else HasBuild = true; //als er geen plekken zijn return state 
+                break;
+        }
+
+        if (CheckActiveTowes())
+        {//kies een turret gebaseerd op hoeveel currency er is. 
+            if (tile != null && tile.occupent == null)
+            {
+                if (_Brain.Currency.currencyAmount >= ShotGuntowerCost)
+                {
+                    BuildTower(TowerChoices.Shotgun, tile, (int)_WhatLine + 1);
+                }
+                else if (_Brain.Currency.currencyAmount >= BurstTowerCost)
+                {
+                    BuildTower(TowerChoices.MultiShot, tile, (int)_WhatLine + 1);
+                }
+                else if (_Brain.Currency.currencyAmount >= NormalTowerCost)
+                {
+                    BuildTower(TowerChoices.Normal, tile, (int)_WhatLine + 1);
+                }
+                else
+                {
+                    ReRun++;
+                    Debug.LogWarning("rerun");
+                }
+                //mocht er voor een reden toch niet genoegt geld zijn dan word hasbuild true zodat een nieuwe state gekozen kan worden
+            }
+        }
+        else
+        {
+            if (tile != null && tile.occupent == null)
+            {
+                BuildTower(TowerChoices.Normal, tile, (int)_WhatLine + 1);
+            }
+            else
+            {
+                ReRun++;
+                Debug.LogWarning("rerun");
+            }
+        }
+
+    }
+    /// <summary>
+    /// returned of alle lines wel genoeg toren hebben voordat de ai betere torens gaat plaatsen
+    /// </summary>
+    /// <returns></returns>
+    private bool CheckActiveTowes()
+    {
+        if (ActiveTowers.Line1.Count < MinTowersOnLine) return false;
+        else if (ActiveTowers.Line2.Count < MinTowersOnLine) return false;
+        else if (ActiveTowers.Line3.Count < MinTowersOnLine) return false;
+        else return true;
+    }
+    /// <summary>
+    /// return een random tile
+    /// </summary>
+    /// <param name="tiles"></param>
+    /// <returns></returns>
+    private Tile ChoseTile(Tile[] tiles)
+    {
+        int TileAmount = tiles.Length - 1;
+        int RandomTile = UnityEngine.Random.Range(0, TileAmount);
+        Tile tile = tiles[RandomTile].GetComponent<Tile>();
+        return tile;
+    }
+    private void BuildTower(GameObject prefab,Tile tile,int whatline)
+    {
+        //spawn spawn effects in 
+        Instantiate(SpawnEffect[0], tile.transform.position, Quaternion.Euler(-90, 0, 0));
+        Instantiate(SpawnEffect[1], tile.transform.position, Quaternion.Euler(-90, 0, 0));
+
+        //zet in de tile wat er op de tile staat
+        tile.occupent = prefab.gameObject;
+        //enable de ghost tower zodat het nu als echte tower werkt
+        //prefab.GetComponent<IPlacable>().SetEnabled(true);
+        GameObject go = Instantiate(prefab, tile.transform.position + BuildOffset,Quaternion.identity);
+
+        //set whospawnt for audio to not boom
+        go.GetComponent<Turret>().WhoSpawnt(2);
+        if (Cam.WhereCamAt == CamAt.Ai) BuildAudio.Play();
+
+        //een script word toegevoegt op de tower om later de towers uit de lijst te verwijderen waar het in staan
+        go.AddComponent<RemoveTowerFromAiList>();
+        RemoveTowerFromAiList remove = go.GetComponent<RemoveTowerFromAiList>();
+        //geef values mee aan het script om later alle goede vlaues te hebben om de tower te verwijderen
+        remove.SetValues(tile,this,whatline);
+
+        //pak turret om de tower in de goede turret tower list te kunnen zetten
+        Turret got = go.GetComponent<Turret>();
+        SetTowerInList(got, whatline);
+
+        //laat de ai betalen wat got kost
+        BetaleGap(got.CostAmount);
+
+        //building is nu klaar, hasbuild true om van state te veranderen
+        HasBuild = true;
+    }
+    /// <summary>
+    /// voeg tower toe aan een lijst gebaseerd op in welke line tower staat
+    /// </summary>
+    /// <param name="tower"></param>
+    /// <param name="whatline"></param>
+    private void SetTowerInList(Turret tower,int whatline)
+    {
+        switch (whatline)
+        {
+            case 1:
+                ActiveTowers.Line1.Add(tower);
+                break;
+            case 2:
+                ActiveTowers.Line2.Add(tower); 
+                break;
+            case 3:
+                ActiveTowers.Line3.Add(tower);
+                break;
+        }
+    }
+    /// <summary>
+    /// haal currency van de ai af voor een toren
+    /// </summary>
+    /// <param name="cost"></param>
+    private void BetaleGap(int cost)
+    {
+        _Brain.Currency.currencyAmount -= cost;
+    }
+    /// <summary>
+    /// verwijder gegeven turret uit de ActiveTowers lijst, geef inline mee op welke line de toren staat
+    /// </summary>
+    /// <param name="turret"></param>
+    /// <param name="inline"></param>
+    public void RemoveTurretFromList(Turret turret, int inline)
+    {
+        //switch case om de de turret uit de goede lijn te verwijderen.
+        switch (inline)
+        {
+            case 1:
+                ActiveTowers.Line1.Remove(turret);
+                break;
+            case 2:
+                ActiveTowers.Line2.Remove(turret);
+                break;
+            case 3:
+                ActiveTowers.Line3.Remove(turret);
+                break;
+        }
+    }
+    private bool GetLineWithSpace()
+    {
+        if (ActiveTowers.Line1.Count < MaxTowersOnLine) return true;
+        else if (ActiveTowers.Line2.Count < MaxTowersOnLine) return true;
+        else if (ActiveTowers.Line3.Count < MaxTowersOnLine) return true;
+        else return false;
+    }
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+								                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * Chosing.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+//(dit zijn de beste stukjes uit de code niet het hele script)
+public class Chosing : MonoBehaviour, IState
+{
+    public IState SwitchState()
+    {
+        if (WhatStateNext == WhatStateIsNext.Building)
+        {
+            WhatStateNext = WhatStateIsNext.Chosing;
+            return brain._States.Building;
+        }
+        if (WhatStateNext == WhatStateIsNext.idle)
+        {
+            WhatStateNext = WhatStateIsNext.Chosing;
+            return brain._States.Idle;
+        }
+        if (WhatStateNext == WhatStateIsNext.Attacing)
+        {
+            WhatStateNext = WhatStateIsNext.Chosing;
+            return brain._States.Attacting;
+        }
+        if (WhatStateNext == WhatStateIsNext.upgrading)
+        {
+            WhatStateNext = WhatStateIsNext.Chosing;
+            return brain._States.Upgrade;
+        }
+        return this;
+    }
+
+    public void UpdateState()
+    {
+        if (brain.StateDebugs) Debug.Log("chosing");
+
+        if (brain.Currency.currencyAmount >= MinCurrencyToDoSomething)
+        {
+            // is het nodig om te bouwen.
+            if (Builder.ActiveTowers.Line1.Count < Builder.MinTowersOnLine)
+            {
+                if (brain.Currency.currencyAmount >= CheapestTower) WhatStateNext = WhatStateIsNext.Building;
+                    Builder._WhatLine = WhatLine.one;
+                return;
+            }
+            else if (Builder.ActiveTowers.Line2.Count < Builder.MinTowersOnLine)
+            {
+                if (brain.Currency.currencyAmount >= CheapestTower) WhatStateNext = WhatStateIsNext.Building;
+                Builder._WhatLine = WhatLine.two;
+                return;
+            }
+            else if (Builder.ActiveTowers.Line3.Count < Builder.MinTowersOnLine)
+            {
+                if (brain.Currency.currencyAmount >= CheapestTower) WhatStateNext = WhatStateIsNext.Building;
+                Builder._WhatLine = WhatLine.three;
+                return;
+            }
+            //er hoeft niet gebouwt te worden, kies een random state
+            int randomValue = Random.Range(1,3);
+            if (randomValue == 1)
+            {
+                //bouwen is gekozen.
+                //is er genoeg geld?, idle word gekozen
+                if (brain.Currency.currencyAmount < CheapestTower) WhatStateNext = WhatStateIsNext.idle;
+                else
+                {
+                    //bouwen is gekozen
+                    //geen van de lijnen heeft een tower nodig, een random line word gekozen.
+                    WhatStateNext = WhatStateIsNext.Building;
+                    Builder._WhatLine = WhatLine.random;
+                }
+            }
+            else if (randomValue == 2)
+            {
+                //er is niet genoeg geld, idle word gekozen.
+                if (brain.Currency.currencyAmount < CheapestUpgrade) WhatStateNext = WhatStateIsNext.idle;
+                else WhatStateNext = WhatStateIsNext.upgrading;
+                //upgrading has been chosen
+            }
+            else if (randomValue == 3)
+            {
+                //enaugh currency available? no, Idle it is
+                if (brain.Currency.currencyAmount < CheapestEnemy) WhatStateNext = WhatStateIsNext.idle;
+                else WhatStateNext = WhatStateIsNext.Attacing;
+                //attacing has been chosen
+            }
+        }
+        else WhatStateNext = WhatStateIsNext.idle;
+    }
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+								                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * Idle.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+public class Idle : MonoBehaviour, IState
+{
+    private Brain brain;
+    private Coroutine wait;
+    private bool contin = false;
+    [SerializeField] private float IdleTime;
+    private void Awake()
+    {
+        brain = GetComponent<Brain>();
+    }
+    public IState SwitchState()
+    {
+        if (contin)
+        {
+            wait = null;
+            contin = false;
+            return brain._States.Chosing;
+        }
+        else return this;
+    }
+
+    public void UpdateState()
+    {
+        if (brain.StateDebugs) Debug.Log("idle");
+        if (wait == null) wait = StartCoroutine(Wait());
+    }
+    private IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(IdleTime);
+        contin = true;
+    }
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+								                                <div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * UpgradeTowers.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+[Serializable]
+public struct UpgradeButtons
+{
+    public UpgradeButton BulletsDamage;
+    public UpgradeButton Health;
+    public UpgradeButton Raduis;
+}
+public class UpgradeTowers : MonoBehaviour, IState
+{
+    private Brain brain;
+    private Building builder;
+    [SerializeField] private UpgradeButtons upgradeButtons;
+    private bool Contin = false;
+    private void Awake()
+    {
+        brain = GetComponent<Brain>();
+        builder = GetComponent<Building>();
+    }
+    public IState SwitchState()
+    {
+        if (Contin)
+        {
+            Contin = false;
+            return brain._States.Idle;
+        }
+        else return this;
+    }
+
+    public void UpdateState()
+    {
+        if (brain.StateDebugs) Debug.Log("Upgrading");
+
+        int RandomUpgrade = Random.Range(1, 4);
+        Turret RandomTurret = GetRandomTurret();
+        GetButtons(RandomTurret);
+        TowerUpgradeUI Upgrader = RandomTurret.UpgradeUI;
+
+        //apply upgrades
+        switch (RandomUpgrade)
+        {
+            case 1:
+                Upgrader.UpgradeBulletDmg(upgradeButtons.BulletsDamage,2);
+                break;
+            case 2:
+                Upgrader.UpgradeHealthAmnt(upgradeButtons.Health,2);
+                break;
+            case 3:
+                Upgrader.UpgradeRadius(upgradeButtons.Raduis,2);
+                break;
+        }
+        Contin = true;
+    }
+    private Turret GetRandomTurret()
+    {
+        int RandomLine = Random.Range(1,4);
+        int towerAmount;
+        int RandomTower;
+        Turret turret = null;
+        switch (RandomLine)
+        {
+            case 1:
+                towerAmount = builder.ActiveTowers.Line1.Count;
+                RandomTower = Random.Range(0,towerAmount);
+                turret =  builder.ActiveTowers.Line1[RandomTower];
+                break;
+            case 2:
+                towerAmount = builder.ActiveTowers.Line2.Count;
+                RandomTower = Random.Range(0, towerAmount);
+                turret = builder.ActiveTowers.Line2[RandomTower];
+                break;
+            case 3:
+                towerAmount = builder.ActiveTowers.Line3.Count;
+                RandomTower = Random.Range(0, towerAmount);
+                turret = builder.ActiveTowers.Line3[RandomTower];
+                break;
+        }
+        return turret;  
+    }
+    private void GetButtons(Turret turret)
+    {
+        UpgradeButton[] buttons = turret.ButtonHolder.GetComponentsInChildren<UpgradeButton>();
+        foreach (UpgradeButton button in buttons)
+        {
+            switch (button.upgradeType.type)
+            {
+                case EUpgradeType.Range:
+                    upgradeButtons.Raduis = button;
+                    break;
+                case EUpgradeType.Damage:
+                    upgradeButtons.BulletsDamage = button;
+                    break;
+                case EUpgradeType.Health:
+                    upgradeButtons.Health = button;
+                    break;
+            }
+        }
+    }
+}	
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
 									</div>
 								</div>
 							</section>
@@ -216,38 +1036,49 @@
 											<p>De enemies kunnen worden geplaatst op spawn tiles. Via de spawn manager wordt er dan een enemy gespawned op die tile. 
 												Van de spawn tile wordt een tag gepakt die gelijkstaat aan een pad dat de enemy moet volgen.</p>
 										</div>
-										<ul class="actions">
-											<li><a href="https://gist.github.com/Youri-Mulder/6e567c1c485ef7c8b1247b75c115b4e5" class="button">Code</a></li>
-										</ul>
+								<div>
+                                    <div class="code-container">
+                                        <div class="code-header"
+                                            onclick="this.nextElementSibling.classList.toggle('open')">
+                                            <strong>code snippet * SpawnTile.cs</strong>
+                                        </div>
+                                        <div class="code-content">
+                                            <pre><code class="language-csharp">
+			
+public class SpawnTile : MonoBehaviour
+{
+    [SerializeField] private int TilePathTag;
+    [SerializeField] private OnPath ToCastleTag;
+    [SerializeField] private Vector3 SpawnOffset;
+    private SpawnManager Spawner;
+    private WaveGenerator waveGen;
+    private void Awake()
+    {
+        Spawner = FindObjectOfType<SpawnManager>();
+        Physics.queriesHitTriggers = false;
+    }
+    private void Start()
+    {
+        waveGen = WaveGenerator.Instance;
+    }
+    private void OnMouseDown()
+    {
+        // heeft de player genoeg waves defent om zelf aan te kunnen vallen?
+        if (waveGen.waveAmnt > 1)
+        {
+            Vector3 fixedOffset = transform.position;
+            fixedOffset += SpawnOffset;
+            Spawner.SpawnEnemy(TilePathTag, fixedOffset, ToCastleTag);
+        }
+    }
+}
+    </code></pre>
+                                        </div>
+                                    </div>
+                                </div>
 									</div>
 								</div>
 							</section>
-							<!--
-								<section id="BaseTemplate">
-								<a class="image">
-									<div class="video-container">
-										<video autoplay loop muted playsinline class="responsive-video">
-										  <source src="" type="video/mp4">
-										  Your browser does not support the video tag.
-										</video>
-									  </div>
-								</a>
-								<div class="content">
-									<div class="inner">
-										<header class="major">
-											<h3>--</h3>
-										</header>
-										<div>
-											<h4>--</h4>
-											<p>--</p>
-										</div>
-										<ul class="actions">
-											<li><a href="" class="button">Code</a></li>
-										</ul>
-									</div>
-								</div>
-							</section>
-							-->
 					</div>
 
 		
@@ -255,9 +1086,6 @@
 				<!-- Footer -->
 					<footer id="footer">
 						<div class="inner">
-							<ul class="icons">
-								<!-- <li><a href="#" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li> -->
-							</ul>
 							<ul class="copyright">
 								<li>&copy; </li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
 							</ul>
@@ -274,6 +1102,8 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/prism.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/components/prism-csharp.min.js"></script>
 			<script>
 
 				var container = document.querySelector("#unity-container");
