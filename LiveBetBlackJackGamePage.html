@@ -28,8 +28,10 @@
         <!-- Note: The "styleN" class below should match that of the banner element. -->
         <header id="header" class="alt FormulaNight">
             <a href="index.html" class="logo FormulaNight"><strong>LifeBetBlackJack</strong> <span></span></a>
+            <a onclick="loadLanguage('nl')" class="button noborder">NL</a>
+			<a onclick="loadLanguage('en')" class="button noborder">EN</a>
             <nav>
-                <a href="#menu">Navigatie Menu</a>
+                <a href="#menu" data-i18n="Navigation">Navigatie Menu</a>
             </nav>
         </header>
 
@@ -53,10 +55,10 @@
                     <img src="images/pic07.jpg" alt="" />
                 </span>
                 <header class="major">
-                    <h1>LiveBetBlackJack</h1>
+                    <h1>LifeBetBlackJack</h1>
                 </header>
                 <div class="content">
-                    <p>Blackjack, maar dan anders, een passieproject waarin je met de dealer speelt en het spel
+                    <p data-i18n="livebetblackjack_uitleg">Blackjack, maar dan anders, een passieproject waarin je met de dealer speelt en het spel
                         beïnvloedt met krachtige kaartmechanieken.</p>
                 </div>
             </div>
@@ -104,13 +106,16 @@
                             <header class="major">
                                 <h2>Project info</h2>
                             </header>
-                            <p>LifeBetBlackJack is een game die ik in mijn vrije tijd ben gaan maken. Omdat ik blackjack
+                            <p data-i18n="livebetblackjack_project_info_1">
+                                LifeBetBlackJack is een game die ik in mijn vrije tijd ben gaan maken. Omdat ik blackjack
                                 een leuk spel vind, heb ik mijn eigen versie ontwikkeld, geïnspireerd door Buckshot
                                 Roulette.
                                 In deze variant gebruik je power-items (powerkaartjes) om invloed uit te oefenen op het
                                 spelverloop.
                                 In plaats van tegen de dealer te spelen, speel je samen met de dealer: de dealer speelt
-                                tegelijkertijd met de speler. <br><br>
+                                tegelijkertijd met de speler.
+                            </p>
+                            <p data-i18n="livebetblackjack_project_info_2">
                                 Hoewel de kern van het spel staat, wil ik LifeBetBlackJack in de toekomst opnieuw
                                 aanpakken.
                                 De huidige gameplay tussen speler en dealer voelt voor mij nog niet optimaal.
@@ -119,12 +124,12 @@
                                 zodat het concept écht tot zijn recht komt.
                             </p>
                             <header class="major">
-                                <h2>Dit zijn een aantal leuke stukjes / featues binnen dit project</h2>
+                                <h2 data-i18n="project_features_tag">Dit zijn een aantal leuke stukjes / featues binnen dit project</h2>
                             </header>
                             <div>
-                                <li><a href="#kaarten" class="button noborder nextt scrolly">Kaartjes - Scriptable Objects</a></li>
+                                <li><a href="#kaarten" class="button noborder nextt scrolly" data-i18n="livebetblackjack_cards_ref">Kaartjes - Scriptable Objects</a></li>
                                 <li><a href="#SlotManager" class="button noborder nextt scrolly">SlotManager</a></li>
-                                <li><a href="#Selecting" class="button noborder nextt scrolly">Selecting</a></li>
+                                <li><a href="#Selecting" class="button noborder nextt scrolly" data-i18n="livebetblackjack_selecting_ref">Selecting</a></li>
                                 <li><a href="#PowerCardsLogic" class="button noborder nextt scrolly">PowerCardsLogic</a></li>
                                 <li><a href="#GameManager" class="button noborder nextt scrolly">GameManager</a></li>
                             </div>
@@ -132,7 +137,7 @@
                 </section>
                 <!-- Two -->
                 <section class="spotlights">
-                                        <section id="Kaarten">
+                     <section id="Kaarten">
                         <a class="image">
                             <div class="image-container">
                                 <image src="" type="images"></image>
@@ -142,11 +147,12 @@
                         <div class="content">
                             <div class="inner">
                                 <header class="major">
-                                    <h3>Scriptable objecten kaarten</h3>
+                                    <h3 data-i18n="livebetblackjack_cards_header">Scriptable objecten kaarten</h3>
                                 </header>
                                 <div>
-                                    <p>Voor alle soorten kaarten is gebruikgemaakt van <strong>Scriptable
-                                            Objects</strong>. Dit maakt het
+                                    <p data-i18n="livebetblackjack_cards">
+                                        Voor alle soorten kaarten is gebruikgemaakt van <strong>Scriptable
+                                        Objects</strong>. Dit maakt het
                                         mogelijk om één <strong>kaart prefab</strong> te gebruiken dat bij het trekken
                                         uit de pot
                                         automatisch een willekeurige kaart toegewezen krijgt.
@@ -207,7 +213,8 @@ public class PowerKaarten : ScriptableObject
                                     <h3>SlotManager</h3>
                                 </header>
                                 <div>
-                                    <p>De <strong>SlotManager</strong> regelt de slotmachine tijdens de game. Het script
+                                    <p data-i18n="livebetblackjack_slotmanager">
+                                        De <strong>SlotManager</strong> regelt de slotmachine tijdens de game. Het script
                                         stuurt de
                                         rotatie animaties aan, toont actuele game data zoals health en rondes, en
                                         beheert het trekken en plaatsen van speel en powerkaarten. Hiermee vormt de
@@ -374,7 +381,8 @@ public class SlotManager : MonoBehaviour
                                 <header class="major">
                                     <h3>Selecting</h3>
                                 </header>
-                                <p>Voor het interacten met kaartjes of knopjes binnen het spel gebruik ik de ingebouwde
+                                <p data-i18n="livebetblackjack_selecting">
+                                    Voor het interacten met kaartjes of knopjes binnen het spel gebruik ik de ingebouwde
                                     <strong>OnMouseDown en OnMouseEnter</strong>methoden.
                                     In deze voorbeelden gebruik ik ze om kaartjes te selecteren en om een pop-up UI weer
                                     te geven wanneer er over powerkaartjes wordt gehoverd.
@@ -445,7 +453,7 @@ public class PowerCard : MonoBehaviour
                                 <header class="major">
                                     <h3>PowerCards Logic</h3>
                                 </header>
-                                <p>
+                                <p data-i18n="livebetblackjack_powercard">
                                     Deze code bevat de logica voor <strong>powerkaarten</strong> binnen de game. Elke
                                     functie voert een
                                     specifieke actie uit die een speler of AI kan beïnvloeden, zoals een nieuw hand
@@ -577,7 +585,8 @@ public class PowerCard : MonoBehaviour
                                     <h3>GameManager</h3>
                                 </header>
                                 <div>
-                                    <p>De <strong>GameManager</strong> regelt de game states, zoals wie er heeft
+                                    <p data-i18n="livebetblackjack_gamemanager">
+                                        De <strong>GameManager</strong> regelt de game states, zoals wie er heeft
                                         gewonnen, hoeveel rondes
                                         er zijn gespeeld en hoeveel levens de speler en AI hebben.
                                         Ook wordt hier de totale waarde van de handen gecontroleerd en zijn er een
@@ -1026,6 +1035,7 @@ public class GameManager : MonoBehaviour
 
 
                 <!-- Scripts -->
+                <script src="assets/js/i18n.js"></script>
                 <script src="assets/js/jquery.min.js"></script>
                 <script src="assets/js/jquery.scrolly.min.js"></script>
                 <script src="assets/js/jquery.scrollex.min.js"></script>

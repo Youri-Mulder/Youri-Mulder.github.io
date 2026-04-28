@@ -19,8 +19,10 @@
 			<!-- Note: The "styleN" class below should match that of the banner element. -->
 				<header id="header" class="alt styleFishyBuisness">
 					<a href="index.html" class="logo logoFishyBuisness"><strong>FishyBuisness</strong> <span></span></a>
+                    <a onclick="loadLanguage('nl')" class="button noborder">NL</a>
+			        <a onclick="loadLanguage('en')" class="button noborder">EN</a>
 					<nav>
-						<a href="#menu">NavigatieMenu</a>
+						<a href="#menu" data-i18n="Navigation">NavigatieMenu</a>
 					</nav>
 				</header>
 
@@ -28,6 +30,7 @@
 				<nav id="menu">
 					<ul class="links">
 						<li><a href="index.html">Portfolio</a></li>
+                        <li><a href="LiveBetBlackJackGamePage.html">lifebetblackjack</a></li>
 						<li><a href="DualDefenders.html">DualDefenders</a></li>
 						<li><a href="cybrospace.html">CybroSpace</a></li>
 						<li><a href="FormulaNight.html">FormulaNight</a></li>
@@ -48,8 +51,7 @@
 							<h1>FishyBuisness</h1>
 						</header>
 						<div class="content">
-							<p>Je vangt vissen verkoopt ze en koopt upgrades. Maar pas op voor de storm, die elke dag op je wacht. Het team bestond uit 2 developers en 4 artist (school jaar 2)<br />
-							</p>
+							<p data-i18n="fishybuisness_uitleg">Je vangt vissen verkoopt ze en koopt upgrades. Maar pas op voor de storm, die elke dag op je wacht. Het team bestond uit 2 developers en 4 artist (school jaar 2)<br/></p>
 						</div>
 					</div>
 				</section>
@@ -66,7 +68,7 @@
 									</div>
 								</div>
 								<div class="middeltextcontainer"><header class="major"></header>
-									<h2>Play the game on itch.io</h2>
+									<h2 data-i18n="playthegame">Play the game on itch.io</h2>
 								</header></div>
 									<div class="IconSpacing">
 										<a href="https://jobboo.itch.io/fishy-buisness" class="icon brands alt setcoloritch fa-itch-io"><span class="label">Itch.io</span></a>
@@ -74,7 +76,8 @@
 									<header class="major">
 										<h2>Project info</h2>
 									</header>
-									<p>Fishy Buisness is een project gemaakt met 2 devs en 4 artist. Dit project was een soort game jam met het thema instanly hooked. De speler moet gelijk in de game zitten en niet willen stoppen. 
+									<p data-i18n="fishybuisness_project_info">
+                                        Fishy Buisness is een project gemaakt met 2 devs en 4 artist. Dit project was een soort game jam met het thema instanly hooked. De speler moet gelijk in de game zitten en niet willen stoppen. 
 										Wij hebben het hooked gedeelte letterlijk genomen en een fish hook er van gemaakt waar deze fishing game uit is gekomen. 
 										De docenten waren zo enthousiast over de game dat ze zijden dat we de game moesten opgeven voor de Dutch Game Awards en dat hebben we gedaan. 
 									</p>
@@ -84,7 +87,7 @@
 										</div>
 									</div>
 									<header class="major">
-										<h2>Tijdens dit project heb ik gewerkt aan.</h2>
+										<h2 data-i18n="worked_on">Tijdens dit project heb ik gewerkt aan.</h2>
 									</header>
 									<div>
 										<li><a href="#FishSpawner" class="button noborder nextt scrolly">Fish Spawner</a></li>   
@@ -112,10 +115,12 @@
 											<h3>Fish Spawner</h3>
 										</header>
 										<div>
-											<p>Met de fish spawners wilde ik bereiken dat er alleen vissen gespawnd worden in zones waar de player is (dit volgt de hook van de boot).
+											<p data-i18n="fishybuisness_fishspawner"> 
+                                                Met de fish spawners wilde ik bereiken dat er alleen vissen gespawnd worden in zones waar de player is (dit volgt de hook van de boot).
 												Voor elke spawner kan ingesteld worden welke vissen en hoeveel per soort er gespawnd kunnen worden.
 												Het leek me handig om makkelijk te kunnen zien welke vissen in welke spawners zitten, dus heb ik met gizmos de namen van de vissen in beeld gebracht.
-												De vissen blijven binnen hun zone doordat je hun eindpositie aangeeft binnen de grootte van de spawner.</p>
+												De vissen blijven binnen hun zone doordat je hun eindpositie aangeeft binnen de grootte van de spawner.
+                                            </p>
 										</div>
                                 <div>
                                     <div class="code-container">
@@ -342,7 +347,8 @@ public class FishSpawner : MonoBehaviour
 											<h3>Fish Pooler</h3>
 										</header>
 										<div>
-											<p>De fish pooler bewaart een aantal vissen om geen nieuwe in te hoeven spawnen. Met twee functies (ReturnFish en GetFish) kunnen er heel makkelijk vissen uit de pooler gehaald en teruggezet worden.
+											<p data-i18n="fishybuisness_fishpooler">
+                                                De fish pooler bewaart een aantal vissen om geen nieuwe in te hoeven spawnen. Met twee functies (ReturnFish en GetFish) kunnen er heel makkelijk vissen uit de pooler gehaald en teruggezet worden.
 												Als alle vissen in de pooler in gebruik zijn wordt er een nieuwe aangemaakt en opgeslagen.
 												Komen er door het spawnen te veel vissen in de lijst dan worden de vissen die uitgezet worden ook verwijderd.
 												Hoeveel vissen er in de pooler passen is in de Inspector makkelijk aan te passen.
@@ -462,30 +468,35 @@ public class FishPooler : MonoBehaviour
 										</header>
 										<div>
 											<h3>FishBrain</h3>
-											<p>De FishBrain regelt de taken die de vis altijd uitvoert zoals roteren richting de eindpositie of in het geval dat de vis aan de haak hangt naar de hengel. Ook worden hier variabelen opgeslagen die alle scripts van de vis nodig hebben, zoals de eindpositie van de vis.
+											<p data-i18n="fishybuisness_fishbrain">
+                                                De FishBrain regelt de taken die de vis altijd uitvoert zoals roteren richting de eindpositie of in het geval dat de vis aan de haak hangt naar de hengel. Ook worden hier variabelen opgeslagen die alle scripts van de vis nodig hebben, zoals de eindpositie van de vis.
 												Ik draai de vis met een IEnumerator loop en een slerp naar de eindpositie of hengel afhankelijk van in welke state de vis is.
 											</p>
 											<h3>FishRoaming</h3>
-											<p>In de FishRoaming wordt een positie gegeven aan de vis om naartoe te zwemmen.
-												 Om de zoveel seconden vergelijk ik de interest value van de vis met een random.value om te bepalen of de vis mag gaan bijten waarna de state overgaat naar FishBiting.
+											<p data-i18n="fishybuisness_fishroaming">
+                                                In de FishRoaming wordt een positie gegeven aan de vis om naartoe te zwemmen.
+												Om de zoveel seconden vergelijk ik de interest value van de vis met een random.value om te bepalen of de vis mag gaan bijten waarna de state overgaat naar FishBiting.
 												De vis laat ik bewegen met een MoveTowards.
 												Met een Vector3.distance kijk ik of een vis zijn eindpunt benadert. Met een kleine formule (movespeed *= dist + 0.3f) laat ik de vis vervolgens een beetje remmen.
 											</p>
 											<h3>FishBiting</h3>
-                                            <p>De FishBiting heeft 3 states om bij de houden wat de vis doet met de haak.</p>
+                                            <p data-i18n="fishybuisness_fishbiting">De FishBiting heeft 3 states om bij de houden wat de vis doet met de haak.</p>
 											<h4>-GoingForHook</h4>
-											<p>De GoingForHook zet de eindpositie van de vis op de hook. Er kunnen maar X aantal vissen naar de hook toe gaan.
-										     	 Zijn het er al te veel dan kunnen ze bij FishRoaming niet de FishBiting state krijgen.
-										    	 Als de vis de positie van de hook bereikt gaat de state naar OnHook.
+											<p data-i18n="fishybuisness_fishgoingforhook">
+                                                De GoingForHook zet de eindpositie van de vis op de hook. Er kunnen maar X aantal vissen naar de hook toe gaan.
+										     	Zijn het er al te veel dan kunnen ze bij FishRoaming niet de FishBiting state krijgen.
+										    	Als de vis de positie van de hook bereikt gaat de state naar OnHook.
 										    	Gaat de vis te lang achter de hengel aan dan verliest de vis interesse en zwemt verder.
 											</p>
 											<h4>-OnHook</h4>
-											<p>Deze state wordt gebruikt wanneer de vis aan de haak zit en niet aan het struggelen is.
+											<p data-i18n="fishybuisness_fishonhook">
+                                                Deze state wordt gebruikt wanneer de vis aan de haak zit en niet aan het struggelen is.
 												De positie van de vis wordt hier op de haak geupdatet en regaint stamina in een IEnumerator loop.
 											    Als de vis X % stamina heeft kan de vis ervoor kiezen te struggelen.
 											</p>
 											<h4>-Struggel</h4>
-											<p>Als de vis begint te struggelen pakt de vis binnen een hoek en de range van de vishengel een positie waar de vis heen moet.
+											<p data-i18n="fishybuisness_struggel">
+												Als de vis begint te struggelen pakt de vis binnen een hoek en de range van de vishengel een positie waar de vis heen moet.
 												De speler drukt nu de rechtermuisknop in om de vis binnen te hengelen.
 												<br>
 												Hierbij vermindert de vis zijn stamina en neemt de kracht op de vislijn toe.
@@ -1204,7 +1215,7 @@ public class FishRoaming : MonoBehaviour, IFishState
 											<h3>GameSaving</h3>
 										</header>
 										<div>
-											<p>Om de game op te slaan maak ik gebruik van JSON-bestanden. De game laadt en slaat alle voortgang op bij het starten en afsluiten van de game en slaat daarnaast alles op om de 5 minuten.</p>
+											<p data-i18n="fishybuisness_gamesaving">Om de game op te slaan maak ik gebruik van JSON-bestanden. De game laadt en slaat alle voortgang op bij het starten en afsluiten van de game en slaat daarnaast alles op om de 5 minuten.</p>
 										</div>
                                 <div>
                                     <div class="code-container">
@@ -1386,6 +1397,7 @@ public struct CatalogueSave
 			</div>
 
 		<!-- Scripts -->
+         	<script src="assets/js/i18n.js"></script>
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.scrolly.min.js"></script>
 			<script src="assets/js/jquery.scrollex.min.js"></script>

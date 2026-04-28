@@ -25,17 +25,20 @@
 		<!-- Header -->
 		<header id="header" class="alt">
 			<a href="index.html" class="logo logoCybroSpace"><strong>Portfolio</strong> <span></span></a>
+			<a onclick="loadLanguage('nl')" class="button noborder">NL</a>
+			<a onclick="loadLanguage('en')" class="button noborder">EN</a>
 			<nav>
-				<a href="#menu">NavigatieMenu</a>
+				<a href="#menu" data-i18n="Navigation">NavigatieMenu</a>
 			</nav>
 		</header>
 
 		<!-- Menu -->
 		<nav id="menu">
 			<ul class="links">
-				<li><a href="#Overmij" class="button noborder nextt scrolly">Over mij</a></li>
-				<li><a href="#Games" class="button noborder nextt scrolly">Projecten</a></li>
-				<li><a href="#Skills" class="button noborder nextt scrolly">Skills</a></li>
+			<li><a href="#Overmij" class="button noborder nextt scrolly" data-i18n="tag_about">Over mij</a></li>
+			<li><a href="#Games" class="button noborder nextt scrolly" data-i18n="tag_projects">Projecten</a></li>
+			<li><a href="#Skills" class="button noborder nextt scrolly">Skills</a></li>
+			</ul>
 		</nav>
 
 		<!-- Banner -->
@@ -43,21 +46,21 @@
 			<div class="inner">
 				<div class="middeltextcontainer">
 					<header class="major">
-						<h1>Youri Mulder <br>Game Programmeur</h1>
+						<h1>Youri Mulder</h1><h1 data-i18n="work_title">Game Programmeur</h1>
 					</header>
 				</div>
 				<header class="major">
-					<h4>Ik ben een gepassioneerde game developer en gebruik Unity om interactieve games te ontwikkelen.
+					<h4><strong data-i18n="about_text">Ik ben een gepassioneerde game developer en gebruik Unity om interactieve games te ontwikkelen.
 						Neem een kijkje in mijn portfolio en ontdek wat ik heb gemaakt en hoe deze projecten tot stand
-						zijn gekomen.<br />
-						</p>
+						zijn gekomen.	
+					</strong></h4>
 				</header>
 				<div class="IconSpacing">
 					<div class="content">
 						<div>
 							<ul class="actions">
 								<section>
-									<li><a href="#Games" class="button scrolly">Projecten</a></li>
+									<li><a href="#Games" class="button scrolly"data-i18n="tag_projects">Projecten</a></li>
 								</section>
 							</ul>
 						</div>
@@ -71,14 +74,14 @@
 						<div>
 							<ul class="actions">
 								<section>
-									<li><a href="#Overmij" class="button scrolly">Over mij</a></li>
+									<li><a href="#Overmij" class="button scrolly" data-i18n="tag_about">Over mij</a></li>
 								</section>
 							</ul>
 						</div>
 						<div>
 							<ul class="actions">
 								<section>
-									<li><a href="#Contact" class="button scrolly">Contact</a></li>
+									<li><a href="#Contact" class="button scrolly" data-i18n="tag_contact">Contact</a></li>
 								</section>
 							</ul>
 						</div>
@@ -104,12 +107,12 @@
 						<img src="images/pic02.jpg" alt="" />
 					</span>
 					<header class="major">
-						<h3><a href="FishyBuisness.html" class="link">FishyBuisness (Fishing)</a></h3>
+						<h3><a href="FishyBuisness.html" class="link">FishyBuisness (Fishing Game)</a></h3>
 						<div><b>Unity-C#-3D</b></div>
 						<div>
-							<h5>Development tijd - 8 Weken - 2 devs 4 art</h5>
+							<h5 data-i18n="fishybuisness_tag">🕒 8 Weken - 2 devs 4 artist</h5>
 						</div>
-						<p>FishyBusiness is een casual visspel.
+						<p data-i18n="fishybuisness_uitleg">FishyBusiness is een casual visspel.
 							Je vangt vissen, verkoopt ze en koopt upgrades. Maar pas op voor de storm, die elke dag op
 							je wacht. (schooljaar 2)
 						</p>
@@ -124,9 +127,9 @@
 						<h3><a href="LiveBetBlackJackGamePage.html" class="link">LifeBetBlackJack</a></h3>
 						<div><b>Unity-C#-3D</b></div>
 						<div>
-							<h5>Development tijd - 4 Weken - solo project</h5>
+							<h5 data-i18n="livebetblackjack_tag">🕒 4 Weken - solo project</h5>
 						</div>
-						<p>Blackjack, maar dan anders, een passieproject waarin je met de dealer speelt en het spel
+						<p data-i18n="livebetblackjack_uitleg">Blackjack, maar dan anders, een passieproject waarin je met de dealer speelt en het spel
 							beïnvloedt met krachtige kaartmechanieken.</p>
 					</header>
 				</article>
@@ -139,9 +142,9 @@
 						<h3><a href="DualDefenders.html" class="link">Dual Defenders (Tower Defence)</a></h3>
 						<div><b>Unity-C#-3D</b></div>
 						<div>
-							<h5>Development tijd - 4 Weken - 2 devs</h5>
+							<h5 data-i18n="dualdefenders_tag">🕒 4 Weken - 2 devs</h5>
 						</div>
-						<p>DualDefenders is een tower defense game.
+						<p data-i18n="dualdefenders_uitleg">DualDefenders is een tower defense game.
 							In deze tower defense moet je niet alleen je eigen base beschermen maar ook vijanden sturen
 							naar de AI tegenstander. (schooljaar 2).</p>
 					</header>
@@ -155,10 +158,9 @@
 						<h3><a href="cybrospace.html" class="link">CybroSpace (TwinStick)</a></h3>
 						<div><b>Unity-C#-3D</b></div>
 						<div>
-							<h5>Development tijd - 8 Weken - 2 devs 2 art</h5>
+							<h5 data-i18n="cybrospace_tag">🕒 8 Weken - 2 devs 2 artist</h5>
 						</div>
-						<p>CybroSpace is een top down twin stick shooter groeps project gemaakt in 7 weken (school jaar
-							1)</p>
+						<p data-i18n="cybrospace_uitleg">CybroSpace is een top down twin stick shooter groeps project gemaakt in 7 weken (school jaar1)</p>
 					</header>
 				</article>
 				<article class="tiles SetColorFormulaNight">
@@ -167,12 +169,12 @@
 						<img src="images/pic03.jpg" alt="" />
 					</span>
 					<header class="major">
-						<h3><a href="FormulaNight.html" class="link">FormulaNight (Racer)</a></h3>
+						<h3><a href="FormulaNight.html" class="link">FormulaNight (Race Game)</a></h3>
 						<div><b>Unity-C#-3D</b></div>
 						<div>
-							<h5>Development tijd - 4 Weken - 2 devs 3 art</h5>
+							<h5 data-i18n="formulanight_tag">🕒 4 Weken - 2 devs 4 artist</h5>
 						</div>
-						<p>FormulaNight is een racegame die 's nachts afspeelt. Ik heb hier vooral gewerkt aan het
+						<p data-i18n="formulanight_uitleg">FormulaNight is een racegame die 's nachts afspeelt. Ik heb hier vooral gewerkt aan het
 							opslaan van bijbehorende tijden en laps (schooljaar 2).</p>
 					</header>
 				</article>
@@ -185,9 +187,9 @@
 						<h3><a href="BugOff.html" class="link">BugOff (SHMUP)</a></h3>
 						<div><b>Unity-C#-3D</b></div>
 						<div>
-							<h5>Development tijd - 4 Weken - 2 devs 3 art</h5>
+							<h5 data-i18n="bugoff_tag">🕒 4 Weken - 2 devs 3 artist</h5>
 						</div>
-						<p>BugOff is een Shmub gemaakt in 3 weken in een team van 5 (school jaar 1)</p>
+						<p data-i18n="bugoff_uitleg">BugOff is een Shmub gemaakt in 3 weken in een team van 5 (school jaar 1)</p>
 					</header>
 				</article>
 				<article class="tiles SetColorDualDefenders">
@@ -196,7 +198,7 @@
 						<img src="images/pic02.jpg" alt="" />
 					</span>
 					<header class="major">
-						<h3><a href="" class="link">Comming Soon</a></h3>
+						<h3 data-i18n="working_on"><a href="" class="link">still working on this</a></h3>
 						<div><b></b></div>
 						<div>
 							<h5></h5>
@@ -239,11 +241,14 @@
 								<h3>Git</h3>
 							</li>
 							<li class="columlist">
-								<h3>shader graph</h3>
+								<h3>C++</h3>
 							</li>
 							<li class="columlist">
-								<h3>Samenwerking</h3>
+								<h3 data-i18n="skill_samenwerken">Samenwerking</h3>
 							</li>
+							<!--
+							shader graph
+							-->
 						</ul>
 					</div>
 				</section>
@@ -261,13 +266,13 @@
 								<div class="content">
 									<div class="inner">
 										<header class="major">
-											<h2>Over mij</h2>
+											<h2 data-i18n="tag_about">Over mij</h2>
 										</header>
 										<div>
-											<p>
+											<p data-i18n="about_page_p1">
 												Ik ben Youri Mulder, <span id="age"></span> jaar oud, en ik ben een
 												gepassioneerde game developer.
-												Programmeren op zichzelf vind ik leuk om te doen, of dat nu in PHP, C#
+												Programmeren op zichzelf vind ik leuk om te doen, of dat nu in C#, C++
 												of een andere taal is,
 												maar het programmeren binnen game development spreekt mij het meest aan.
 												Dit komt vooral doordat games interactief zijn en de logica die je
@@ -275,7 +280,7 @@
 												van het type game dat je maakt geen enkel systeem voelt hetzelfde.
 											</p>
 
-											<p>
+											<p data-i18n="about_page_p2">
 												Mijn interesse in game development begon met GameMaker Studio, waar ik
 												voor het eerst in aanraking
 												kwam met visual scripting via drag and drop codeblokken.
@@ -290,7 +295,7 @@
 												ik nu in mijn vierde leerjaar zit.
 											</p>
 
-											<p>
+											<p data-i18n="about_page_p3">
 												Na mijn opleiding wil ik mij verder blijven ontwikkelen binnen game
 												development en mij blijven verdiepen
 												in het bouwen van sterke gameplay en game systemen.
@@ -306,7 +311,9 @@
 					<div class="middeltext">
 						<div class="middeltextcontainer">
 							<header class="major">
+								<!--
 								<h2>linkedin / CV / Mail</h2>
+								-->
 							</header>
 						</div>
 					</div>
@@ -327,6 +334,7 @@
 	</div>
 
 	<!-- Scripts -->
+	<script src="assets/js/i18n.js"></script>
 	<script>
 		fetch("https://webserver.yourimuldergamedev.nl/Age.php")
 			.then(response => response.text())

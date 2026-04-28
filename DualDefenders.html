@@ -24,8 +24,10 @@
 				<!-- Note: The "styleN" class below should match that of the banner element. -->
 					<header id="header" class="alt styleDualDefenders">
 						<a href="index.html" class="logo logoDualDefenders"><strong>DualDefenders</strong> <span></span></a>
+                        <a onclick="loadLanguage('nl')" class="button noborder">NL</a>
+			            <a onclick="loadLanguage('en')" class="button noborder">EN</a>
 						<nav>
-							<a href="#menu">NavigatieMenu</a>
+							<a href="#menu" data-i18n="Navigation">NavigatieMenu</a>
 						</nav>
 					</header>
 
@@ -34,6 +36,7 @@
 						<ul class="links">
 							<li><a href="index.html">Portfolio</a></li>
 							<li><a href="FishyBuisness.html">FishyBuisness</a></li>
+                            <li><a href="LiveBetBlackJackGamePage.html">lifebetblackjack</a></li>
 							<li><a href="cybrospace.html">CybroSpace</a></li>
 							<li><a href="FormulaNight.html">FormulaNight</a></li>
 							<li><a href="BugOff.html">BuggOff</a></li>
@@ -52,8 +55,9 @@
 								<h1>DualDefenders</h1>
 							</header>
 							<div class="content">
-								<p>DualDefenders is een tower defense game gemaakt door twee developers.
-									 In deze tower defense moet je niet alleen je eigen base beschermen maar ook vijanden sturen naar de AI tegenstander.<br />
+								<p data-i18n="dualdefenders_uitleg">
+                                    DualDefenders is een tower defense game gemaakt door twee developers.
+									In deze tower defense moet je niet alleen je eigen base beschermen maar ook vijanden sturen naar de AI tegenstander.<br />
 								</p>
 								<hr>
 							</div>
@@ -93,21 +97,22 @@
 									<header class="major">
 											<h2>Project info</h2>
 										</header>
-										<p>Ik heb dit project gemaakt met één andere developer. We moesten bij dit project gebruikmaken van een pathfinding AI gemaakt door een docent.
-											 We kozen voor de waypoint path finding en hebben daarmee een tower defense game gemaakt.
+										<p data-i18n="dualdefenders_project_info">
+                                            Ik heb dit project gemaakt met één andere developer. We moesten bij dit project gebruikmaken van een pathfinding AI gemaakt door een docent.
+											We kozen voor de waypoint path finding en hebben daarmee een tower defense game gemaakt.
 											Als twist op de tower defense hebben we het van twee kanten gemaakt en moet je nu ook vijanden plaatsen bij de AI tegenstander.
 										</p>
 									</header>
 
 									<header class="major">
-										<h2>Tijdens dit project heb ik gewerkt aan.</h2>
+										<h2 data-i18n="worked_on">Tijdens dit project heb ik gewerkt aan.</h2>
 									</header>
 
 									<div>
 										<li><a href="#CamMovement" class="button noborder nextt scrolly">Camera movement</a></li>   
 										<li><a href="#Enemies" class="button noborder nextt scrolly">Enemies</a></li>   
-										<li><a href="#TegenstanderAI" class="button noborder nextt scrolly">Tegenstander AI</a></li>   
-										<li><a href="#EnemiesPlaatsen" class="button noborder nextt scrolly">Enemies plaatsen</a></li>   
+										<li><a href="#TegenstanderAI" class="button noborder nextt scrolly" data-i18n="dualdefenders_tegenstander_ai_header">Tegenstander AI</a></li>   
+										<li><a href="#EnemiesPlaatsen" class="button noborder nextt scrolly" data-i18n="dualdefenders_enemies_plaatsen_header">Enemies plaatsen</a></li>   
 									</div>
 									
 								</div>
@@ -131,8 +136,10 @@
 											<h3>CameraMovement</h3>
 										</header>
 										<div>
-											<p>Om te kunnen wisselen tussen jouw veld en dat van de tegenstander heb ik een camera gemaakt die van een startvector naar een eindvector beweegt door middel van een Slerp. 
-												Waar de camera zich bevindt beïnvloedt ook welke kant van de map je wel en niet kunt horen.</p>
+											<p data-i18n="dualdefenders_camera_movement">
+                                                Om te kunnen wisselen tussen jouw veld en dat van de tegenstander heb ik een camera gemaakt die van een startvector naar een eindvector beweegt door middel van een Slerp. 
+												Waar de camera zich bevindt beïnvloedt ook welke kant van de map je wel en niet kunt horen.
+                                            </p>
 										</div>
 								<div>
                                     <div class="code-container">
@@ -244,13 +251,16 @@ public class CameraMovment : MonoBehaviour
 											<h3>Enemies</h3>
 										</header>
 										<div>
-											<p>We moesten voor dit project voor de beweging een pathfinding-systeem van een docent gebruiken. Mijn teamgenoot en ik hebben gekozen voor waypoints pathfinding. 
+											<p data-i18n="dualdefenders_enemy">
+                                                We moesten voor dit project voor de beweging een pathfinding-systeem van een docent gebruiken. Mijn teamgenoot en ik hebben gekozen voor waypoints pathfinding. 
 												De rest van de enemies heb ik zelf gemaakt. 
-												De enemies gebruiken scriptable objects om heel eenvoudig verschillende varianten te maken.</p>
+												De enemies gebruiken scriptable objects om heel eenvoudig verschillende varianten te maken.
+                                            </p>
 											<h4>Enemy Base</h4>
-											<p>In de AI-basis worden alle waarden ingesteld en staat de code die wordt gebruikt wanneer de enemy zijn eindpunt heeft bereikt.</p>
-											<h4>Shooting Enemy</h4>
-											<p>Voor de shooting enemy gebruik ik een overlap sphere om te controleren of er een toren binnen het bereik van de enemy is. 
+											<p data-i18n="dualdefenders_enemy_base">In de AI-basis worden alle waarden ingesteld en staat de code die wordt gebruikt wanneer de enemy zijn eindpunt heeft bereikt.</p>
+											<h4 data-i18n="dualdefenders_shootenemy">Shooting Enemy</h4>
+											<p data-i18n="dualdefenders_enemy_shooting">
+                                                Voor de shooting enemy gebruik ik een overlap sphere om te controleren of er een toren binnen het bereik van de enemy is. 
 												Vervolgens wordt er een kogel gespawned en gericht op de dichtstbijzijnde toren. Tot slot wordt een coroutine gestart voor de cooldown.
 												De kogel wordt vervolgens met een Vector3 Movement naar de toren bewogen.
 											</p>
@@ -476,13 +486,15 @@ public class ShootingNPC : AiBase
 								<div class="content">
 									<div class="inner">
 										<header class="major">
-											<h3>Tegenstander AI</h3>
+											<h3 data-i18n="dualdefenders_tegenstander_ai_header">Tegenstander AI</h3>
 										</header>
 										<div>
-											<p>De tegenstander-AI heeft meerdere states en de mogelijkheid om towers te plaatsen en te upgraden. 
+											<p data-i18n="dualdefenders_tegenstander_ai">
+                                                De tegenstander-AI heeft meerdere states en de mogelijkheid om towers te plaatsen en te upgraden. 
 												Met de choosing state wordt er gekeken naar wat er in de map nodig is. 
 												Als er genoeg towers op de map staan, gaat de AI meer bijbouwen of towers upgraden en dit is allemaal instelbaar. 
-												Om te voorkomen dat de AI towers en upgrades gaat spammen is er ook een idle state.</p>
+												Om te voorkomen dat de AI towers en upgrades gaat spammen is er ook een idle state.
+                                            </p>
 										</div>
                                 <div>
                                     <div class="code-container">
@@ -1030,11 +1042,13 @@ public class UpgradeTowers : MonoBehaviour, IState
 								<div class="content">
 									<div class="inner">
 										<header class="major">
-											<h3>Enemies plaatsen</h3>
+											<h3 data-i18n="dualdefenders_enemies_plaatsen_header">Enemies plaatsen</h3>
 										</header>
 										<div>
-											<p>De enemies kunnen worden geplaatst op spawn tiles. Via de spawn manager wordt er dan een enemy gespawned op die tile. 
-												Van de spawn tile wordt een tag gepakt die gelijkstaat aan een pad dat de enemy moet volgen.</p>
+											<p data-i18n="dualdefenders_enemy_plaatsen"> 
+                                                De enemies kunnen worden geplaatst op spawn tiles. Via de spawn manager wordt er dan een enemy gespawned op die tile. 
+												Van de spawn tile wordt een tag gepakt die gelijkstaat aan een pad dat de enemy moet volgen.
+                                            </p>
 										</div>
 								<div>
                                     <div class="code-container">
@@ -1095,6 +1109,7 @@ public class SpawnTile : MonoBehaviour
 			</div>
 
 		<!-- Scripts -->
+            <script src="assets/js/i18n.js"></script>
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.scrolly.min.js"></script>
 			<script src="assets/js/jquery.scrollex.min.js"></script>

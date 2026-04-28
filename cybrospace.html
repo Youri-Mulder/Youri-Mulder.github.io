@@ -23,8 +23,10 @@
 				<!-- Note: The "styleN" class below should match that of the banner element. -->
 					<header id="header" class="alt styleCybroSpace">
 						<a href="index.html" class="logo logoCybroSpace"><strong>CybroSpace</strong> <span></span></a>
+                        <a onclick="loadLanguage('nl')" class="button noborder">NL</a>
+			            <a onclick="loadLanguage('en')" class="button noborder">EN</a>
 						<nav>
-							<a href="#menu">NavigatieMenu</a>
+							<a href="#menu" data-i18n="Navigation">NavigatieMenu</a>
 						</nav>
 					</header>
 
@@ -33,6 +35,7 @@
 						<ul class="links">
 							<li><a href="index.html">Portfolio</a></li>
 							<li><a href="FishyBuisness.html">FishyBuisness</a></li>
+                            <li><a href="LiveBetBlackJackGamePage.html">lifebetblackjack</a></li>
 							<li><a href="DualDefenders.html">DualDefenders</a></li>
 							<li><a href="FormulaNight.html">FormulaNight</a></li>
 							<li><a href="BugOff.html">BugOff</a></li>
@@ -51,8 +54,7 @@
 								<h1>CybroSpace</h1>
 							</header>
 							<div class="content">
-								<p>CybroSpace is een top down twin stick game groeps project gemaakt in 7 weken. Het team bestond uit 2 developers en 2 artist (school jaar 1).<br />
-								</p>
+								<p data-i18n="cybrospace_uitleg">CybroSpace is een top down twin stick game groeps project gemaakt in 7 weken. Het team bestond uit 2 developers en 2 artist (school jaar 1).<br/></p>
 							</div>
 						</div>
 					</section>
@@ -70,13 +72,14 @@
                                         <h2>Project Info</h2>
 									</header>
 									<div>
-									<p>Dit was een groepsproject voor school dat samen met de artist in 7 weken is gemaakt. 
+									<p data-i18n="cybrospace_project_info">
+                                        Dit was een groepsproject voor school dat samen met de artist in 7 weken is gemaakt. 
 										Dit project ging helaas niet al te soepel en er waren wat tegenslagen maar uiteindelijk hebben we er toch iets vets van weten te maken. 
 										We moesten met dit project een top down twinstick game maken.
 									</p>
 									</div>
 									<header class="major">
-										<h2>Tijdens dit project heb ik gewerkt aan.</h2>
+										<h2 data-i18n="worked_on">Tijdens dit project heb ik gewerkt aan.</h2>
 									</header>
 									<div>
 										<li><a href="#CameraMovement" class="button noborder nextt scrolly">Camera Movement</a></li>   
@@ -109,10 +112,12 @@
 												<h3>CameraMovement</h3>
 											</header>
 											<div>
-											<p>Sommige gedeeltes in de map waren niet goed te zien door de camera positie. 
+											<p data-i18n="cybrospace_camera_movement">
+                                                Sommige gedeeltes in de map waren niet goed te zien door de camera positie. 
 												Ik had al een camera die de speler volgt en dat script heb ik aangepast zodat de camera ook 180 graden kan draaien zodat je meer van de map kunt zien en beter kunt rondbewegen. 
 												De positie van de camera wordt ook een klein beetje aangepast zodat de speler altijd goed in beeld staat omdat de speler niet helemaal in het midden van het beeld zit. 
-												De camera wordt gedraaid met een Lerp en een simpele timer.</p>
+												De camera wordt gedraaid met een Lerp en een simpele timer.
+                                            </p>
 											</div>
                                 <div>
                                     <div class="code-container">
@@ -191,16 +196,18 @@ public class CameraScript : MonoBehaviour
 									<div id="Doors" class="content">
 										<div class="inner">
 											<header class="major">
-												<h3>KeyCard / Deuren</h3>
+												<h3 data-i18n="cybrospace_keycard_door_tag1">KeyCard / Deuren</h3>
 											</header>
 											<div>
-												<h4>KeyCard / klap Deuren</h4>
+												<h4 data-i18n="cybrospace_keycard_door_tag2">KeyCard / klap Deuren</h4>
 											</div>
-											<p>De keycarddeur gaat alleen open als er een bool true is. 
+											<p data-i18n="cybrospace_keycard_door">
+                                                De keycarddeur gaat alleen open als er een bool true is. 
 												Deze bool kan in de inspector op true worden gezet zodat de deur altijd open kan zijn of met een keycard geopend moet worden. 
 												De kleur van de deuren werd eerst veranderd naar de kleur van de keycards maar dat wordt niet gebruikt in de laatste versie van de game. 
 												De deuren houden met een enum de staat bij of de deur open/dicht aan het gaan is. 
-												De keycarddeuren werken met waypoints waarbij de deuren naar de waypoints gaan en de klapdeuren roteren van de ene rotatie naar de andere.</p>
+												De keycarddeuren werken met waypoints waarbij de deuren naar de waypoints gaan en de klapdeuren roteren van de ene rotatie naar de andere.
+                                            </p>
                                 <div>
                                     <div class="code-container">
                                         <div class="code-header"
@@ -459,11 +466,11 @@ public class Klapdeur : MonoBehaviour
 											<div>
 												<h4>KeyCards</h4>
 											</div>
-											<p>De deuren hebben allemaal een bool die aangeeft of de speler de bijbehorende keycards heeft. 
+											<p data-i18n="cybrospace_keycards">
+                                                De deuren hebben allemaal een bool die aangeeft of de speler de bijbehorende keycards heeft. 
 												Als er een keycard wordt opgepakt worden de bools op true gezet voor alle deuren die de keycard in de inspector hebben staan. 
 												Op de UI bevindt zich een grid waar keycards op gespawnd worden wanneer er een keycard wordt opgepakt. 
 												De kleur van de UI keycard wordt omgezet naar de kleur van de opgepakte keycard.
-
 											</p>
                                 <div>
                                     <div class="code-container">
@@ -560,9 +567,11 @@ public class KeyCardPickUp : MonoBehaviour
 												<h3>LevelSelect</h3>
 											</header>
 											<div>
-											<p>Niet alle levels zijn altijd speelbaar dus schakelen de levelselectknoppen zichzelf uit als ze zien dat de speler nog niet bij dat level is aangekomen. 
+											<p data-i18n="cybrospace_levelselect">
+                                                Niet alle levels zijn altijd speelbaar dus schakelen de levelselectknoppen zichzelf uit als ze zien dat de speler nog niet bij dat level is aangekomen. 
 												De knoppen kijken in het DataCenter van de game om te zien bij welk level de speler is. 
-												Als de knop actief is kan een level worden gestart met de leveltag in de knop die gemakkelijk naar elk level kan worden veranderd zodat de knoppen makkelijk instelbaar zijn voor komende levels die nog in ontwikkeling zijn.</p>
+												Als de knop actief is kan een level worden gestart met de leveltag in de knop die gemakkelijk naar elk level kan worden veranderd zodat de knoppen makkelijk instelbaar zijn voor komende levels die nog in ontwikkeling zijn.
+                                            </p>
 											</div>
                                 <div>
                                     <div class="code-container">
@@ -630,10 +639,12 @@ public class LevelLoader : MonoBehaviour
 												<h3>WallTurret</h3>
 											</header>
 											<div>
-												<p>De WallTurret kijkt of de speler binnen bereik is met een OverlapSphere en een angle(VisonCone). 
+												<p data-i18n="cybrospace_wallturret">
+                                                    De WallTurret kijkt of de speler binnen bereik is met een OverlapSphere en een angle(VisonCone). 
 													Met een raycast wordt er gekeken of er geen muur tussen staat en dan begint de WallTurret op de speler te schieten. 
 													Met RotateTowards draait de turret naar de speler. Voor wat visuele feedback heeft de turret een licht die het schietveld aangeeft. 
-													Als de speler in het zicht van de turret is verandert de kleur van het licht naar rood.</p>
+													Als de speler in het zicht van de turret is verandert de kleur van het licht naar rood.
+                                                </p>
 											</div>
                                 <div>
                                     <div class="code-container">
@@ -736,9 +747,11 @@ public class WallTurret : MonoBehaviour
 												<h3>GameSaving</h3>
 											</header>
 											<div>
-											<p>De game slaat alles wat opgeslagen moet worden op in lijsten in een aparte class die met een BinaryFormatter wordt omgezet tot een save file. 
-												De stats waar de speler mee eindigt worden naar het volgende level overgezet zodat de speler verder kan gaan met dezelfde stats. 
-												Als de speler een vorig level wil spelen kan de speler met de oude stats verder omdat alles per level word opgeslagen.</p>
+                                                <p data-i18n="cybrospace_gamesaving">
+                                                    De game slaat alles wat opgeslagen moet worden op in lijsten in een aparte class die met een BinaryFormatter wordt omgezet tot een save file. 
+												    De stats waar de speler mee eindigt worden naar het volgende level overgezet zodat de speler verder kan gaan met dezelfde stats. 
+												    Als de speler een vorig level wil spelen kan de speler met de oude stats verder omdat alles per level word opgeslagen.
+                                                </p>
 											</div>
                                 <div>
                                     <div class="code-container">
@@ -1045,10 +1058,12 @@ public class StorageCenter
 												<h3>Camera's</h3>
 											</header>
 											<div>
-												<p>De camera's kijken of de speler ergens rondloopt door middel van een OverlapSphere en angle (vision cone). een raycast controleert of er geen obstakel tussen staat. 
+												<p data-i18n="cybrospace_camera">
+                                                    De camera's kijken of de speler ergens rondloopt door middel van een OverlapSphere en angle (vision cone). een raycast controleert of er geen obstakel tussen staat. 
 													Het gezichtsveld (FOV) van de camera wordt aangegeven met licht dat rood wordt als de speler erin loopt. 
 													De camera geeft aan alle vijanden die in de buurt staan aan dat de speler in de buurt is zodat ze gaan aanvallen. 
-													De camera heeft de mogelijkheid om rond te draaien en dit is aan te passen in de inspector.</p>
+													De camera heeft de mogelijkheid om rond te draaien en dit is aan te passen in de inspector.
+                                                </p>
 											</div>
                                 <div>
                                     <div class="code-container">
@@ -1170,8 +1185,10 @@ public class WallCamera : MonoBehaviour
 												<h3>GameManager</h3>
 											</header>
 											<div>
-											<p>De GameManager wordt gebruikt om het death screen in te laden en automatisch het level te herstarten als de speler doodgaat. 
-												Zodra de bossfight is geladen wordt de GameManager overschreven en doet deze niets meer.</p>
+											<p data-i18n="cybrospace_gamemanager">
+                                                De GameManager wordt gebruikt om het death screen in te laden en automatisch het level te herstarten als de speler doodgaat. 
+												Zodra de bossfight is geladen wordt de GameManager overschreven en doet deze niets meer.
+                                            </p>
 											</div>
                                 <div>
                                     <div class="code-container">
@@ -1276,15 +1293,18 @@ public class GameManager : MonoBehaviour
 												<h3>Enemies</h3>
 											</header>
 											<div>
-											<p>Ik wilde enemies hebben die gemakkelijk aan te passen zijn dus deze enemies hebben ook best wel wat instellingen. 
+											<p data-i18n="cybrospace_enemies_p1">
+                                                Ik wilde enemies hebben die gemakkelijk aan te passen zijn dus deze enemies hebben ook best wel wat instellingen. 
 												Zo kunnen de zichtafstand, zichtangle en de manier van bewegen worden aangepast. 
 												De enemies kunnen waypoints volgen. dezelfde waypoints kunnen ze ook in een random volgorde volgen. en de enemies kunnen zelf rondlopen met random movement.
 											</p>
-											<p>Ik heb de vision cone van de enemies gemaakt met een OverlapSphere, angle en een raycast die kijkt of er geen obstakels in de weg staan. 
+											<p data-i18n="cybrospace_enemies_p2">
+                                                Ik heb de vision cone van de enemies gemaakt met een OverlapSphere, angle en een raycast die kijkt of er geen obstakels in de weg staan. 
 												De AI heeft meerdere states om aan te vallen rond te lopen of achter de speler aan te gaan. 
 												Afhankelijk van of er ergens een obstakel staat of de speler te ver van de enemy is worden die states aangepast.
 											</p>
-											<p>De enemies hebben de mogelijkheid om andere enemies binnen een bepaalde range en zonder obstakels in de weg te alarmeren. 
+											<p data-i18n="cybrospace_enemies_p3">
+                                                De enemies hebben de mogelijkheid om andere enemies binnen een bepaalde range en zonder obstakels in de weg te alarmeren. 
 												Daarnaast kunnen de enemies alert worden door camera's die met een OverlapSphere alle in range enemies detecteren. 
 												Als de speler in de buurt is worden die enemies alert en krijgen ze de positie van de speler.
 											</p>
@@ -1688,12 +1708,14 @@ public class AiBase : MonoBehaviour
 										    <div>
 												<h3>Boss</h3>
 											</div>
-											<p>De tijd begon een beetje krap te worden dus de boss is helaas een beetje gehaast. 
+											<p data-i18n="cybrospace_boss">
+                                                De tijd begon een beetje krap te worden dus de boss is helaas een beetje gehaast. 
 												De boss heeft meerdere aanvallen die willekeurig worden uitgevoerd zoals de normale aanval die ongeveer één kogel per seconde schiet, 
 												een burstaanval en er was het plan voor granaten maar dat is nu ook een normale aanval geworden omdat er helaas te weinig tijd was. 
 												De boss past zijn positie aan gebaseerd op of de speler ver weg of dichtbij is. 
 												Ook als de boss te vaak wordt geraakt gaat hij op zoek naar een andere positie. 
-												De boss heeft een OverlapSphere en een angle vision cone.</p>
+												De boss heeft een OverlapSphere en een angle vision cone.
+                                            </p>
                                 <div>
                                     <div class="code-container">
                                         <div class="code-header"
@@ -1926,9 +1948,11 @@ public class BossBattle : MonoBehaviour
 											<div>
 											<h3>BossBattleManager</h3>
 											</div>
-											<p>De BossBattleManager houdt de hele bossfight bij. Als de speler doodgaat wordt alles in de boss area hersteld naar de oorspronkelijke staat. 
+											<p data-i18n="cybrospace_bossbattlemanager">
+                                                De BossBattleManager houdt de hele bossfight bij. Als de speler doodgaat wordt alles in de boss area hersteld naar de oorspronkelijke staat. 
 												Nieuwe enemies worden ingespawnd en ook de spelerstats worden teruggezet. De BossBattleManager regelt ook het in- en uitfaden van het beeld zolang de bossfight bezig is. 
-												Als alle enemies en de boss dood zijn is de bossfight klaar en wordt de game automatisch opgeslagen en het startscherm ingeladen.</p>
+												Als alle enemies en de boss dood zijn is de bossfight klaar en wordt de game automatisch opgeslagen en het startscherm ingeladen.
+                                            </p>
                                 <div>
                                     <div class="code-container">
                                         <div class="code-header"
@@ -2190,6 +2214,7 @@ public class BossBattleManager : MonoBehaviour
 			</div>
 
 		<!-- Scripts -->
+         	<script src="assets/js/i18n.js"></script>
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.scrolly.min.js"></script>
 			<script src="assets/js/jquery.scrollex.min.js"></script>
