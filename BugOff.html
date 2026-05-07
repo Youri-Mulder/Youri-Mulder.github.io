@@ -38,9 +38,9 @@
 		<nav id="menu">
 			<ul class="links">
 				<li><a href="index.html">Portfolio</a></li>
-				<li><a href="FishyBuisness.html">FishyBuisness</a></li>
-                <li><a href="LiveBetBlackJackGamePage.html">lifebetblackjack</a></li>
-				<li><a href="DualDefenders.html">DualDefenders</a></li>
+				<li><a href="FishyBusiness.html">FishyBusiness</a></li>
+                <li><a href="LifeBetBlackJack.html">LifeBetBlackJack</a></li>
+				<li><a href="DuelDefenders.html">DuelDefenders</a></li>
 				<li><a href="cybrospace.html">CybroSpace</a></li>
 				<li><a href="FormulaNight.html">FormulaNight</a></li>
 			</ul>
@@ -153,7 +153,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         TurnTimer += Time.deltaTime;
-        PerCentage = TurnTimer / TurnTime;
+        Percentage = TurnTimer / TurnTime;
 
         EndRotation = Quaternion.Euler(Z * RotationAmountZ, 0, X * -RotationAmountX);
 
@@ -163,7 +163,7 @@ public class PlayerMovement : MonoBehaviour
             RotationStart = transform.rotation;
         }
 
-        transform.rotation = Quaternion.Slerp(RotationStart, EndRotation, PerCentage);
+        transform.rotation = Quaternion.Slerp(RotationStart, EndRotation, Percentage);
 
         // dash
         if (DashTimer < DashTimerReset)
@@ -240,7 +240,7 @@ public class PlayerMovement : MonoBehaviour
 public class MapScript : MonoBehaviour
 {
     [SerializeField] private Transform[] Waypoints;
-    [SerializeField] private List<GameObject> MapDelen;
+    [SerializeField] private List&lt;GameObject&gt; MapDelen;
     [SerializeField] private float Speed;
     // 1 is voor de endwaypoint en 0 is de startwaypoint
 
@@ -427,9 +427,9 @@ public class MrZandhoopje : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, PlayerPoint, ChargeSpeed * Time.deltaTime);
         }
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// zet de waypoint op een nieuwe positie binnen het aangegeven speelveld
-    /// </summary>
+    /// &lt;/summary&gt;
     private void ReplaceWayPoint()
     {
         float X = Random.Range((int)spawner.FieldPoints[0].transform.position.z, (int)spawner.FieldPoints[1].transform.position.z);
@@ -443,9 +443,9 @@ public class MrZandhoopje : MonoBehaviour
     }
 
     bool SoundEffectUp = false;
-    /// <summary>
+    /// &lt;summary&gt;
     /// laat de spike groter worden/ zet de player vast
-    /// </summary>
+    /// &lt;/summary&gt;
     private void Attac()
     {
         Vector3 newSize = new Vector3(25, 25, SpikeScaleBig);
@@ -482,9 +482,9 @@ public class MrZandhoopje : MonoBehaviour
     }
 
     bool soundEffectDown = false;
-    /// <summary>
+    /// &lt;summary&gt;
     /// trek de spike terug zandhoopje in en laat de player los
-    /// </summary>
+    /// &lt;/summary&gt;
     private void ArrowPullBackAnim()
     {
         Vector3 NewSize = new Vector3(25, 25, 5);
@@ -519,9 +519,9 @@ public class MrZandhoopje : MonoBehaviour
             PlayerStats.PlayerHealth--;
         }
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// ga naar een laatste checkpoint na dat eenm attac is uitgevoert
-    /// </summary>
+    /// &lt;/summary&gt;
     private void Flee()
     {
         if (WaitForFlee > 0)
@@ -659,7 +659,7 @@ public class powerUpScript : MonoBehaviour
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
+        rb = GetComponent&lt;Rigidbody&gt;();
     }
     void Start()
     {
@@ -680,9 +680,9 @@ public class powerUpScript : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// kijk waar de power up gaat landen en plaats een spot op de grond voor visuele feedback
-    /// </summary>
+    /// &lt;/summary&gt;
     private void HitOnGround()
     {
         if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit Hitinfo, Mathf.Infinity, Ground))
@@ -706,7 +706,7 @@ public class PowerUpSpawner : MonoBehaviour
 {
 	private void Awake()
     {
-        Player = FindObjectOfType<PlayerMovement>();
+        Player = FindObjectOfType&lt;PlayerMovement&gt;();
 
         FieldPoint1X = ((int)SpawnField[0].transform.position.x);
         FieldPoint1Z = ((int)SpawnField[0].transform.position.z);
@@ -777,7 +777,7 @@ public class ShieldScript : MonoBehaviour
 
     private void Awake()
     {
-        Player = FindObjectOfType<PlayerPowerUps>();
+        Player = FindObjectOfType&lt;PlayerPowerUps&gt;();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -790,10 +790,6 @@ public class ShieldScript : MonoBehaviour
                                         </div>
                                     </div>
                                 </div>
-							<ul class="actions">
-								<li><a href="https://gist.github.com/Youri-Mulder/592d779045855b12dc48da677c33ab7d"
-										class="button">Code</a></li>
-							</ul>
 						</div>
 					</div>
 				</section>
@@ -839,7 +835,7 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private AudioSource PlayerHitSoundEffect;
     private void Awake()
     {
-        scoremanager = FindObjectOfType<ScoreManager>();
+        scoremanager = FindObjectOfType&lt;ScoreManager&gt;();
         PlayerMaxHealth = PlayerHealth;
     }
 
@@ -878,7 +874,7 @@ public class PlayerStats : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Bullet") || collision.gameObject.CompareTag("BossBullet"))
         {
-            PlayerHealth -= collision.gameObject.GetComponent<BulletEnemy>().damage;
+            PlayerHealth -= collision.gameObject.GetComponent&lt;BulletEnemy&gt;().damage;
             //scoremanager.score -= scoremanager.ScoreLossOnHit;
             if (scoremanager.score >= scoremanager.ScoreLossOnHit)
             {

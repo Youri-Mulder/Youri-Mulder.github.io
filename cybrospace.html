@@ -34,9 +34,9 @@
 					<nav id="menu">
 						<ul class="links">
 							<li><a href="index.html">Portfolio</a></li>
-							<li><a href="FishyBuisness.html">FishyBuisness</a></li>
-                            <li><a href="LiveBetBlackJackGamePage.html">lifebetblackjack</a></li>
-							<li><a href="DualDefenders.html">DualDefenders</a></li>
+							<li><a href="FishyBusiness.html">FishyBusiness</a></li>
+                            <li><a href="LifeBetBlackJack.html">LifeBetBlackJack</a></li>
+							<li><a href="DuelDefenders.html">DuelDefenders</a></li>
 							<li><a href="FormulaNight.html">FormulaNight</a></li>
 							<li><a href="BugOff.html">BugOff</a></li>
 						</ul>
@@ -222,8 +222,8 @@ public class DoorTrigger : MonoBehaviour
     private Klapdeur Klapdeur;
     private void Start()
     {
-        Door = GetComponentInParent<KeyCardDoor>();
-        Klapdeur = GetComponentInParent<Klapdeur>();
+        Door = GetComponentInParent&lt;KeyCardDoor&gt;();
+        Klapdeur = GetComponentInParent&lt;Klapdeur&gt;();
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -298,7 +298,7 @@ public class KeyCardDoor : MonoBehaviour
     {
         gameObject.isStatic = false;
         Player = GameObject.Find("player");
-        GM = FindObjectOfType<GameManager>();
+        GM = FindObjectOfType&lt;GameManager&gt;();
         FindError();
         ClosedState[0] = Doors[0].transform.position;
         ClosedState[1] = Doors[1].transform.position;
@@ -497,20 +497,20 @@ public class KeyCardPickUp : MonoBehaviour
     private void Start()
     {
         // verander de kleur van de deur naar de kleur van de keycard
-        GetComponent<MeshRenderer>().material.color = Color;
+        GetComponent&lt;MeshRenderer&gt;().material.color = Color;
         if (ChangeDoorColorToKayCardCollorOnPlay)
         {
             for (int i = 0; i < Doors.Length; i++)
             {
                 for (int j = 0; j < Doors[i].Doors.Length; j++)
                 {
-                    Doors[i].Doors[j].GetComponent<MeshRenderer>().material.color = Color;
+                    Doors[i].Doors[j].GetComponent&lt;MeshRenderer&gt;().material.color = Color;
                 }
             }
             for (int i = 0; i < KlapDoors.Length; i++)
             {
-                KlapDoors[i].Door1.GetComponent<MeshRenderer>().material.color = Color;
-                KlapDoors[i].Door2.GetComponent<MeshRenderer>().material.color = Color;
+                KlapDoors[i].Door1.GetComponent&lt;MeshRenderer&gt;().material.color = Color;
+                KlapDoors[i].Door2.GetComponent&lt;MeshRenderer&gt;().material.color = Color;
             }
         }
 
@@ -524,13 +524,13 @@ public class KeyCardPickUp : MonoBehaviour
             Pickedup = true;
             for (int i = 0; i < Doors.Length; i++)
             {
-                Doors[i].GetComponent<KeyCardDoor>().DoesPlayerHasKeyCard = true;
+                Doors[i].GetComponent&lt;KeyCardDoor&gt;().DoesPlayerHasKeyCard = true;
             }
             for (int i = 0; i < KlapDoors.Length; i++)
             {
-                KlapDoors[i].GetComponent<Klapdeur>().PlayerHaveKeyCard = true;   
+                KlapDoors[i].GetComponent&lt;Klapdeur&gt;().PlayerHaveKeyCard = true;   
             }
-            FindObjectOfType<PlayerUI>().KeyCardOnScreen(Color);
+            FindObjectOfType&lt;PlayerUI&gt;().KeyCardOnScreen(Color);
             Destroy(gameObject);
         }
     }
@@ -550,7 +550,7 @@ public class KeyCardPickUp : MonoBehaviour
     public void KeyCardOnScreen(Color color)
     {
         GameObject Keycard = Instantiate(KeyCardImage, KayCardGrid.transform);
-        Keycard.GetComponent<Image>().color = color;
+        Keycard.GetComponent&lt;Image&gt;().color = color;
         KeyCards.Add(Keycard);
     }
     </code></pre>
@@ -593,9 +593,9 @@ public class LevelLoader : MonoBehaviour
         SetctiveState();
         Ready = true;
     } 
-    /// <summary>
+    /// &lt;summary&gt;
     /// zet level button uit als deze nog niet speelbaar is.
-    /// </summary>
+    /// &lt;/summary&gt;
     public void SetctiveState()
     {
         if (Data.CurrentLevel < Level)
@@ -677,10 +677,10 @@ public class WallTurret : MonoBehaviour
         }
         else licht.color = Color.blue;
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// kijkt of player in range is en er geen muur zit tussen de turret en player.
     /// is player zichtbaar voor de turret dan roteert ie naar player
-    /// </summary>
+    /// &lt;/summary&gt;
     private void Vision()
     {
         Collider[] RangeChecks = Physics.OverlapSphere(transform.position, LookRange, TargetLayer);
@@ -706,10 +706,10 @@ public class WallTurret : MonoBehaviour
             CanSeePlayer = false;
         }
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// draait naar target
-    /// </summary>
-    /// <param name="target"></param>
+    /// &lt;/summary&gt;
+    /// &lt;param name="target"&gt;&lt;/param&gt;
     private void RotateToPlayer(Transform target)
     {
         Vector3 DirectionToTarget = target.position - transform.position;
@@ -764,14 +764,14 @@ public class WallTurret : MonoBehaviour
 public class DataCenter : MonoBehaviour
 {
     // level
-    [HideInInspector] public List<bool> levelCompleted = new List<bool>();
+    [HideInInspector] public List&lt;bool&gt; levelCompleted = new List&lt;bool&gt;();
     // level player health
-    [HideInInspector] public List<float> LevelPlayerHealth = new List<float>();
-    [HideInInspector] public List<float> LevelPlayerArmor = new List<float>();
+    [HideInInspector] public List&lt;float&gt; LevelPlayerHealth = new List&lt;float&gt;();
+    [HideInInspector] public List&lt;float&gt; LevelPlayerArmor = new List&lt;float&gt;();
     // level player gun
-    [HideInInspector] public List<float> LevelPlayerAmmo = new List<float>();
-    [HideInInspector] public List<float> LevelPlayerMagazine = new List<float>();
-    //public List<GameObject> LevelEquiptGun = new List<GameObject>();
+    [HideInInspector] public List&lt;float&gt; LevelPlayerAmmo = new List&lt;float&gt;();
+    [HideInInspector] public List&lt;float&gt; LevelPlayerMagazine = new List&lt;float&gt;();
+    //public List&lt;GameObject&gt; LevelEquiptGun = new List&lt;GameObject&gt;();
     // player game progression
     [HideInInspector] public int CurrentLevel = 1;
 
@@ -818,9 +818,9 @@ public class DataCenter : MonoBehaviour
             OnStart();
         }
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// maak een Datacenter singelton
-    /// </summary>
+    /// &lt;/summary&gt;
     private void DataaCenterRegester()
     {
         if (LocalDataCenter == null)
@@ -834,15 +834,15 @@ public class DataCenter : MonoBehaviour
     }
 
     private bool OnGoingStart = false;
-    /// <summary>
+    /// &lt;summary&gt;
     /// De start die op elk level gebruikt word 
-    /// </summary>
+    /// &lt;/summary&gt;
     private void OnStart()
     {
         level = SceneManager.GetActiveScene().buildIndex;
 
-        _PlayerHealth = FindObjectOfType<PlayerHealth>();
-        Gun = FindObjectOfType<StanderGun>();
+        _PlayerHealth = FindObjectOfType&lt;PlayerHealth&gt;();
+        Gun = FindObjectOfType&lt;StanderGun&gt;();
 
         if (level == StartLevel)
         {
@@ -851,9 +851,9 @@ public class DataCenter : MonoBehaviour
         else if (level != MainMenu) LoadLevelDataToPlay(SceneManager.GetActiveScene().buildIndex);
         OnGoingStart = false;
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// maakt genoeg datapunten aan om alle game data op te slaan
-    /// </summary>
+    /// &lt;/summary&gt;
     private void MakeLevels()
     {
         for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
@@ -866,9 +866,9 @@ public class DataCenter : MonoBehaviour
             //LevelEquiptGun.Add(null);
         }
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// laad Defauld player settings, word alleen geladen in eerste level
-    /// </summary>
+    /// &lt;/summary&gt;
     private void LoadPlayerDefauld()
     {
         _PlayerHealth.Health = SetPlayerHeath;
@@ -876,10 +876,10 @@ public class DataCenter : MonoBehaviour
         Gun.currentAmmo = SetGunAmmo;
         Gun.magazine = SetMagazines;
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// laad de opgeslagen data in dat er op X level staat opgeslagen
-    /// </summary>
-    /// <param name="_Level"></param>
+    /// &lt;/summary&gt;
+    /// &lt;param name="_Level"&gt;&lt;/param&gt;
     private void LoadLevelDataToPlay(int _Level)
     {
         Gun.magazine = LevelPlayerMagazine[_Level];
@@ -888,9 +888,9 @@ public class DataCenter : MonoBehaviour
         _PlayerHealth.Armor = LevelPlayerArmor[_Level];
     }
 
-    /// <summary>
+    /// &lt;summary&gt;
     /// current values worden naar data level values geschreven
-    /// </summary>
+    /// &lt;/summary&gt;
     public void TransferValuesToNextLevel()
     {
         int Nextlevel = SceneManager.GetActiveScene().buildIndex + 1;
@@ -904,9 +904,9 @@ public class DataCenter : MonoBehaviour
         if (ShowDataLogs) Debug.Log("saved to next level");
     }
 
-    /// <summary>
+    /// &lt;summary&gt;
     /// schrijft data van locaal naar een file
-    /// </summary>
+    /// &lt;/summary&gt;
     private void WriteToSafeFile()
     {
         Data.LevelCompleted = levelCompleted;
@@ -918,9 +918,9 @@ public class DataCenter : MonoBehaviour
         //Data.LevelEquiptGun = LevelEquiptGun;
     }
 
-    /// <summary>
+    /// &lt;summary&gt;
     /// schrijft data van file naar locaal
-    /// </summary>
+    /// &lt;/summary&gt;
     private void WriteToLocal()
     {
         levelCompleted = Data.LevelCompleted;
@@ -974,9 +974,9 @@ public class DataCenter : MonoBehaviour
         }
         else if (ShowDataLogs) Debug.Log("there is no safe file to delete");
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// als player de safe file reset verwijdert dit alles dat locaal staat opgesalgen
-    /// </summary>
+    /// &lt;/summary&gt;
     public void ResetLocal()
     {
         levelCompleted.Clear();
@@ -993,7 +993,7 @@ public class DataCenter : MonoBehaviour
     {
         Debug.Log("test ie");
         yield return new WaitForEndOfFrame();
-        foreach (LevelLoader loader in FindObjectsOfType<LevelLoader>())
+        foreach (LevelLoader loader in FindObjectsOfType&lt;LevelLoader&gt;())
         {
             Debug.Log("test Foreach");
             loader.SetActiveOff();
@@ -1025,14 +1025,14 @@ public class DataCenter : MonoBehaviour
 public class StorageCenter
 {
     // level
-    public List<bool> LevelCompleted = new List<bool>();
+    public List&lt;bool&gt; LevelCompleted = new List&lt;bool&gt;();
     // level player health 
-    public List<float> LevelPlayerHealth = new List<float>();
-    public List<float> LevelPlayerArmor = new List<float>();
+    public List&lt;float&gt; LevelPlayerHealth = new List&lt;float&gt;();
+    public List&lt;float&gt; LevelPlayerArmor = new List&lt;float&gt;();
     // level player gun
-    public List<float> LevelPlayerAmmo = new List<float>();
-    public List<float> LevelPlayerMagazine = new List<float>();
-    //public List<GameObject> LevelEquiptGun = new List<GameObject>();
+    public List&lt;float&gt; LevelPlayerAmmo = new List&lt;float&gt();
+    public List&lt;float&gt; LevelPlayerMagazine = new List&lt;float&gt();
+    //public List&lt;GameObject&gt; LevelEquiptGun = new List&lt;GameObject&gt;();
     // player game progression
     public int CurrentLevel;
 }
@@ -1093,9 +1093,9 @@ public class WallCamera : MonoBehaviour
             licht2.color = Color.blue;
         }
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// kijkt met een overlapsSphere en een anle of er een player in de camera zicht staat, een raycast kijkt of er geen obstakel in de weg staat in camera zicht.
-    /// </summary>
+    /// &lt;/summary&gt;
     private void Vision()
     {
         Collider[] RangeChecks = Physics.OverlapSphere(transform.position, LookRange, TargetLayer);
@@ -1121,9 +1121,9 @@ public class WallCamera : MonoBehaviour
             CanSeePlayer = false;
         }
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// pakt alle Ai in Range als de player in zicht is en alert ze met CameraAlert
-    /// </summary>
+    /// &lt;/summary&gt;
     private void Alert()
     {
         if (CanSeePlayer)
@@ -1133,18 +1133,18 @@ public class WallCamera : MonoBehaviour
             {
                 for (int i = 0; i < RangeChecks.Length; i++)
                 {
-                    if (RangeChecks[i].GetComponentInChildren<AiBase>())
+                    if (RangeChecks[i].GetComponentInChildren&lt;AiBase&gt;())
                     {
                         Vector3 ai = new Vector3();
-                        RangeChecks[i].GetComponentInChildren<AiBase>().CameraAlert(ai);
+                        RangeChecks[i].GetComponentInChildren&lt;AiBase&gt;().CameraAlert(ai);
                     }
                 }
             }
         }
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// Laat de camera Roteren Van links naar rechts
-    /// </summary>
+    /// &lt;/summary&gt;
     private void Animation()
     {
         RotateTimer += Time.deltaTime;
@@ -1205,7 +1205,7 @@ public class GameManager : MonoBehaviour
     private TextMeshProUGUI DeathTimerText;
     private PlayerHealth Player;
     [HideInInspector] public bool BossBattleOverride = false;
-    public List<AiBase> Enemies = new List<AiBase>();
+    public List&lt;AiBase&gt; Enemies = new List&lt;AiBase&gt;();
 
     private float DeathTimer = 4;
     private float AlphaTimer;
@@ -1213,13 +1213,13 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         DeathScreen = GameObject.Find("DeathScreen");
-        UI = FindObjectOfType<PlayerUI>();
+        UI = FindObjectOfType&lt;PlayerUI&gt;();
         DeathTimerText = UI.DeathTimerText;
         //DeathScreen.SetActive(false);
     }
     void Start()
     {
-        Player = FindObjectOfType<PlayerHealth>();
+        Player = FindObjectOfType&lt;PlayerHealth&gt;();
     }
 
 
@@ -1227,9 +1227,9 @@ public class GameManager : MonoBehaviour
     {
         if (Player.Health <= 0 && !BossBattleOverride)
         {
-            if (!BossBattleOverride && FindObjectOfType<BossBattleManager>())
+            if (!BossBattleOverride && FindObjectOfType&lt;BossBattleManager&gt;())
             {
-                Destroy(FindObjectOfType<BossBattleManager>());
+                Destroy(FindObjectOfType&lt;BossBattleManager&gt;());
             }
             //timer voor death screen
             DeathTimer -= Time.deltaTime;
@@ -1238,12 +1238,12 @@ public class GameManager : MonoBehaviour
             if (!DeathScreen.activeInHierarchy) DeathScreen.SetActive(true);
 
             //laat de death screen langzaam in
-            Image image = DeathScreen.GetComponent<Image>();
+            Image image = DeathScreen.GetComponent&lt;Image&gt;();
             Color ImageColor = image.color;
             ImageColor.a = AlphaTimer;
             image.color = ImageColor;
             
-            TextMeshProUGUI Timer = DeathTimerText.GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI Timer = DeathTimerText.GetComponent&lt;TextMeshProUGUI&gt;>();
             Color TextColor = Timer.color;
             TextColor.a = AlphaTimer;
             Timer.color = TextColor; 
@@ -1321,12 +1321,12 @@ public class GameManager : MonoBehaviour
 [RequireComponent(typeof(NavMeshAgent))]
 public class AiBase : MonoBehaviour
 {
-    /// <summary>
+    /// &lt;summary&gt;
     /// vind alle ai in de scene en sla die op in een list
-    /// </summary>
+    /// &lt;/summary&gt;
     public void FindAi()
     {
-        foreach (AiBase ai in FindObjectsOfType<AiBase>())
+        foreach (AiBase ai in FindObjectsOfType&lt;AiBase&gt;())
         {
             AiInScene.Add(ai);
         }
@@ -1384,9 +1384,9 @@ public class AiBase : MonoBehaviour
             }
             GM.Enemies.Remove(this);
 
-            if (FindObjectOfType<BossBattleManager>())
+            if (FindObjectOfType&lt;BossBattleManager&gt;())
             {
-                BossBattleManager BM = FindObjectOfType<BossBattleManager>();
+                BossBattleManager BM = FindObjectOfType&lt;BossBattleManager&gt;();
                 BM.Enemies.Remove(this);
             }
             Destroy(gameObject);
@@ -1419,9 +1419,9 @@ public class AiBase : MonoBehaviour
             Attac();
         }
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// kijkt met een overlapshpere, angle en raycast of er een player in zicht is en er geen obstakel in de weg staat.
-    /// </summary>
+    /// &lt;/summary&gt;
     public void Vision()
     {
         Collider[] RangeChecks = Physics.OverlapSphere(transform.position, LookRange, TargetLayer);
@@ -1446,9 +1446,9 @@ public class AiBase : MonoBehaviour
             CanSeePlayer = false;
         }
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// stats en ai state word geupdate om aan te vallen
-    /// </summary>
+    /// &lt;/summary&gt;
     private void SeePlayer()
     {
         Alerted = true;
@@ -1459,9 +1459,9 @@ public class AiBase : MonoBehaviour
             state = AiState.attac;
         }
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// pak de player positie en distace naar de player. player positie word nieuwe destination, als player in zicht is zonder obstakels dan word ai state attac
-    /// </summary>
+    /// &lt;/summary&gt;
     private void Stalk()
     {
         Vector3 directiontoplayer = (Target.transform.position - transform.position);
@@ -1479,9 +1479,9 @@ public class AiBase : MonoBehaviour
             state = AiState.attac;
         }
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// reset alert na tijd 
-    /// </summary>
+    /// &lt;/summary&gt;
     private void Timing()
     {
         if (Alerted)
@@ -1499,9 +1499,9 @@ public class AiBase : MonoBehaviour
             Alerted = false;
         }
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// kijkt met een distance voor alle ai in de scene of ze dichtbij genoeg zijn en kijkt of er geen obstakel is zodat ander ai in de buurt alert kan worden voor player in de buurt 
-    /// </summary>
+    /// &lt;/summary&gt;
     private void SearchForNearbyTeam()
     {                
         for (int i = 0; i < AiInScene.Count; i++)
@@ -1586,9 +1586,9 @@ public class AiBase : MonoBehaviour
         Reloading = false;
         ReloadCor = null;
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// laat de ai een pad volgen op volgworde of in een random volgworde met een random int.
-    /// </summary>
+    /// &lt;/summary&gt;
     public void FollowWaypoints()
     {
         int randomWaypoint;
@@ -1608,9 +1608,9 @@ public class AiBase : MonoBehaviour
             }
         }
     }
-    /// <summary>
+    ///&lt;summary&gt;
     /// vraagt random point op als true is word hit positie gezet als nieuwe eind potitie. als random point false is word if statment opnieuw gedaan 
-    /// </summary>
+    /// &lt;/summary&gt;
     public void RandomMovement()
     {
         if (Agent.remainingDistance < Agent.stoppingDistance)
@@ -1623,13 +1623,12 @@ public class AiBase : MonoBehaviour
             }
         }
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// pakt een random point op de navmesh en return die als output, return true als point op de navmesh is anders return false.
-    /// </summary>
-    /// <param name="center"></param>
-    /// <param name="range"></param>
-    /// <param name="result"></param>
-    /// <returns></returns>
+    /// &lt;/summary&gt;
+    /// &lt;param name="center"&gt;&lt;/param&gt;
+    /// &lt;param name="range"&gt;&lt;/param&gt;
+    /// &lt;param name="result"&gt;&lt;/param&gt;
     public bool RandomPoint(Vector3 center, float range, out Vector3 result)
     {
         Vector3 randompoint = center + Random.insideUnitSphere * range; // random point binnen centersphere word gepakt
@@ -1642,9 +1641,9 @@ public class AiBase : MonoBehaviour
         result = Vector3.zero;
         return false;
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// update de health bar boven de Ai draait de health bar naar de camera
-    /// </summary>
+    /// &lt;/summary&gt;
     private void UIComps()
     {
         Healthbar.fillAmount = Health / 100;
@@ -1652,9 +1651,9 @@ public class AiBase : MonoBehaviour
         Healthbar.transform.rotation = Quaternion.LookRotation(transform.position - Cam.transform.position);
         Schieldbar.transform.rotation = Quaternion.LookRotation(transform.position - Cam.transform.position);
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// word aangeroepen vanaf de camera's, zet ai state op stalk
-    /// </summary>
+    /// &lt;/summary&gt;
     public void CameraAlert(Vector3 playerpos)
     {
         Alerted = true;
@@ -1834,10 +1833,9 @@ public class BossBattle : MonoBehaviour
 
 
     private bool BurstCoolDown = false;
-    /// <summary>
+    /// &lt;summary&gt;
     /// zogt voor een kleine delay tussen de burst kogels
-    /// </summary>
-    /// <returns></returns>
+    /// &lt;/summary&gt;
     private IEnumerator BurstHandler()
     {
         BurstCoolDown = true;
@@ -1847,10 +1845,9 @@ public class BossBattle : MonoBehaviour
         BurstCoolDown = false;
     }
     private bool ChoosingNewGun = false;
-    /// <summary>
+    /// &lt;summary&gt;
     /// kies een nieuwe gun met een kleine delay tussen attacs
-    /// </summary>
-    /// <returns></returns>
+    /// &lt;/summary&gt;
     private IEnumerator NewGunNeeded()
     {
         ChoosingNewGun = true;
@@ -1884,10 +1881,10 @@ public class BossBattle : MonoBehaviour
     {
         ArmRotationCenter.transform.rotation = Quaternion.RotateTowards(ArmRotationCenter.transform.rotation, Quaternion.LookRotation(-dir), Time.deltaTime * RotateSpeed);
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// rotate de boss naar de player
-    /// </summary>
-    /// <param name="Dir"></param>
+    /// &lt;/summary&gt;
+    /// &lt;param name="Dir"&gt;&lt;/param&gt;
     private void RotateToPlayer(Vector3 Dir)
     {
         transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(Dir), Time.deltaTime * RotateSpeed);
@@ -1898,9 +1895,9 @@ public class BossBattle : MonoBehaviour
         Agent.SetDestination(pos);
     }
 
-    /// <summary>
+    /// &lt;summary&gt;
     /// de destination waar de boss heen moet lopen 
-    /// </summary>
+    /// &lt;/summary&gt;
     private void MovePosition()
     {
         if (Agent.remainingDistance < Agent.stoppingDistance)
@@ -1913,11 +1910,10 @@ public class BossBattle : MonoBehaviour
             }
         }
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// return een random point op de navmesh
-    /// </summary>
-    /// <param name="result"></param>
-    /// <returns></returns>
+    /// &lt;/summary&gt;
+    /// &lt;param name="result"&gt;&lt;/param&gt;
     public bool RandomPoint(out Vector3 result)
     {
         Vector3 randomPoint = transform.position + Random.insideUnitSphere * CenterRange;
@@ -1979,9 +1975,9 @@ public class BossBattleManager : MonoBehaviour
             Door.DoesPlayerHasKeyCard = false;
         }
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// sla de player stats op zodat de fight gereset kan worden als de player dood gaat
-    /// </summary>
+    /// &lt;/summary&gt;
     private void SetPlayerStats()
     {
         PlayerHealth = PH.Health;
@@ -1989,19 +1985,19 @@ public class BossBattleManager : MonoBehaviour
         PlayerAmmo = Gun.currentAmmo;
         PlayerMags = Gun.magazine;
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// zet een nieuwe camera hoogte om meer of minder van de map te kunnen zien tijdens de bossfight
-    /// </summary>
+    /// &lt;/summary&gt;
     private void SetCamHight()
     {
         Cam.CamHight = CamHight;
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// sla alle enemies op in een lijst om bij te houden hoeveel er zijn
-    /// </summary>
+    /// &lt;/summary&gt;
     private void FindAi()
     {
-        foreach (AiBase ai in FindObjectsOfType<AiBase>())
+        foreach (AiBase ai in FindObjectsOfType&lt;AiBase&gt;())
         {
             Enemies.Add(ai);
         }
@@ -2039,7 +2035,7 @@ public class BossBattleManager : MonoBehaviour
 
         if (!DeathScreen.activeInHierarchy) DeathScreen.SetActive(true);
 
-        Image image = DeathScreen.GetComponent<Image>();
+        Image image = DeathScreen.GetComponent&lt;Image&gt;();
         Color ImageColor = image.color;
         ImageColor.a = AlphaTimer;
         image.color = ImageColor;
@@ -2086,21 +2082,21 @@ public class BossBattleManager : MonoBehaviour
     {
         Enemies.Clear();
 
-        foreach (AiBase ai in FindObjectsOfType<AiBase>())
+        foreach (AiBase ai in FindObjectsOfType&lt;AiBase&gt;())
         {
             Destroy(ai.gameObject);
         }
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// destroy alle ongebruike pickups na een gefaalde bossfight
-    /// </summary>
+    /// &lt;/summary&gt;
     private void DestroyPickups()
     {
         Destroy(Pickups);
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// spawn een nieuwe enemie wave in na een gefaalde bossfight
-    /// </summary>
+    /// &lt;/summary&gt;
     private void SpawnEnemieWave()
     {
         for (int i = 0; i < EnemieSpawnPoint.Count; i++)
@@ -2108,9 +2104,9 @@ public class BossBattleManager : MonoBehaviour
             Instantiate(EnemiePrefab, EnemieSpawnPoint[i].position, EnemieSpawnPoint[i].rotation);
         }
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// spawn nieuwe pickups in na een gefaalde bossfight
-    /// </summary>
+    /// &lt;/summary&gt;
     private void PlaceNewPickupds()
     {
         Pickups = Instantiate(PickupsObject, transform.position, transform.rotation);
@@ -2119,9 +2115,9 @@ public class BossBattleManager : MonoBehaviour
     {
         PH.transform.position = transform.position;
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// reset alle player stats naar wat het was toen de bossfight voor het eerst startte
-    /// </summary>
+    /// &lt;/summary&gt;
     private void LoadStats()
     {
         PH.Health = PlayerHealth;
@@ -2142,7 +2138,7 @@ public class BossBattleManager : MonoBehaviour
         EndTimer -= Time.deltaTime;
         AlphaTimer += Time.deltaTime;
         WinScreen.SetActive(true);
-        Image WinScreenImage = WinScreen.GetComponent<Image>();
+        Image WinScreenImage = WinScreen.GetComponent&lt;Image&gt;();
         Color c = WinScreenImage.color;
         c.a = AlphaTimer;
         WinScreenImage.color = c;
@@ -2157,7 +2153,7 @@ public class BossBattleManager : MonoBehaviour
     private void WinScreenadeOut()
     {
         FadeTimer -= Time.deltaTime * 2;
-        Image WinScreenImage = WinScreen.GetComponent<Image>();
+        Image WinScreenImage = WinScreen.GetComponent&lt;Image&gt;();
         Color c = WinScreenImage.color;
         c.r = FadeTimer;
         c.g = FadeTimer;
@@ -2171,9 +2167,9 @@ public class BossBattleManager : MonoBehaviour
         WinTimer.color = WTC;
         Safe();
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// safe de game automatisch waneer de player de boss heeft versalgen
-    /// </summary>
+    /// &lt;/summary&gt;
     private void Safe()
     {
         Center.levelCompleted[SceneManager.GetActiveScene().buildIndex] = true;

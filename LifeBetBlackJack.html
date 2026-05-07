@@ -39,7 +39,8 @@
         <nav id="menu">
             <ul class="links">
                 <li><a href="Portfolio.html">Portfolio</a></li>
-                <li><a href="FishyBuisness.html">FishyBuisness</a></li>
+                <li><a href="FishyBusiness.html">FishyBusiness</a></li>
+                <li><a href="DuelDefenders.html">DuelDefenders</a></li>
                 <li><a href="FormulaNight.html">FormulaNight</a></li>
                 <li><a href="cybrospace.html">CybroSpace</a></li>
                 <li><a href="BugOff.html">BugOff</a></li>
@@ -335,7 +336,7 @@ public class SlotManager : MonoBehaviour
                 else
                 {
                     if (Wheels[i].transform.localEulerAngles != Rotations.CrossRotation) StopAudio.Play();
-                    if (Game.RoundsWon[i] == WhoWon.NotPlayed) NotPlayedIndicators[i].GetComponent<MeshFilter>().mesh = NotPlayedIcon;
+                    if (Game.RoundsWon[i] == WhoWon.NotPlayed) NotPlayedIndicators[i].GetComponent&lt;MeshFilter&gt;().mesh = NotPlayedIcon;
                     Wheels[i].transform.localEulerAngles = Rotations.CrossRotation;
                 }
             }
@@ -362,7 +363,7 @@ public class SlotManager : MonoBehaviour
     {
         foreach (UsingCard card in SecondHand)
         {
-            MoveTowards move = card.GetComponent<MoveTowards>();
+            MoveTowards move = card.GetComponent&lt;MoveTowards&gt;();
             move.SetEndPoint(Game.GetCardOrigin());
             move.DoDestoyOnEnd();
         }
@@ -404,8 +405,8 @@ public class SelectCard : MonoBehaviour
     private UsingCard CardUser;
     private void Start()
     {
-        Game = FindObjectOfType<GameManager>();
-        CardUser = GetComponent<UsingCard>();
+        Game = FindObjectOfType&lt;GameManager&gt;();
+        CardUser = GetComponent&lt;UsingCard&gt;();
         CardOwner = CardUser.ThisOwner;
         CardManager = CardOwner == Gamers.player ? Game.GetPlayer() : Game.GetAi();
     }
@@ -504,7 +505,7 @@ public class PowerCard : MonoBehaviour
         if (Gamer.SelectedCard != null)
         {
             UsingCard[] hand = CardOwner == Gamers.player ? Game.PlayerPlayCards.ToArray() : Game.AiPlayCards.ToArray();
-            MoveTowards move = GetComponent<MoveTowards>();
+            MoveTowards move = GetComponent&lt;MoveTowards&gt;();
             move.SetEndPoint(Gamer.SelectedCard.transform.position);
             for (int i = 0; i < hand.Length; i++)
             {
@@ -512,7 +513,7 @@ public class PowerCard : MonoBehaviour
                 if (Gamer.SecondHand.Count - 1 >= i) if (Gamer.SecondHand[i].tagn == Gamer.SelectedCard.tagn) contin = true;
                 if (contin)
                 {
-                    UsingCard thisNewUsing = gameObject.AddComponent<UsingCard>();
+                    UsingCard thisNewUsing = gameObject.AddComponent&lt;UsingCard&gt;();
                     thisNewUsing.ThisCard = Aas;
                     if (hand[i].tagn == Gamer.SelectedCard.tagn)
                     {
@@ -520,7 +521,7 @@ public class PowerCard : MonoBehaviour
                         else Game.AiPlayCards[i] = thisNewUsing;
                     }
                     if (Gamer.SecondHand.Count - 1 >= i) if (Gamer.SecondHand[i].tagn == Gamer.SelectedCard.tagn) Gamer.SecondHand[i] = thisNewUsing;
-                    MoveTowards moveSelected = Gamer.SelectedCard.GetComponent<MoveTowards>();
+                    MoveTowards moveSelected = Gamer.SelectedCard.GetComponent&lt;MoveTowards&gt;();
                     moveSelected.SetEndPoint(Game.GetCardOrigin());
                     moveSelected.DoDestoyOnEnd();
                     AceUsed();
@@ -631,8 +632,8 @@ public class GameManager : MonoBehaviour
     [Header("Inventory")]
     public GridSlot[] PlayerPowerCards;
     public GridSlot[] AiPowerCards;
-    public List<UsingCard> PlayerPlayCards = new List<UsingCard>();
-    public List<UsingCard> AiPlayCards = new List<UsingCard>();
+    public List&lt;UsingCard&gt; PlayerPlayCards = new List&lt;UsingCard&gt;();
+    public List&lt;UsingCard&gt; AiPlayCards = new List&lt;UsingCard&gt;();
     [Tooltip("zet op 2")]
     public UsingCard[] PlayerSecondChance;
     [Tooltip("zet op 2")]
@@ -728,12 +729,12 @@ public class GameManager : MonoBehaviour
         Ai.SetTrap();
         GameWait = null;
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// end for the very end of the game
-    /// </summary>
+    /// &lt;/summary&gt;
     private void GameOver()
     {
-        GameFadeLoader Fade = FindObjectOfType<GameFadeLoader>();
+        GameFadeLoader Fade = FindObjectOfType&lt;GameFadeLoader&gt;();
         switch (GameWinState())
         {
             case WhoWon.player:
@@ -762,7 +763,7 @@ public class GameManager : MonoBehaviour
     public void SpawnPowerCard(Vector3 PlacePoint, Vector3 Rotation, out PowerCard go)
     {
         go = Instantiate(PowerCard,CardOriginPoint.transform.position,Quaternion.identity);
-        go.GetComponent<MoveTowards>().SetEndPoint(PlacePoint);
+        go.GetComponent&lt;MoveTowards&gt;().SetEndPoint(PlacePoint);
         go.ThisPowerCards = GetRandomPowerCard();
         go.transform.eulerAngles = Rotation;
     }
@@ -781,10 +782,10 @@ public class GameManager : MonoBehaviour
     public void SpawnPlayCard(Vector3 PlacePoint, Vector3 Rotation, out UsingCard gos)
     {
         UsingCard go = Instantiate(GameCard, CardOriginPoint.transform.position, Quaternion.identity);
-        go.GetComponent<MoveTowards>().SetEndPoint(PlacePoint); ;
+        go.GetComponent&lt;MoveTowards&gt;().SetEndPoint(PlacePoint); ;
         go.ThisCard = GetRandomPlayCard();
         go.transform.eulerAngles = Rotation;
-        gos = go.GetComponent<UsingCard>();
+        gos = go.GetComponent&lt;UsingCard&gt;();
     }
     private PowerKaarten GetRandomPowerCard()
     {
@@ -804,12 +805,11 @@ public class GameManager : MonoBehaviour
         return ChosenCard;
     }
     //// Checks ----
-    /// <summary>
+    /// &lt;summary&gt;
     /// return the next available slot for a card
-    /// </summary>
-    /// <param name="slots"></param>
-    /// <param name="S"></param>
-    /// <returns></returns>
+    /// &lt;/summary&gt;
+    /// &lt;param name="slots"&gt;&lt;/param&gt;
+    /// &lt;param name="S"&gt;&lt;/param&gt;
     public bool CheckActiveSlots(GridSlot[] slots, out int S)
     {
         // s = card slot
@@ -824,14 +824,13 @@ public class GameManager : MonoBehaviour
         S = 0;
         return false;
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// checks the total value of an hand
-    /// </summary>
-    /// <param name="cards"></param>
-    /// <returns></returns>
+    /// &lt;/summary&gt;
+    /// &lt;param name="cards"&gt;&lt;/param&gt;
     public int CheckHandValue(UsingCard[] cards)
     {
-        List<UsingCard> acesList = new List<UsingCard>();
+        List&lt;UsingCard&gt; acesList = new List&lt;UsingCard&gt;();
         int aces = 0;
         int value = 0;
         foreach (UsingCard card in cards)
@@ -872,22 +871,21 @@ public class GameManager : MonoBehaviour
         {
             if (elevenace > 0)
             {
-                card.GetComponent<MeshRenderer>().material = card.ThisCard.AceValues.ElevenAce;
+                card.GetComponent&lt;MeshRenderer&gt;().material = card.ThisCard.AceValues.ElevenAce;
                 elevenace--;
             }
             else if (oneace > 0)
             {
-                card.GetComponent<MeshRenderer>().material = card.ThisCard.AceValues.OneAce;
+                card.GetComponent&lt;MeshRenderer&gt;().material = card.ThisCard.AceValues.OneAce;
                 oneace--;
             } 
         }
         return value;
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// checks in which round the game is and if there is an unplayed match
-    /// </summary>
-    /// <param name="inround"></param>
-    /// <returns></returns>
+    /// &lt;/summary&gt;
+    /// &lt;param name="inround"&gt;&lt;/param&gt;
     private int RoundCheck()
     {
         for (int i = 0; i < P_RoundWon.Length -1; i++)
@@ -899,9 +897,9 @@ public class GameManager : MonoBehaviour
         }
         return 2;
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// checks deck of both player and ai if there is a blackjack at start
-    /// </summary>
+    /// &lt;/summary&gt;
     private void CheckStartBlackJack()
     {
         int playervalue = CheckHandValue(PlayerPlayCards.ToArray());
@@ -955,8 +953,8 @@ public class GameManager : MonoBehaviour
         for (int i = hand.Length -1; i >= halfhand; i--)
         {
             GameObject sechandpoint = gamer.ThisGamer == Gamers.player ? PlayPlacePointPlayerSec : PlayPlacePointAiSec;
-            if (i == halfhand) hand[i].GetComponent<MoveTowards>().SetEndPoint(sechandpoint.transform.position);
-            else hand[i].GetComponent<MoveTowards>().SetEndPoint(sechandpoint.transform.position + PlayCardOffset * (gamer.SecondHand.Count -1));
+            if (i == halfhand) hand[i].GetComponent&lt;MoveTowards&gt;().SetEndPoint(sechandpoint.transform.position);
+            else hand[i].GetComponent&lt;MoveTowards&gt;().SetEndPoint(sechandpoint.transform.position + PlayCardOffset * (gamer.SecondHand.Count -1));
         }
     }
     public void HoldnewHand(Gamers Whois)
@@ -965,8 +963,8 @@ public class GameManager : MonoBehaviour
         {
             for (int i = 0; i <= 1; i++)
             {
-                MoveTowards move = PlayerPlayCards[i].GetComponent<MoveTowards>();
-                PlayerSecondChance[i].GetComponent<MoveTowards>().SetEndPoint(PlayerPlayCards[i].transform.position);
+                MoveTowards move = PlayerPlayCards[i].GetComponent&lt;MoveTowards&gt;();
+                PlayerSecondChance[i].GetComponent&lt;MoveTowards&gt;().SetEndPoint(PlayerPlayCards[i].transform.position);
                 PlayerPlayCards[i] = PlayerSecondChance[i];
                 move.SetEndPoint(GetCardOrigin());
                 move.DoDestoyOnEnd();
@@ -977,8 +975,8 @@ public class GameManager : MonoBehaviour
         {
             for (int i = 0; i <= 1; i++)
             {
-                MoveTowards move = AiPlayCards[i].GetComponent<MoveTowards>();
-                AiSecondChance[i].GetComponent<MoveTowards>().SetEndPoint(AiPlayCards[i].transform.position);
+                MoveTowards move = AiPlayCards[i].GetComponent&lt;MoveTowards&gt;();
+                AiSecondChance[i].GetComponent&lt;MoveTowards&gt;().SetEndPoint(AiPlayCards[i].transform.position);
                 AiPlayCards[i] = AiSecondChance[i];
                 move.SetEndPoint(GetCardOrigin());
                 move.DoDestoyOnEnd();
@@ -996,15 +994,15 @@ public class GameManager : MonoBehaviour
 
             for (int i = 0; i < AiPlayCards.Count; i++)
             {
-                AiPlayCards[i].GetComponent<MoveTowards>().SetEndPoint(PlayPlacePointPlayer.transform.position + PlayCardOffset * i);
+                AiPlayCards[i].GetComponent&lt;MoveTowards&gt;().SetEndPoint(PlayPlacePointPlayer.transform.position + PlayCardOffset * i);
                 AiPlayCards[i].transform.eulerAngles = GetPlayer().WhatIsCardRotation();
-                AiPlayCards[i].GetComponent<SelectCard>().CardOwner = Gamers.player;
+                AiPlayCards[i].GetComponent&lt;SelectCard&gt;().CardOwner = Gamers.player;
             }
             for (int i = 0; i < PlayerPlayCards.Count; i++)
             {
-                PlayerPlayCards[i].GetComponent<MoveTowards>().SetEndPoint(PlayPlacePointAi.transform.position + -PlayCardOffset * i);
+                PlayerPlayCards[i].GetComponent&lt;MoveTowards&gt;().SetEndPoint(PlayPlacePointAi.transform.position + -PlayCardOffset * i);
                 PlayerPlayCards[i].transform.eulerAngles = GetAi().WhatIsCardRotation();
-                AiPlayCards[i].GetComponent<SelectCard>().CardOwner = Gamers.ai;
+                AiPlayCards[i].GetComponent&lt;SelectCard&gt;().CardOwner = Gamers.ai;
             }
             PlayerPlayCards.Clear();
             AiPlayCards.Clear();

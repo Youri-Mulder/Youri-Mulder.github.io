@@ -34,9 +34,9 @@
 					<nav id="menu">
 						<ul class="links">
 							<li><a href="index.html">Portfolio</a></li>
-							<li><a href="FishyBuisness.html">FishyBuisness</a></li>
-                            <li><a href="LiveBetBlackJackGamePage.html">lifebetblackjack</a></li>
-							<li><a href="DualDefenders.html">DualDefenders</a></li>
+							<li><a href="FishyBusiness.html">FishyBusiness</a></li>
+                            <li><a href="LifeBetBlackJack.html">LifeBetBlackJack</a></li>
+							<li><a href="DuelDefenders.html">DuelDefenders</a></li>
 							<li><a href="cybrospace.html">CybroSpace</a></li>
 							<li><a href="BugOff.html">BugOff</a></li>
 						</ul>
@@ -131,9 +131,9 @@
                                         </div>
                                         <div class="code-content">
                                             <pre><code class="language-csharp">
-   /// <summary>
+   /// &lt;summary&gt;
     /// open segement window and close anything else in screen, change segment window to 0 (start kolom) 
-    /// </summary>
+    /// &lt;/summary&gt;
     public void OpenSegmentTimeWindow()
     {
         OpenTimes.SetActive(false);
@@ -141,24 +141,24 @@
         SegmentScreen.SetActive(true);
         ChangeSegment(0);
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// gives 1 parameter to ChangeSegment
-    /// </summary>
+    /// &lt;/summary&gt;
     public void NextSegment()
     {
         ChangeSegment(1);
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// gives -1 parameter to ChangeSegment
-    /// </summary>
+    /// &lt;/summary&gt;
     public void PreviusSegment()
     {
         ChangeSegment(-1);
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// changes segment window witch 1 || -1 parameter
-    /// </summary>
-    /// <param name="next"></param>
+    /// &lt;/summary&gt;
+    /// &lt;param name="next"&gt;&lt;/param&gt;
     private void ChangeSegment(int next)
     {
         LapManager manager = Globalmanager.GetActiveManager();
@@ -173,9 +173,9 @@
             SegmentScores[i].text = manager.SegmentTimeList[(OnSegment * Globalmanager.MaxScores) + i].ToString("F1");
         }
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// close the segment times and open all the other end screens
-    /// </summary>
+    /// &lt;/summary&gt;
     public void BackToLapTimes()
     {
         OpenTimes.SetActive(true);
@@ -282,7 +282,7 @@ public class LapManager : MonoBehaviour
 {
     void Start()
     {
-        GlobalManager = GetComponentInParent<GlobalLapManager>();
+        GlobalManager = GetComponentInParent&lt;GlobalLapManager&gt;();
         if (!DataCenter._DataCenter.DoesSaveFileExist())
         {
             LapTime = new float[GlobalManager.MaxScores];
@@ -290,9 +290,9 @@ public class LapManager : MonoBehaviour
         CurrentSegmentTimes = new float[_CheckPoints.Count];
         if (SegmentTimeList.Count == 0) CreateSegmentList();
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// makes the needed space for all segment scores
-    /// </summary>
+    /// &lt;/summary&gt;
     private void CreateSegmentList()
     {
         for (int i = 0; i < _CheckPoints.Count * GlobalManager.MaxScores; i++)
@@ -300,10 +300,10 @@ public class LapManager : MonoBehaviour
             SegmentTimeList.Add(0);
         }
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// Checks if the checkpoint is the next one, saves the time and shows score. 
-    /// </summary>
-    /// <param name="checkpointTag"></param>
+    /// &lt;/summary&gt;
+    /// &lt;param name="checkpointTag"&gt;&lt;/param&gt;
     public void RunCheck(int checkpointTag)
     {
         if (checkpointTag == NextCheckpoint)
@@ -345,11 +345,11 @@ public class LapManager : MonoBehaviour
         }
         GlobalManager.ChangeLapText(Laps + 1);
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// saves all the segment times to a list that can be saved to an external file
-    /// </summary>
-    /// <param name="checkpointTag"></param>
-    /// <param name="scoreplace"></param>
+    /// &lt;/summary&gt;
+    /// &lt;param name="checkpointTag"&gt;&lt;/param&gt;
+    /// &lt;param name="scoreplace"&gt;&lt;/param&gt;
     private void SetSegmentTimes(int checkpointTag, out int scoreplace)
     {
         // checkpointTag -1 om gelijk te maken aan de lijst 
@@ -385,10 +385,10 @@ public class LapManager : MonoBehaviour
         }
         scoreplace = loopRound;
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// compares the new time to old times and reorganize all the times.
-    /// </summary>
-    /// <param name="CurrentLapTime"></param>
+    /// &lt;/summary&gt;
+    /// &lt;param name="CurrentLapTime"&gt;&lt;/param&gt;
     public void Calculate(float CurrentLapTime)
     {
         float[] TemplapList = new float[GlobalManager.MaxScores];
@@ -420,19 +420,17 @@ public class LapManager : MonoBehaviour
         SegmentTimeList = MS.SegmentTimeList;
         LapTime = MS.LapTime;
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// can be used from other scripts to get i safed segment time
-    /// </summary>
-    /// <param name="i"></param>
-    /// <returns></returns>
+    /// &lt;/summary&gt;
+    /// &lt;param name="i"&gt;&lt;/param&gt;
     public float GetSegmentTime(int i)
     {
         return SegmentTimeList[i];
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// can be used form other scrips to use the current timer time
-    /// </summary>
-    /// <returns></returns>
+    /// &lt;/summary&gt;
     public float GetTimerTime()
     {
         float time = 0f;
@@ -469,7 +467,7 @@ public class LapManager : MonoBehaviour
 public class ManagerScore
 {
     public float[] LapTime = new float[0];
-    public List<float> SegmentTimeList = new List<float>();
+    public List&lt;float&gt; SegmentTimeList = new List&lt;float&gt;();
 }
     </code></pre>
                                         </div>
@@ -496,7 +494,7 @@ public class ManagerScore
 public class GlobalLapManager : MonoBehaviour
 {
     public int MaxScores; // used in lap managers
-    public List<LapManager> Managers = new List<LapManager>(); // used in editor tool
+    public List&lt;LapManager&gt; Managers = new List&lt;LapManager&gt;(); // used in editor tool
     public bool RaceOnHold;
     private bool CountingDown;
 
@@ -726,9 +724,9 @@ public class CheckPoints : MonoBehaviour
     public int CheckPointTag;
     void Start()
     {
-        Destroy(GetComponent<MeshRenderer>());
-        GlobalLapManager = FindObjectOfType<GlobalLapManager>();
-        Manager = GetComponentInParent<LapManager>();
+        Destroy(GetComponent&lt;MeshRenderer&gt;());
+        GlobalLapManager = FindObjectOfType&lt;GlobalLapManager&gt;();
+        Manager = GetComponentInParent&lt;LapManager&gt;();
         if (Manager == null) Debug.LogError("manager == null");
     }
     private void OnTriggerEnter(Collider other)
@@ -787,7 +785,7 @@ public class DataCenter : MonoBehaviour
     {
         SetCenter();
         CreateNewValues();
-        GlobalLapManager GM = FindObjectOfType<GlobalLapManager>(); ;
+        GlobalLapManager GM = FindObjectOfType&lt;GlobalLapManager&gt;(); ;
         if (File.Exists(Application.persistentDataPath + SaveLocation))
         {
             if (ShowComments) Debug.Log("Save File Exitst At : " + Application.persistentDataPath + SaveLocation);
@@ -812,9 +810,9 @@ public class DataCenter : MonoBehaviour
             DeleteSaveFile = false;
         }
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// makes a singelton and DontDestroyOnLoad
-    /// </summary>
+    /// &lt;/summary&gt;
     private void SetCenter()
     {
         if (_DataCenter == null)
@@ -875,7 +873,7 @@ public class DataCenter : MonoBehaviour
 [Serializable]
 public class SaveGame
 {
-    public List<ManagerScore> AllScores =  new List<ManagerScore>();
+    public List&lt;ManagerScore&gt; AllScores =  new List&lt;ManagerScore&gt;();
 }
     </code></pre>
                                         </div>
@@ -918,7 +916,7 @@ public class SaveGame
     // dit staat in een algemene race manager via hier word de naviagatie pijl geupdate.
     public void SetNAvigationArrowRotation(CheckPoints target)
     {
-        FindObjectOfType<NavigationRotate>().RotateTowarts(target);
+        FindObjectOfType&lt;NavigationRotate&gt;().RotateTowarts(target);
     }
 
     // dit staat op de navigatie pijl en draait de pijl naar de target wat een checkpoint is
