@@ -150,17 +150,17 @@
                                         <div class="code-content">
                                             <pre><code class="language-csharp">
 												
-/// <summary>
+/// &lt;summary&gt;
 /// Met CamAt weet de camera altijd waar het is
-/// </summary>
+/// &lt;/summary&gt;
 public enum CamAt
 {
     player,
     Ai
 }
-/// <summary>
+/// &lt;summary&gt;
 /// sla camera positie en rotatie op om later te her gebruiken
-/// </summary>
+/// &lt;/summary&gt;
 [Serializable]
 struct CamPos
 {
@@ -305,16 +305,16 @@ public class AiBase : MonoBehaviour
         gm = GameManager.Instance;
         waveGenerator = WaveGenerator.Instance;
         manager = GameManager.Instance;
-        health = GetComponent<AiHealth>();
+        health = GetComponent&lt;AiHealth&gt;();
 
         health.Ondeath += OnDeath;    
 
-        List<GameObject> path = FindObjectOfType<PathManager>().GetPath(PathToFollow, out OnPath toCastleTag);
+        List&lt;GameObject&gt; path = FindObjectOfType&lt;PathManager&gt;().GetPath(PathToFollow, out OnPath toCastleTag);
         ToCastle = toCastleTag;
 
         // set enemy ai behavior
-        Steering steering = GetComponent<Steering>();
-        List<IBehavior> behaviors = new List<IBehavior>();
+        Steering steering = GetComponent&lt;Steering&gt;();
+        List&lt;IBehavior&gt; behaviors = new List&lt;IBehavior&gt;();
         _FollowPath = new FollowPath(path);
         behaviors.Add(_FollowPath);
         steering.SetBehaviors(behaviors);
@@ -333,8 +333,8 @@ public class AiBase : MonoBehaviour
         //remove de enemie uit de wave generator
         waveGenerator.currentEnemies.Remove(this);
         //kijk naar welk caslte deze enemie gaat en haal een live van die castle af
-        if (ToCastle == OnPath.player) manager.PlayerCastle.GetComponent<IModifyValue>().ModifyValue(-1);
-        if (ToCastle == OnPath.ai) manager.AiCastle.GetComponent<IModifyValue>().ModifyValue(-1);
+        if (ToCastle == OnPath.player) manager.PlayerCastle.GetComponent&lt;IModifyValue&gt;().ModifyValue(-1);
+        if (ToCastle == OnPath.ai) manager.AiCastle.GetComponent&lt;IModifyValue&gt;().ModifyValue(-1);
         Destroy(gameObject);
     }
     private void OnDeath()
@@ -371,12 +371,12 @@ public class AiHealth : MonoBehaviour, IModifyValue, IDamageable
 
     void Start()
     {
-        BaseAi = GetComponent<AiBase>();
+        BaseAi = GetComponent&lt;AiBase&gt;();
         Cam = CameraMovment.Instance;
-        DeathSound = GetComponent<AudioSource>();
+        DeathSound = GetComponent&lt;AudioSource&gt;();
         health = EnemyStat.health;
         maxHealth = health;
-        animator = GetComponentInChildren<Animator>();
+        animator = GetComponentInChildren&lt;Animator&gt;();
     }
     public void ModifyValue(int value)
     {
@@ -387,10 +387,10 @@ public class AiHealth : MonoBehaviour, IModifyValue, IDamageable
 
             animator.SetBool("Death", true);
 
-            Destroy(GetComponent<Steering>());
-            Destroy(GetComponent<AiBase>());
+            Destroy(GetComponent&lt;Steering&gt;());
+            Destroy(GetComponent&lt;AiBase&gt;());
 
-            Spawneffect DeathEffect = GetComponent<Spawneffect>();
+            Spawneffect DeathEffect = GetComponent&lt;Spawneffect&gt;();
             DeathEffect.StartCoroutine(DeathEffect.SpawnDeathEffect(transform.position));
 
             Destroy(gameObject, 2f);
@@ -443,11 +443,11 @@ public class ShootingNPC : AiBase
                 Shoot(DirToTower);
             }
         }
-    }
-    /// <summary>
+    }gt;
+    /// &lt;summary&gt;
     /// Instantiate bullet,zet damage van dit script naar bullet en laat bullet kijken naar dir
-    /// </summary>
-    /// <param name="dir"></param>
+    /// &lt;/summary&gt;
+    /// &lt;param name="dir"&gt;&lt;/param&gt;
     private void Shoot(Vector3 dir)
     {
         //maak een fixedoffset met offset en position om rare dingen te verkomen
@@ -507,7 +507,7 @@ public class ShootingNPC : AiBase
 [Serializable]
 public struct States
 {
-    public Chosing Chosing;
+    public Choosing Choosing;
     public Building Building;
     public Idle Idle;
     public Attacting Attacting;
@@ -526,7 +526,7 @@ public class Brain : MonoBehaviour
 
     private void Start()
     {
-        currentState = _States.Chosing;
+        currentState = _States.Choosing;
         _GameManager = GameManager.Instance;
         Currency = _GameManager.aiCurrency;
     }
@@ -658,10 +658,9 @@ public class Building : MonoBehaviour, IState
         }
 
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// returned of alle lines wel genoeg toren hebben voordat de ai betere torens gaat plaatsen
-    /// </summary>
-    /// <returns></returns>
+    /// &lt;/summary&gt;
     private bool CheckActiveTowes()
     {
         if (ActiveTowers.Line1.Count < MinTowersOnLine) return false;
@@ -669,16 +668,15 @@ public class Building : MonoBehaviour, IState
         else if (ActiveTowers.Line3.Count < MinTowersOnLine) return false;
         else return true;
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// return een random tile
-    /// </summary>
-    /// <param name="tiles"></param>
-    /// <returns></returns>
+    /// &lt;/summary&gt;
+    /// &lt;param name="tiles"&gt;&lt;/param&gt;
     private Tile ChoseTile(Tile[] tiles)
     {
         int TileAmount = tiles.Length - 1;
         int RandomTile = UnityEngine.Random.Range(0, TileAmount);
-        Tile tile = tiles[RandomTile].GetComponent<Tile>();
+        Tile tile = tiles[RandomTile].GetComponent&lt;Tile&gt;();
         return tile;
     }
     private void BuildTower(GameObject prefab,Tile tile,int whatline)
@@ -690,21 +688,21 @@ public class Building : MonoBehaviour, IState
         //zet in de tile wat er op de tile staat
         tile.occupent = prefab.gameObject;
         //enable de ghost tower zodat het nu als echte tower werkt
-        //prefab.GetComponent<IPlacable>().SetEnabled(true);
+        //prefab.GetComponent&lt;IPlacable&gt;().SetEnabled(true);
         GameObject go = Instantiate(prefab, tile.transform.position + BuildOffset,Quaternion.identity);
 
         //set whospawnt for audio to not boom
-        go.GetComponent<Turret>().WhoSpawnt(2);
+        go.GetComponent&lt;Turret&gt;().WhoSpawnt(2);
         if (Cam.WhereCamAt == CamAt.Ai) BuildAudio.Play();
 
         //een script word toegevoegt op de tower om later de towers uit de lijst te verwijderen waar het in staan
-        go.AddComponent<RemoveTowerFromAiList>();
-        RemoveTowerFromAiList remove = go.GetComponent<RemoveTowerFromAiList>();
+        go.AddComponent&lt;RemoveTowerFromAiList&gt;();
+        RemoveTowerFromAiList remove = go.GetComponent&lt;RemoveTowerFromAiList&gt;();
         //geef values mee aan het script om later alle goede vlaues te hebben om de tower te verwijderen
         remove.SetValues(tile,this,whatline);
 
         //pak turret om de tower in de goede turret tower list te kunnen zetten
-        Turret got = go.GetComponent<Turret>();
+        Turret got = go.GetComponent&lt;Turret&gt;();
         SetTowerInList(got, whatline);
 
         //laat de ai betalen wat got kost
@@ -713,11 +711,11 @@ public class Building : MonoBehaviour, IState
         //building is nu klaar, hasbuild true om van state te veranderen
         HasBuild = true;
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// voeg tower toe aan een lijst gebaseerd op in welke line tower staat
-    /// </summary>
-    /// <param name="tower"></param>
-    /// <param name="whatline"></param>
+    /// &lt;/summary&gt;
+    /// &lt;param name="tower"&gt;&lt;/param&gt;
+    /// &lt;param name="whatline"&gt;&lt;/param&gt;
     private void SetTowerInList(Turret tower,int whatline)
     {
         switch (whatline)
@@ -733,19 +731,19 @@ public class Building : MonoBehaviour, IState
                 break;
         }
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// haal currency van de ai af voor een toren
-    /// </summary>
-    /// <param name="cost"></param>
+    /// &lt;/summary&gt;
+    /// &lt;param name="cost"&gt;&lt;/param&gt;
     private void BetaleGap(int cost)
     {
         _Brain.Currency.currencyAmount -= cost;
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// verwijder gegeven turret uit de ActiveTowers lijst, geef inline mee op welke line de toren staat
-    /// </summary>
-    /// <param name="turret"></param>
-    /// <param name="inline"></param>
+    /// &lt;/summary&gt;
+    /// &lt;param name="turret"&gt;&lt;/param&gt;
+    /// &lt;param name="inline"&gt;&lt;/param&gt;
     public void RemoveTurretFromList(Turret turret, int inline)
     {
         //switch case om de de turret uit de goede lijn te verwijderen.
@@ -778,33 +776,33 @@ public class Building : MonoBehaviour, IState
                                     <div class="code-container">
                                         <div class="code-header"
                                             onclick="this.nextElementSibling.classList.toggle('open')">
-                                            <strong>code snippet * Chosing.cs</strong>
+                                            <strong>code snippet * Choosing.cs</strong>
                                         </div>
                                         <div class="code-content">
                                             <pre><code class="language-csharp">
 //(dit zijn de beste stukjes uit de code niet het hele script)
-public class Chosing : MonoBehaviour, IState
+public class Choosing : MonoBehaviour, IState
 {
     public IState SwitchState()
     {
         if (WhatStateNext == WhatStateIsNext.Building)
         {
-            WhatStateNext = WhatStateIsNext.Chosing;
+            WhatStateNext = WhatStateIsNext.Choosing;
             return brain._States.Building;
         }
         if (WhatStateNext == WhatStateIsNext.idle)
         {
-            WhatStateNext = WhatStateIsNext.Chosing;
+            WhatStateNext = WhatStateIsNext.Choosing;
             return brain._States.Idle;
         }
         if (WhatStateNext == WhatStateIsNext.Attacing)
         {
-            WhatStateNext = WhatStateIsNext.Chosing;
+            WhatStateNext = WhatStateIsNext.Choosing;
             return brain._States.Attacting;
         }
         if (WhatStateNext == WhatStateIsNext.upgrading)
         {
-            WhatStateNext = WhatStateIsNext.Chosing;
+            WhatStateNext = WhatStateIsNext.Choosing;
             return brain._States.Upgrade;
         }
         return this;
@@ -812,7 +810,7 @@ public class Chosing : MonoBehaviour, IState
 
     public void UpdateState()
     {
-        if (brain.StateDebugs) Debug.Log("chosing");
+        if (brain.StateDebugs) Debug.Log("Choosing");
 
         if (brain.Currency.currencyAmount >= MinCurrencyToDoSomething)
         {
@@ -884,19 +882,19 @@ public class Idle : MonoBehaviour, IState
 {
     private Brain brain;
     private Coroutine wait;
-    private bool contin = false;
+    private bool continue = false;
     [SerializeField] private float IdleTime;
     private void Awake()
     {
-        brain = GetComponent<Brain>();
+        brain = GetComponent&lt;Brain&gt;();
     }
     public IState SwitchState()
     {
-        if (contin)
+        if (continue)
         {
             wait = null;
-            contin = false;
-            return brain._States.Chosing;
+            continue = false;
+            return brain._States.Choosing;
         }
         else return this;
     }
@@ -909,7 +907,7 @@ public class Idle : MonoBehaviour, IState
     private IEnumerator Wait()
     {
         yield return new WaitForSeconds(IdleTime);
-        contin = true;
+        continue = true;
     }
 }
     </code></pre>
@@ -936,17 +934,17 @@ public class UpgradeTowers : MonoBehaviour, IState
     private Brain brain;
     private Building builder;
     [SerializeField] private UpgradeButtons upgradeButtons;
-    private bool Contin = false;
+    private bool continue = false;
     private void Awake()
     {
-        brain = GetComponent<Brain>();
-        builder = GetComponent<Building>();
+        brain = GetComponent&lt;Brain&gt;();
+        builder = GetComponent&lt;Building&gt;();
     }
     public IState SwitchState()
     {
-        if (Contin)
+        if (continue)
         {
-            Contin = false;
+            continue = false;
             return brain._States.Idle;
         }
         else return this;
@@ -974,7 +972,7 @@ public class UpgradeTowers : MonoBehaviour, IState
                 Upgrader.UpgradeRadius(upgradeButtons.Raduis,2);
                 break;
         }
-        Contin = true;
+        continueue = true;
     }
     private Turret GetRandomTurret()
     {
@@ -1004,7 +1002,7 @@ public class UpgradeTowers : MonoBehaviour, IState
     }
     private void GetButtons(Turret turret)
     {
-        UpgradeButton[] buttons = turret.ButtonHolder.GetComponentsInChildren<UpgradeButton>();
+        UpgradeButton[] buttons = turret.ButtonHolder.GetComponentsInChildren&lt;UpgradeButton&gt;();
         foreach (UpgradeButton button in buttons)
         {
             switch (button.upgradeType.type)
@@ -1068,7 +1066,7 @@ public class SpawnTile : MonoBehaviour
     private WaveGenerator waveGen;
     private void Awake()
     {
-        Spawner = FindObjectOfType<SpawnManager>();
+        Spawner = FindObjectOfType&lt;SpawnManager&gt;();
         Physics.queriesHitTriggers = false;
     }
     private void Start()

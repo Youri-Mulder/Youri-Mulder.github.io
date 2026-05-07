@@ -154,7 +154,7 @@ public class FishSpawner : MonoBehaviour
 
     private BoxCollider2D bounds;
     private FishPooler fishPooler;
-    private List<FishBrain> ActiveFish = new List<FishBrain>();
+    private List&lt;FishBrain&gt; ActiveFish = new List&lt;FishBrain&gt;();
     private bool isThisSpawnerActive = false;
     public bool IsThisSpawnerActive
     {
@@ -169,7 +169,7 @@ public class FishSpawner : MonoBehaviour
             EventManager.FishCaught += OnFishCaught;
         }
         fishPooler = FishPooler.instance;
-        bounds = GetComponent<BoxCollider2D>();
+        bounds = GetComponent&lt;BoxCollider2D&gt;();
         bounds.isTrigger = true;
         bounds.size = SpawnArea;
     }
@@ -366,7 +366,7 @@ public class FishPooler : MonoBehaviour
 {
     public static FishPooler instance;
     public BoxCollider WaterBlock;
-    [SerializeField] private List<FishBrain> FishList = new List<FishBrain>();
+    [SerializeField] private List&lt;FishBrain&gt; FishList = new List&lt;FishBrain&gt;();
     [SerializeField] private FishBrain fishPrefab;
     [SerializeField] private int MaxFishInList;
     [SerializeField] private GameObject Hook;
@@ -412,10 +412,9 @@ public class FishPooler : MonoBehaviour
         fish.DestroyVisual();
         fish.gameObject.SetActive(false);
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// check over er niet meer vissen in de pooler zitten dan nodig
-    /// </summary>
-    /// <returns></returns>
+    /// &lt;/summary&gt;
     private bool ToManyFishActive()
     {
         int i = 0;
@@ -518,9 +517,9 @@ public class FishPooler : MonoBehaviour
 //(dit zijn de beste stukjes uit de code niet het hele script)
 public class FishBiting : MonoBehaviour, IFishState
 {
-    /// <summary>
+    /// &lt;summary&gt;
     /// zet alle fish waarden naar standard on state start
-    /// </summary>
+    /// &lt;/summary&gt;
     public void OnStateActivate()
     {
         stamina = MaxStamina;
@@ -821,10 +820,9 @@ public class FishBiting : MonoBehaviour, IFishState
         }
     }
 
-    /// <summary>
+    /// &lt;summary&gt;
     /// return if the fish is in a struggle
-    /// </summary>
-    /// <returns></returns>
+    /// &lt;/summary&gt;
     public bool IsStruggeling()
     {
         if (biteState == FishBitingState.Struggling) return true;
@@ -999,10 +997,10 @@ public class FishBrain : MonoBehaviour
             wiggle.SetWigglePositions();
         }
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// set de target positie van de vis
-    /// </summary>
-    /// <param name="endpos"></param>
+    /// &lt;/summary&gt;
+    /// &lt;param name="endpos"&gt;&lt;/param&gt;
     public void SetEndPos(Vector3 endpos)
     {
         P_EndPos = endpos;
@@ -1012,8 +1010,8 @@ public class FishBrain : MonoBehaviour
 
     void Start()
     {
-        UI = GetComponent<FishUI>();
-        CurrentState = GetComponent<IFishState>();
+        UI = GetComponent&lt;FishUI&gt;();
+        CurrentState = GetComponent&lt;IFishState&gt;();
         CurrentState = states.Roaming;
         ViewManager.instance.ViewShow += CheckPauseState;
     }
@@ -1034,9 +1032,9 @@ public class FishBrain : MonoBehaviour
             CheckForObsticles();
         }
     }
-    /// <summary>
+    /// &lt;summary&gt;
     /// check voor obstakels die recht voor de vis zetten
-    /// </summary>
+    /// &lt;/summary&gt;
     private void CheckForObsticles()
     {
         if (Physics.Raycast(RotationObject.transform.position, RotationObject.transform.forward, 0.3f, obstacleLayer))
@@ -1114,7 +1112,7 @@ public class FishRoaming : MonoBehaviour, IFishState
 
     void Awake()
     {
-        brain = GetComponent<FishBrain>();
+        brain = GetComponent&lt;FishBrain&gt;();
     }
     public void OnStateActivate()
     {
@@ -1235,7 +1233,7 @@ public class DataCenter : MonoBehaviour
     [SerializeField] private int saveAfterTime;
     private string Filename = "/GameSafe.json";
     private StorageCenter storageCenter = new StorageCenter();
-    private List<InventorySave> GameSave = new List<InventorySave>();
+    private List&lt;InventorySave&gt; GameSave = new List&lt;InventorySave&gt;();
 
     private Coroutine SavingC;
     private void Start()
@@ -1257,7 +1255,7 @@ public class DataCenter : MonoBehaviour
         if (File.Exists(Application.persistentDataPath + Filename))
         {
             string file = File.ReadAllText(Application.persistentDataPath + Filename);
-            storageCenter = JsonUtility.FromJson<StorageCenter>(file);
+            storageCenter = JsonUtility.FromJson&lt;StorageCenter&gt;(file);
         }
     }
     private void SafeGame()
@@ -1307,7 +1305,7 @@ public class DataCenter : MonoBehaviour
     private void WriteSave()
     {
         // write fish
-        List<InventoryItem> invitems = Inventory.instance.currentFish;
+        List&lt;InventoryItem&gt; invitems = Inventory.instance.currentFish;
         foreach (InventoryItem fish in invitems)
         {
             InventorySave fishSave = new InventorySave();
@@ -1355,7 +1353,7 @@ public class DataCenter : MonoBehaviour
 [Serializable]
 public class StorageCenter
 {
-    public List<InventorySave> inventory = new List<InventorySave>();
+    public List&lt;InventorySave&gt; inventory = new List&lt;InventorySave&gt;();
     public CatalogueSave Catalogue;
     public int[] upgradeIndex;
     public int currentDay;
